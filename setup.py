@@ -1,6 +1,5 @@
 with open(".env", "w", encoding="utf-8") as f:
     f.write(f"""
-    DB_URL={input("DB_URL:\n")}
     APP_NAME={input("APP_NAME:\n")}
     SECRET_KEY={input("SECRET_KEY:\n")}
     """)

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Felhasználók{% endblock %}
-{% block heading %}Felhasználók{% endblock %}
 
 {% block head %}
     <style>
@@ -30,28 +29,18 @@
 {% endblock %}
 
 {% block main %}
-<a href="{{ url_for('users.create') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br>
+<!-- <a href="{{ url_for('users.register') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br> -->
 {% for user in users %}
-    {% if user.role != 'athlete' %}
         <div class="user p-4 my-3">
             <h5 class="user-name">{{ user.name }}</h5>
-            {% if user.last_seen %}
-                <div class="small-gray mb-2">Legutóbb aktív: {{ user.last_seen }}</div>
-            {% endif %}
-            {% if user.set_password_code %}
-                <button onclick="copyLink('{{ user.url }}');" class="btn btn-secondary me-2">
-                    <i class="fas fa-copy"></i> Link másolása
-                </button>
-            {% endif %}
             <form action="{{ url_for('users.delete', user_id=user.id) }}" method="post"
                   onsubmit='return confirm("Biztosan törlöd? ({{ user.name }})")' class="d-inline">
-                {{ delete_form.csrf_token(id=False) }}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary-dark">
                     <i class="fas fa-trash"></i> Törlés
                 </button>
             </form>
         </div>
-    {% endif %}
 {% endfor %}
 {% endblock %}
 

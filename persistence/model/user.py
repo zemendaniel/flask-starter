@@ -32,11 +32,15 @@ class User(Model):
         if role_name not in roles.keys():
             raise ValueError(f'Role {role_name} is not allowed')
         self.role = role_name
-        self.save()
 
     @property
     def role_hun(self):
         return roles[self.role]
+
+    def form_update(self, form):
+        self.name = form.name.data
+        self.set_role("user")
+        self.set_password(form.password.data)
 
 
 from persistence.repository.user import UserRepository

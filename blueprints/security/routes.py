@@ -58,7 +58,7 @@ def login():
 @bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    response = redirect(url_for('security.login'))
+    response = redirect(url_for('pages.home'))
     response.set_cookie('login_token', '', expires=0)
     flash('Sikeresen kijelentkezve!', 'success')
     return response

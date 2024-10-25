@@ -18,43 +18,19 @@
     }
 </style>
 {% endblock %}
-{% block heading %}
-{% if create %}Létrehozás{% else %}Szerkesztés{% endif %}
-{% endblock %}
 
 {% block main %}
-    <div class="my-2">
-        <a {% if (not create) and request.args.get('redirect') %}
-                href="{{ request.args['redirect'] }}"
-            {% else %}
-                href="{{ url_for('posts.list_all') }}"
-           {% endif %}
-           class="btn btn-dark me-4" onclick="return confirmChanges()"><i class="fa fa-arrow-left"></i> Vissza a bejegyzésekhez
-        </a>
-    </div>
-<form method="post" onchange="changed = true;" id="form">
+    <a href="{{ url_for('posts.list_all') }}" class="btn btn-dark me-4 my-2" onclick="return confirmChanges()"><i class="fa fa-arrow-left"></i> Vissza a bejegyzésekhez</a>
+
+    <form method="post" onchange="changed = true;" id="form">
     {{ form.csrf_token() }}
     <div class="form-group mb-3">
         {{ form.date.label }}
         {{ form.date(class="form-control", id='date') }}
     </div>
-    <div class="form-group mb-3">
+    <div class="form-group mb-1">
         {{ form.content.label }}
         {{ form.content(class="form-control no-resize", id='content')}}
-    </div>
-    <div class="form-group mb-3">
-    </div>
-    <div class="form-group mb-3">
-        <label for="difficulty">{{ form.difficulty.label }}</label>
-        {{ form.difficulty(class="form-control") }}
-    </div>
-    <div class="form-group mb-3">
-        <label for="feel">{{ form.feel.label }}</label>
-        {{ form.feel(class="form-control") }}
-    </div>
-    <div class="form-group">
-        {{ form.visible.label(class_="checkbox-label") }}
-        {{ form.visible()}}
     </div>
 </form>
 
@@ -66,7 +42,7 @@
         {% if not create %}
             <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="post"
                   onsubmit='return confirm("Biztosan törlöd? ({{ post.date }})")' class="d-inline">
-                {{ delete_form.csrf_token(id=False) }}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-dark mx-2">
                     <i class="fa-solid fa-trash-can"></i> Törlés
                 </button>

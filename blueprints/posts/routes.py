@@ -33,7 +33,7 @@ def list_all():
 def view(post_id):
     post = PostRepository.find_by_id(post_id) or abort(404)
 
-    return render_template('posts/view.html', post=post, delete_form=DeletePostForm())
+    return render_template('posts/view.html', post=post)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

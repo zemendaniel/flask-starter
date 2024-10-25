@@ -35,10 +35,9 @@ def register():
     if form.validate_on_submit():
         if UserRepository.find_by_name(form.name.data.strip()):
             flash('A név már foglalt!', 'error')
-            return redirect(url_for('users.create'))
+            return redirect(url_for('users.register'))
         user = User()
-        user.name = form.name.data.strip()
-        user.role = "user"
+        user.form_update(form)
         user.save()
         flash("Sikeres regisztráció!", 'success')
         return redirect(url_for('security.login'))

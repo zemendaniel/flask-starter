@@ -32,7 +32,7 @@ def reset_admin():
             session.commit()
         admin = User()
         admin.name = input("Admin neve:\n").strip()
-        admin.role = "admin"
+        admin.set_role("admin")
         admin.password = generate_password_hash(input("Admin jelszava (min. 4 karakter hosszú):\n"))
 
         session.add(admin)
