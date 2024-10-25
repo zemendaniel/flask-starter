@@ -1,0 +1,2 @@
+Relationships: https://github.com/search?q=repo%3Azemendaniel%2Fmaltai_projekt%20relationship&type=code
+Alchemical: https://alchemical.readthedocs.io/en/stable/

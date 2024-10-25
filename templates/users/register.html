@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Új felhasználó létrehozása{% endblock %}
+
+{% block heading %}Új felhasználó létrehozása{% endblock %}
+
+{% block main %}
+    <a href="{{ url_for('users.list_all') }}" class="btn btn-dark py-2"><i class="fa fa-arrow-left"></i> Vissza a felhasználókhoz</a>
+
+    <form method="post" class="form">
+        {{ form.csrf_token() }}
+
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Létrehozás</button>
+        </div>
+    </form>
+{% endblock %}

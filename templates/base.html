@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block head %}{% endblock %}
+
+</head>
+<body>
+    {% if g.user %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="dropdown">
+                <a class="navbar-brand dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-user"></i> <strong class="ms-1">{{ g.user.name }}</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userDropdown">
+                    <li>
+                        <form class="d-flex me-3" action="{{ url_for('security.logout') }}" method="post" id="logoutForm">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button type="submit" class="dropdown-item text-light bg-transparent border-0"><strong><i class="fa-solid fa-sign-out-alt"></i> Kijelentkezés</strong></button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link {% if request.endpoint == 'posts.list_all' %}active{% endif %}" href="{{ url_for("posts.list_all") }}"><i class="fa-solid fa-book"></i> Posztok</a>
+                    </li>
+                    {% if is_admin() %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container" id="flashMessages">
+    </div>
+    <script>
+        idNum = 0;
+        function createFlashMessage(msg, category){
+            let className = "alert-dark";
+            if (category === "info"){
+                className = "alert-dark"
+            }
+            else if (category === "success"){
+                className = 'alert-success'
+            }
+            else if (category === "error"){
+                className = 'alert-danger'
+            }
+            else if (category === "warning"){
+                className = 'alert-warning'
+            }
+
+            idNum++;
+
+            const flashId = "flash-" + (idNum - 1);
+
+            document.getElementById('flashMessages').innerHTML += `
+                <div class="alert ${className} alert-dismissible fade show mt-3 text-center flash-message" role="alert" id="${flashId}">
+                    <b>${msg}</b>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="progress-bar"></div>
+                </div>
+            `;
+
+            setTimeout(function() {
+                var element = document.getElementById(flashId);
+                element.style.transition = "opacity 0.25s ease-out";
+                element.style.opacity = "0"; // Fading out
+
+                setTimeout(function() {
+                    element.remove();
+                }, 250);
+
+            }, 10000);
+        }
+    </script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <script>
+                    createFlashMessage('{{ message }}', "{{ category }}");
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block before_main %}{% endblock %}
+
+    <main class="container">
+        {% block main %}{% endblock %}
+    </main>
+
+    {% block after_main %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    {% block after_scripts %}{% endblock %}
+</body>
+</html>

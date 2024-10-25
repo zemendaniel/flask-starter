@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if create %}
+    Létrehozás
+{% else %}
+    Szerkesztés
+{% endif %}
+{% endblock %}
+
+{% block head %}
+<style>
+    .form-control.no-resize {
+        resize: none;
+        max-width: 100%;
+        height: 330px;
+        max-height: 330px;
+    }
+</style>
+{% endblock %}
+{% block heading %}
+{% if create %}Létrehozás{% else %}Szerkesztés{% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="my-2">
+        <a {% if (not create) and request.args.get('redirect') %}
+                href="{{ request.args['redirect'] }}"
+            {% else %}
+                href="{{ url_for('posts.list_all') }}"
+           {% endif %}
+           class="btn btn-dark me-4" onclick="return confirmChanges()"><i class="fa fa-arrow-left"></i> Vissza a bejegyzésekhez
+        </a>
+    </div>
+<form method="post" onchange="changed = true;" id="form">
+    {{ form.csrf_token() }}
+    <div class="form-group mb-3">
+        {{ form.date.label }}
+        {{ form.date(class="form-control", id='date') }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form.content.label }}
+        {{ form.content(class="form-control no-resize", id='content')}}
+    </div>
+    <div class="form-group mb-3">
+    </div>
+    <div class="form-group mb-3">
+        <label for="difficulty">{{ form.difficulty.label }}</label>
+        {{ form.difficulty(class="form-control") }}
+    </div>
+    <div class="form-group mb-3">
+        <label for="feel">{{ form.feel.label }}</label>
+        {{ form.feel(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.visible.label(class_="checkbox-label") }}
+        {{ form.visible()}}
+    </div>
+</form>
+
+<div class="d-flex align-items-center">
+        <button type="submit" onclick="document.getElementById('form').submit()" class="btn btn-primary-dark">
+            <i class="fa-solid fa-floppy-disk"></i> Mentés
+        </button>
+
+        {% if not create %}
+            <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="post"
+                  onsubmit='return confirm("Biztosan törlöd? ({{ post.date }})")' class="d-inline">
+                {{ delete_form.csrf_token(id=False) }}
+                <button type="submit" class="btn btn-dark mx-2">
+                    <i class="fa-solid fa-trash-can"></i> Törlés
+                </button>
+            </form>
+        {% endif %}
+</div>
+
+<script>
+    let changed = false;
+    function confirmChanges(){
+        if (changed === true){
+            return confirm("Biztosan kilépsz? Nem mentett módosítások vannak.");
+        }
+        return true;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Edzésnapló{% endblock %}
+
+{% block before_main %}
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <button type="button" class="btn btn-dark btn-floating btn-lg" id="scrollToTopButton" onclick="backToTop()">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+{% endblock %}
+
+{% block main %}
+<div class="d-flex align-items-center my-2">
+    {% if is_athlete() %}
+        <a href="{{ url_for('posts.create') }}" class="btn btn-dark me-2">
+            <i class="fa-solid fa-plus-circle"></i> Bejegyzés hozzáadása
+        </a>
+    {% endif %}
+    <button class="btn btn-secondary" onclick="showSearchForm('searchPostFormDiv', 'showPostFormButton')" id="showPostFormButton" style="display: none">
+        <i class="fa-solid fa-filter"></i> Szűrők megjelenítése
+    </button>
+</div>
+<div id="searchPostFormDiv" style="display: none">
+    <form id="searchPostForm" hx-get="{{ url_for('posts.list_all') }}" hx-trigger="submit" hx-target="#content" hx-push-url="true">
+        <input type="hidden" name="search" value="_">
+        <div class="form-group mb-3">
+            <label for="date1">Dátum ettől</label>
+            <input type="date" class="form-control" id="date1" name="date1">
+        </div>
+        <div class="form-group mb-3">
+            <label for="date2">Dátum eddig</label>
+            <input type="date" class="form-control" id="date2" name="date2">
+        </div>
+        <div class="form-group mb-3">
+            <label for="query_string">Keresendő szöveg (pl. 2000, résztáv)</label>
+            <input type="text" name="query_string" id="query_string" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="order_by">Rendezés</label>
+            <select name="order_by" id="order_by" class="form-control">
+                <option value="date">Dátum szerint </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ascending" class="checkbox-label">Növekvő sorrend?</label>
+            <input type="checkbox" name="ascending" id="ascending">
+        </div>
+        <div class="d-flex align-items-center">
+            <button type="submit" class="btn btn-primary-dark"><i class="fa-solid fa-search"></i> Keresés</button>
+            <button type="button" class="btn btn-dark reset-button mx-2"
+                    hx-get="{{ url_for('posts.list_all') }}" hx-trigger="click" hx-target="#content" hx-push-url="true"
+                    onclick="document.getElementById('searchPostForm').reset()">
+                <i class="fa-solid fa-rotate-left"></i> Visszaállítás</button>
+            <button type="button" class="btn btn-secondary" onclick="hideSearchForm('searchPostFormDiv', 'showPostFormButton')"><i class="fa-solid fa-chevron-up"></i> Szűrők elrejtése</button>
+        </div>
+    </form>
+</div>
+<div class="results-info my-2 p-1">
+    <i class="fas fa-list"></i> <span id="amount"></span>
+</div>
+
+<div id="content" hx-get="{{ request.full_path }}" hx-trigger="load" hx-indicator="#loading"></div>
+
+{% endblock %}
+
+{% block after_main %}
+    <script>
+        function onLoad(){
+            document.getElementById('searchPostFormDiv').style.display = 'none';
+            document.getElementById('showPostFormButton').style.display = 'none';
+
+            showOrHideFormOnLoad("searchPostFormDiv", 'showPostFormButton');
+        }
+
+        window.onload = onLoad;
+    </script>
+
+    <script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
+
+{% endblock %}
