@@ -1,4 +1,3 @@
-# todo change role oldal
 # todo view oldal
 # todo css dolgok
 # todo maybe no dark mode

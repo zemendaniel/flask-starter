@@ -19,6 +19,11 @@
             font-size: 0.9rem;
             color: #a0aec0; /* Gray text for last seen */
         }
+
+        .role{
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
     </style>
 {% endblock %}
 
@@ -32,7 +37,14 @@
 <!-- <a href="{{ url_for('users.register') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br> -->
 {% for user in users %}
         <div class="user p-4 my-3">
-            <h5 class="user-name">{{ user.name }}</h5>
+            <h5 class="user-name">{{ user.name }}</h5><h5 class="role">({{ user.role }})</h5>
+            <form action="{{ url_for('users.role_change', user_id=user.id) }}" method="post"
+                  onsubmit='return confirm("Biztosan {% if user.role == "user" %}admin rankra {% else %}user rankra{% endif %} szeretnéd válzoztatni? ({{ user.name }})")' class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary-dark" {% if g.user == user and user.role == "admin" %}disabled{% endif %}>
+                    {% if user.role == "user" %}Promótálás{% else %}Demótálás{% endif %}
+                </button>
+            </form>
             <form action="{{ url_for('users.delete', user_id=user.id) }}" method="post"
                   onsubmit='return confirm("Biztosan törlöd? ({{ user.name }})")' class="d-inline">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

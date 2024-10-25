@@ -1,4 +1,4 @@
-from flask import g, redirect, url_for, flash, render_template, abort, session
+from flask import g, redirect, url_for, flash, render_template, abort, request, session
 from security.decorators import is_admin, is_fully_authenticated
 from blueprints.users import bp
 from blueprints.users.forms import RegisterUserForm
@@ -43,3 +43,24 @@ def register():
         return redirect(url_for('security.login'))
 
     return render_template('users/register.html', form=form)
+
+@bp.route('/role_change/<int:user_id>', methods=['POST'])
+@is_fully_authenticated
+@is_admin
+def role_change(user_id):
+    user = UserRepository.find_by_id(user_id) or abort(404)
+    if g.user == user:
+        abort(401)
+
+    if user.role == 'user':
+        user.set_role('admin')
+    else:
+        user.set_role('user')
+
+    user.save()
+    flash("Szerep sikeresen megváltoztatva", 'success')
+
+    return redirect(url_for('users.list_all'))
+
+
+
