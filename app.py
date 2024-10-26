@@ -1,10 +1,10 @@
-# todo view oldal
-# todo css dolgok
-# todo maybe no dark mode
+# todo Adam css dolgok
+# todo Adam valahol jelenlen meg magyarul a jogosultság (g.user.role_hun)
+# todo Adam dark mode legyen vagy ne legyen
 # todo back to top
+# todo settings page
 
 import os
-import threading
 import logging
 import persistence
 from logging.handlers import RotatingFileHandler
@@ -17,6 +17,7 @@ import security
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from config import Config
 from flask_minify import Minify
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 csrf = CSRFProtect()
 minify = Minify(html=True, js=True, cssless=True)
@@ -25,6 +26,7 @@ minify = Minify(html=True, js=True, cssless=True)
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.jinja_env.add_extension('jinja2.ext.do')
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_size': 10,
         'max_overflow': 20,
@@ -58,9 +60,13 @@ def create_app(config_class=Config):
     def unauthorized(error):
         return render_template('errors/401.html'), 401
 
+    @app.errorhandler(403)
+    def forbidden(error):
+        return render_template('errors/403.html'), 403
+
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
-        return render_template('errors/400.html'), 400
+        return render_template('errors/403.html'), 400
 
     return app
 

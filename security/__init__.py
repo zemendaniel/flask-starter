@@ -6,7 +6,7 @@ from persistence.repository.user import UserRepository
 def init_app(app):
     app.before_request(__load_current_user)
     app.jinja_env.globals['is_fully_authenticated'] = lambda: g.user
-    app.jinja_env.globals['is_admin'] = lambda: g.user and g.user.role == "admin"
+    app.jinja_env.globals['is_admin'] = lambda: g.user and g.user.is_admin
 
 
 def __load_current_user():

@@ -6,7 +6,6 @@ from wtforms.validators import DataRequired
 
 class CreatePostForm(FlaskForm):
     content = TextAreaField('Tartalom', validators=[DataRequired()])
-    date = DateField('Dátum', validators=[DataRequired()])
 
     submit = SubmitField('Létrehozás')
 

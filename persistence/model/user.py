@@ -1,9 +1,13 @@
 from alchemical import Model
+from flask import g
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, validates
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
+# Maximum 64 characters
 roles = {
+    'super_admin': 'Főadminisztrátor',
     'admin': 'Adminisztrátor',
     'user': 'Felhasználó',
 }
@@ -21,6 +25,15 @@ class User(Model):
     def delete(self):
         UserRepository.delete(self)
 
+    @property
+    # Determines whether the user is the original admin
+    def is_super_admin(self):
+        return self.role == 'super_admin'
+
+    @property
+    def is_admin(self):
+        return self.role in ["admin", "super_admin"]
+
     def check_password(self, password) -> bool:
         return check_password_hash(self.password, password)
 
@@ -29,7 +42,7 @@ class User(Model):
         self.save()
 
     def set_role(self, role_name):
-        if role_name not in roles.keys():
+        if role_name not in roles.keys() or role_name == 'super_admin':
             raise ValueError(f'Role {role_name} is not allowed')
         self.role = role_name
 

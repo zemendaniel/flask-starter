@@ -19,7 +19,7 @@ def is_admin(view):
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for('security.login', redirect=request.path))
-        elif not g.user.role == "admin":
+        elif not g.user.is_admin:
             abort(401)
 
         return view(**kwargs)

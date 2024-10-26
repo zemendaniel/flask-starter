@@ -5,6 +5,9 @@ from sqlalchemy import func
 class UserRepository:
     @staticmethod
     def save(user):
+        if not g.user.is_super_admin and user.role == 'super_admin':
+            raise Exception('There can only be 1 super admin')
+
         g.session.add(user)
         g.session.commit()
 
@@ -44,7 +47,7 @@ class UserRepository:
             .order_by(User.name)
         )
 
-        return g.session.scalars(statement)
+        return g.session.scalars(statement).all()
 
 
 from persistence.model.user import User

@@ -26,14 +26,26 @@ def install():
 
 def reset_admin():
     with db.Session() as session:
-        admin = session.scalar(User.select().where(User.role == 'admin'))
+        admin = session.scalar(User.select().where(User.role == 'super_admin'))
         if admin:
             session.delete(admin)
             session.commit()
         admin = User()
-        admin.name = input("Admin neve:\n").strip()
-        admin.set_role("admin")
-        admin.password = generate_password_hash(input("Admin jelszava (min. 4 karakter hosszú):\n"))
+
+        while True:
+            name = input("Admin neve (max. 64 karakter hosszú): ").strip()
+            if len(name) <= 64:
+                break
+
+        while True:
+            password = input("Admin jelszava (min. 4, max. 32 karakter hosszú): ")
+            if 4 <= len(password) <= 32:
+                break
+
+        # DON'T USE THE USUAL METHODS AS THEY REQUIRE A G.SESSION
+        admin.name = name
+        admin.password = generate_password_hash(password)
+        admin.role = 'super_admin'
 
         session.add(admin)
         session.commit()

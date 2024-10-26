@@ -1,18 +1,28 @@
 from flask import g, redirect, url_for, flash, render_template, abort, request, session
 from security.decorators import is_admin, is_fully_authenticated
 from blueprints.users import bp
-from blueprints.users.forms import RegisterUserForm
+from blueprints.users.forms import RegisterUserForm, EditUserRoleForm
 from persistence.repository.user import UserRepository
 from persistence.model.user import User
 
 
-@bp.route('/')
+@bp.route('/', methods=['GET', 'POST'])
 @is_fully_authenticated
 @is_admin
 def list_all():
     users = UserRepository.find_all()
+    role_form = EditUserRoleForm()
 
-    return render_template("users/list.html", users=users)
+    if role_form.validate_on_submit():
+        user = UserRepository.find_by_id(role_form.user_id.data) or abort(404)
+        if user.is_super_admin or g.user.id == user.id:
+            abort(403)
+
+        user.set_role(role_form.role.data)
+        user.save()
+        return redirect(url_for('users.list_all'))
+
+    return render_template("users/list.html", users=users, role_form=role_form)
 
 
 @bp.route('/delete/<int:user_id>', methods=['POST'])
@@ -20,8 +30,8 @@ def list_all():
 @is_admin
 def delete(user_id):
     user = UserRepository.find_by_id(user_id) or abort(404)
-    if user.role == 'admin':
-        abort(401)
+    if user.is_super_admin or g.user.id == user.id:
+        abort(403)
 
     username = user.name
     user.delete()
@@ -43,24 +53,3 @@ def register():
         return redirect(url_for('security.login'))
 
     return render_template('users/register.html', form=form)
-
-@bp.route('/role_change/<int:user_id>', methods=['POST'])
-@is_fully_authenticated
-@is_admin
-def role_change(user_id):
-    user = UserRepository.find_by_id(user_id) or abort(404)
-    if g.user == user:
-        abort(401)
-
-    if user.role == 'user':
-        user.set_role('admin')
-    else:
-        user.set_role('user')
-
-    user.save()
-    flash("Szerep sikeresen megváltoztatva", 'success')
-
-    return redirect(url_for('users.list_all'))
-
-
-
