@@ -1,7 +1,6 @@
 # todo Adam css dolgok
 # todo Adam valahol jelenlen meg magyarul a jogosultság (g.user.role_hun)
 # todo Adam dark mode legyen vagy ne legyen
-# todo back to top
 # todo settings page
 
 import os
