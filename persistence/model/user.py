@@ -20,13 +20,12 @@ class User(Model):
 
 
     @property
-    def password(self):
+    def password(self) -> None:
         return None
 
     @password.setter
     def password(self, password):
         self._password = generate_password_hash(password)
-        self.save()
 
     @property
     def role(self):
