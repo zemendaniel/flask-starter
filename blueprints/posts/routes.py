@@ -44,6 +44,7 @@ def create():
     form = CreatePostForm()
     if form.validate_on_submit():
         post.form_update(form)
+        post.author_id = g.user.id
         post.save()
         flash('Poszt hozzáadva.', 'success')
 

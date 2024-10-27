@@ -1,0 +1,6 @@
+Relationships: https://github.com/search?q=repo%3Azemendaniel%2Fmaltai_projekt%20relationship&type=code
+Alchemical: https://alchemical.readthedocs.io/en/stable/
+
+AKINEK NEM MŰKÖDIK A DEBUGGING EZT ÍRJA BE:
+mklink /J C:\PyCharm "C:\Program Files\JetBrains\PyCharm2023.3"
+Utána pedig a PyCharm parancsikonban a target: C:\PyCharm\bin\pycharm64.exe - a start in pedig C:\PyCharm\bin

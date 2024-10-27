@@ -11,6 +11,9 @@ from persistence.model.user import User
 @is_admin
 def list_all():
     users = UserRepository.find_all()
+    for user in users:
+        for post in user.posts:
+            print(post.id)
     role_form = EditUserRoleForm()
 
     if role_form.validate_on_submit():
@@ -41,6 +44,9 @@ def delete(user_id):
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    if g.user is not None:
+        return redirect(url_for('pages.home'))
+
     form = RegisterUserForm()
     if form.validate_on_submit():
         if UserRepository.find_by_name(form.name.data.strip()):

@@ -63,6 +63,10 @@ def create_app(config_class=Config):
     def forbidden(error):
         return render_template('errors/403.html'), 403
 
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return render_template('errors/405.html'), 405
+
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
         return render_template('errors/403.html'), 400
