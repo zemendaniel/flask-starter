@@ -5,13 +5,21 @@ from sqlalchemy import func
 class UserRepository:
     @staticmethod
     def save(user):
-        if not g.user.is_super_admin and user.role == 'super_admin':
+        if user.role == 'super-admin' and UserRepository.get_super_admin().id != user.id:
             raise Exception('There can only be 1 super admin')
 
         g.session.add(user)
         g.session.commit()
 
         return user
+
+    @staticmethod
+    def get_super_admin():
+        statement = (
+            User.select()
+            .where(User.role == 'super_admin')
+        )
+        return g.session.scalar(statement)
 
     @staticmethod
     def delete(user):
