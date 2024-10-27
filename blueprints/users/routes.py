@@ -18,7 +18,7 @@ def list_all():
         if user.is_super_admin or g.user.id == user.id:
             abort(403)
 
-        user.set_role(role_form.role.data)
+        user.role = role_form.role.data
         user.save()
         return redirect(url_for('users.list_all'))
 

@@ -26,7 +26,7 @@ def install():
 
 def reset_admin():
     with db.Session() as session:
-        admin = session.scalar(User.select().where(User.role == 'super_admin'))
+        admin = session.scalar(User.select().where(User._role == 'super_admin'))    #ugly but it needs to refer to the actual column not the setter
         if admin:
             session.delete(admin)
             session.commit()
@@ -44,8 +44,8 @@ def reset_admin():
 
         # DON'T USE THE USUAL METHODS AS THEY REQUIRE A G.SESSION
         admin.name = name
-        admin.password = generate_password_hash(password)
-        admin.role = 'super_admin'
+        admin._password = generate_password_hash(password)
+        admin._role = 'super_admin'
 
         session.add(admin)
         session.commit()
