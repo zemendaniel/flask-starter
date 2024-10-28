@@ -2,7 +2,8 @@ from flask import g, redirect, url_for, flash, render_template, abort, request, 
 from security.decorators import is_admin, is_fully_authenticated
 from blueprints.users import bp
 from blueprints.pages import bp as base_bp
-from blueprints.users.forms import RegisterUserForm, EditUserRoleForm, UserSettingsForm, UserPasswordResetForm
+from blueprints.users.forms import RegisterUserForm, EditUserRoleForm, UserSettingsForm, UserPasswordResetForm, \
+    UserDeleteForm
 from persistence.repository.user import UserRepository
 from persistence.model.user import User
 
@@ -63,10 +64,11 @@ def settings():
 
     user_settings_form = UserSettingsForm()
     user_password_form = UserPasswordResetForm()
+    user_delete_form = UserDeleteForm()
 
     user_settings_form.name.data = g.user.name
 
-    return render_template('users/settings.html', user_settings_form=user_settings_form, user_password_form=user_password_form)
+    return render_template('users/settings.html', user_settings_form=user_settings_form, user_password_form=user_password_form, user_delete_form=user_delete_form)
 
 
 @bp.route('/user_settings', methods=['POST'])
@@ -102,3 +104,21 @@ def password_reset():
             flash("A régi jelszó hibás!", 'error')
 
     return redirect(url_for('pages.settings'))
+
+
+@is_fully_authenticated
+@bp.route('/delete-self', methods=['POST'])
+def delete_self():
+    user = g.user
+    user_delete_form = UserDeleteForm()
+
+    if user.is_super_admin:
+        abort(403)
+
+    if user_delete_form.validate_on_submit():
+    #todo valami jelszo bekeros ablakszeru cucc
+        user.delete()
+        flash("Fiók sikeresen törölve.", 'success')
+
+    return redirect(url_for('security.login'))
+

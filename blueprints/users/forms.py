@@ -35,3 +35,6 @@ class UserPasswordResetForm(FlaskForm):
     new_password_again = PasswordField('Új jelszó újra', validators=[DataRequired(), length(max=32, min=4)])
     submit = SubmitField('Jelszó módosítása')
 
+class UserDeleteForm(FlaskForm):
+    submit = SubmitField('Fiók törlése')
+

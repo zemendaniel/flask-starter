@@ -75,4 +75,11 @@
             <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> {{ user_password_form.submit.label }}</button>
         </div>
     </form>
+
+
+    <form method="post" action="{{ url_for('users.delete_self') }}">
+    {{ user_delete_form.csrf_token() }}
+    <button type="submit" class="btn btn-primary-dark">{{ user_delete_form.submit.label }}</button>
+    </form>
+
 {% endblock %}
