@@ -13,9 +13,6 @@ from persistence.model.user import User
 @is_admin
 def list_all():
     users = UserRepository.find_all()
-    for user in users:
-        for post in user.posts:
-            print(post.id)
     role_form = EditUserRoleForm()
 
     if role_form.validate_on_submit():
@@ -25,6 +22,7 @@ def list_all():
 
         user.role = role_form.role.data
         user.save()
+        flash(f"{user.name} szerepköre sikeresen megváltozva erre: {user.role_hun}", 'success')
         return redirect(url_for('users.list_all'))
 
     return render_template("users/list.html", users=users, role_form=role_form)
@@ -44,7 +42,7 @@ def delete(user_id):
     return redirect(url_for('users.list_all'))
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@base_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if g.user is not None:
         return redirect(url_for('pages.home'))
@@ -54,7 +52,7 @@ def register():
     if form.validate_on_submit():
         if UserRepository.find_by_name(form.name.data.strip()):
             flash('A név már foglalt!', 'error')
-            return redirect(url_for('users.register'))
+            return redirect(url_for('pages.register'))
         user.form_update(form)
         user.save()
         flash("Sikeres regisztráció!", 'success')
@@ -91,7 +89,7 @@ def user_settings():
         user.name = user_settings_form.name.data
         user.save()
 
-        flash("A felhasználónév megváltozott!.", 'success')
+        flash("A felhasználónév sikeresen megváltozott!", 'success')
 
     return redirect(url_for('pages.settings'))
 
@@ -106,6 +104,7 @@ def password_reset():
         if user.check_password(user_password_form.old_password.data):
             user.password = user_password_form.new_password.data
             user.save()
+            flash("A jelszó sikeresen megváltozott!", 'success')
         else:
             flash("A régi jelszó hibás!", 'error')
 
@@ -122,7 +121,9 @@ def delete_self():
         abort(403)
 
     if user_delete_form.validate_on_submit():
-    #todo valami jelszo bekeros ablakszeru cucc
+        if not user.check_password(user_delete_form.password.data):
+            flash("A jelszó hibás, sikertelen törlés!", 'error')
+            return redirect(url_for('pages.settings'))
         user.delete()
         flash("Fiók sikeresen törölve.", 'success')
 

@@ -2,32 +2,11 @@
 
 {% block title %}Regisztráció{% endblock %}
 
-{% block head %}
- <script>
-    function validatePassword() {
-        const password = document.getElementById('password').value;
-        const passwordAgain = document.getElementById('password_again').value;
-        const messageElement = document.getElementById('passwordMatchMessage');
-        const submit = document.getElementById('submit');
-
-         if (!passwordAgain) {
-            messageElement.textContent = "";
-            submit.disabled = true;
-        }
-        else if (password === passwordAgain) {
-            messageElement.textContent = "A jelszavak egyeznek.";
-            messageElement.className = "text-success";
-            submit.disabled = false;
-        } else {
-            messageElement.textContent = "A jelszavak nem egyeznek.";
-            messageElement.className = "text-danger";
-            submit.disabled = true;
-        }
-    }
-    </script>
+{% block heading %}
+    {% with heading_content="Regisztráció" %}
+        {% include "heading.html" %}
+    {% endwith %}
 {% endblock %}
-
-{% block heading %}<h2 class="text-center mb-3 pt-4">Regisztráció</h2>{% endblock %}
 
 {% block main %}
     <form method="post" class="form">

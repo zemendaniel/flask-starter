@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block heading %}<h2 class="text-center mb-3 pt-4">Főoldal</h2>{% endblock %}
+{% block title %}Főoldal{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Főoldal" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
 
 {% block main %}
     <div class="text-center">Főoldal</div>

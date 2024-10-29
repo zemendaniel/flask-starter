@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block main %}
-<!-- <a href="{{ url_for('users.register') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br> -->
+<!-- <a href="{{ url_for('pages.register') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br> -->
 {% for user in users %}
     {% if not (user.is_super_admin or user.id == g.user.id) %}
         <div class="user p-4 my-3">
@@ -37,7 +37,7 @@
             {% do role_form.set_role(user.role) %}
             {% do role_form.set_user_id(user.id) %}
 
-            <form method="post">
+            <form method="post" onsubmit="return confirm('Biztosan megváltoztatja {{ user.name }} jogosultságát?')">
                 {{ role_form.csrf_token() }}
                 {{ role_form.role(class="form-control") }}
                 {{ role_form.user_id() }}
@@ -53,6 +53,7 @@
                     <i class="fas fa-trash"></i> Törlés
                 </button>
             </form>
+
         </div>
     {% endif %}
 {% endfor %}

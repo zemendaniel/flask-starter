@@ -2,54 +2,32 @@
 
 {% block title %}Beállítások{% endblock %}
 
-{% block head %}
- <script>
-    function validatePassword() {
-        const password = document.getElementById('new_password').value;
-        const passwordAgain = document.getElementById('new_password_again').value;
-        const messageElement = document.getElementById('passwordMatchMessage');
-        const submit = document.getElementById('submit');
-
-        if (!passwordAgain) {
-            messageElement.textContent = "";
-            submit.disabled = true;
-        }
-        else if (password === passwordAgain) {
-            messageElement.textContent = "A jelszavak egyeznek.";
-            messageElement.className = "text-success";
-            submit.disabled = false;
-        } else {
-            messageElement.textContent = "A jelszavak nem egyeznek.";
-            messageElement.className = "text-danger";
-            submit.disabled = true;
-        }
-    }
-    </script>
+{% block heading %}
+    {% with heading_content="Beállítások" %}
+        {% include "heading.html" %}
+    {% endwith %}
 {% endblock %}
 
-{% block heading %}<h2 class="text-center mb-3 pt-4">Beállítások</h2>{% endblock %}
-
 {% block main %}
-    <form method="post" class="form" action="{{ url_for('users.user_settings') }}">
-        {{ user_settings_form.csrf_token() }}
+    <h5><u>Névváltoztatás</u></h5>
+    <form method="post" action="{{ url_for('users.user_settings') }}">
+        {{ user_settings_form.csrf_token(id=False) }}
 
-        <div class="form-group mb-3">
+        <div class="form-group">
             {{ user_settings_form.name.label }}
             {{ user_settings_form.name(class="form-control") }}
         </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> {{ user_settings_form.submit.label }}</button>
+        <div class="form-group mb-4">
+            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
         </div>
     </form>
 
-    <br>
-    <br>
-
-    <form method="post" class="form" action="{{ url_for('users.password_reset') }}">
-        {{ user_password_form.csrf_token() }}
+    <h5><u>Jelszóváltoztatás</u></h5>
+    <form method="post" action="{{ url_for('users.password_reset') }}">
+        {{ user_password_form.csrf_token(id=False) }}
         <div class="form-group mb-1">
-            <label for="old_password">{{ user_password_form.old_password.label }}</label>
+            {{ user_password_form.old_password.label }}
             <div class="input-group">
                 {{ user_password_form.old_password(class="form-control", id="old_password") }}
                 <span class="show-password-btn ms-4 mt-1" style="font-size: 1.2em" onclick="togglePasswordVisibility('old_password', this);">
@@ -57,29 +35,35 @@
                 </span>
             </div>
 
-            <label for="new_password">{{ user_password_form.new_password.label }}</label>
+            {{ user_password_form.new_password.label }}
                 <div class="input-group">
-                    {{ user_password_form.new_password(class="form-control", id="new_password", onkeyup="validatePassword()") }}
-                    <span class="show-password-btn ms-4 mt-1" style="font-size: 1.2em" onclick="togglePasswordVisibility('new_password', this); togglePasswordVisibility('new_password_again', this)">
+                    {{ user_password_form.new_password(class="form-control", id="password", onkeyup="validatePassword()") }}
+                    <span class="show-password-btn ms-4 mt-1" style="font-size: 1.2em" onclick="togglePasswordVisibility('password', this); togglePasswordVisibility('password_again', this)">
                         <i class="fa fa-eye"></i>
                     </span>
                 </div>
             </div>
-            <div class="form-group mb-1">
-                <label for="new_password_again">{{ user_password_form.new_password_again.label }}</label>
-                {{ user_password_form.new_password_again(class="form-control", id="new_password_again", onkeyup="validatePassword()") }}
+            <div class="form-group">
+                {{ user_password_form.new_password_again.label }}
+                {{ user_password_form.new_password_again(class="form-control", id="password_again", onkeyup="validatePassword()") }}
             </div>
             <div class="match" id="passwordMatchMessage"></div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> {{ user_password_form.submit.label }}</button>
+        <div class="form-group mb-4">
+            <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
         </div>
     </form>
 
-
-    <form method="post" action="{{ url_for('users.delete_self') }}">
-    {{ user_delete_form.csrf_token() }}
-    <button type="submit" class="btn btn-primary-dark">{{ user_delete_form.submit.label }}</button>
-    </form>
+    {% if not g.user.is_super_admin %}
+        <h5><u>Felhasználói fiók törlése</u></h5>
+        <form method="post" action="{{ url_for('users.delete_self') }}">
+        {{ user_delete_form.csrf_token(id=False) }}
+        {{ user_delete_form.password.label }}
+        <div class="form-group">
+            {{ user_delete_form.password(class="form-control", id=False) }}
+        </div>
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Fiók törlése</button>
+        </form>
+    {% endif %}
 
 {% endblock %}

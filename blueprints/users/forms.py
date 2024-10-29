@@ -32,9 +32,12 @@ class UserSettingsForm(FlaskForm):
 class UserPasswordResetForm(FlaskForm):
     old_password = PasswordField('Régi jelszó', validators=[DataRequired()])
     new_password = PasswordField('Új jelszó', validators=[DataRequired(), length(max=32, min=4)])
-    new_password_again = PasswordField('Új jelszó újra', validators=[DataRequired(), length(max=32, min=4)])
+    new_password_again = PasswordField('Új jelszó újra', validators=[DataRequired(), length(max=32, min=4),
+                                                                     EqualTo('new_password')])
     submit = SubmitField('Jelszó módosítása')
 
+
 class UserDeleteForm(FlaskForm):
+    password = PasswordField('Jelszó', validators=[DataRequired(), length(max=32, min=4)])
     submit = SubmitField('Fiók törlése')
 

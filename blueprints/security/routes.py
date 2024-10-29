@@ -60,7 +60,7 @@ def logout():
     session.clear()
     response = redirect(url_for('pages.home'))
     response.set_cookie('login_token', '', expires=0)
-    flash('Sikeresen kijelentkezve!', 'success')
+    flash('Sikeresen kijelentkezett!', 'success')
     return response
 
 

@@ -51,7 +51,7 @@ class User(Model):
 
     @property
     def role_hun(self):
-        return roles[self.role]
+        return roles[self._role]
 
     def check_password(self, password) -> bool:
         return check_password_hash(self._password, password)
