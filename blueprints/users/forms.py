@@ -1,3 +1,4 @@
+from flask import g
 from flask_wtf import FlaskForm
 from wtforms.fields.simple import SubmitField, StringField, PasswordField, HiddenField
 from wtforms.fields.choices import SelectField
@@ -21,3 +22,19 @@ class EditUserRoleForm(FlaskForm):
 
     def set_user_id(self, user_id):
         self.user_id.data = user_id
+
+
+class UserSettingsForm(FlaskForm):
+    name = StringField('Felhasználónév', validators=[DataRequired(), length(max=32)])
+    submit = SubmitField('Mentés')
+
+
+class UserPasswordResetForm(FlaskForm):
+    old_password = PasswordField('Régi jelszó', validators=[DataRequired()])
+    new_password = PasswordField('Új jelszó', validators=[DataRequired(), length(max=32, min=4)])
+    new_password_again = PasswordField('Új jelszó újra', validators=[DataRequired(), length(max=32, min=4)])
+    submit = SubmitField('Jelszó módosítása')
+
+class UserDeleteForm(FlaskForm):
+    submit = SubmitField('Fiók törlése')
+

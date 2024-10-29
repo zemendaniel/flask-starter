@@ -10,7 +10,11 @@
         const messageElement = document.getElementById('passwordMatchMessage');
         const submit = document.getElementById('submit');
 
-        if (password === passwordAgain) {
+         if (!passwordAgain) {
+            messageElement.textContent = "";
+            submit.disabled = true;
+        }
+        else if (password === passwordAgain) {
             messageElement.textContent = "A jelszavak egyeznek.";
             messageElement.className = "text-success";
             submit.disabled = false;
