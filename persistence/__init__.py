@@ -44,7 +44,8 @@ def reset_admin():
 
         # DON'T USE THE USUAL METHODS AS THEY REQUIRE A G.SESSION
         admin.name = name
-        admin._password = generate_password_hash(password)
+        admin.password = password
+        # THIS HAS TO BE WITH THE _ROLE NOT ROLE
         admin._role = 'super_admin'
 
         session.add(admin)
