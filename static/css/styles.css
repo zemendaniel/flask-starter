@@ -316,3 +316,13 @@ margin-bottom: 2px;
     font-size: 0.9rem;
     color: #a0aec0;
 }
+.card{
+    background-color: #d71212;
+    font-style: italic;
+}
+.badge{
+    color: #4d0000;
+}
+.mini_container{
+    background-color: #1a46ac;
+}
