@@ -47,11 +47,8 @@ class SiteSettingRepository:
         g.session.commit()
 
     @staticmethod
-    def get_by_key(key):
-        return g.session.scalar(SiteSetting.select().where(SiteSetting.key == key))
+    def find_by_id(setting_id):
+        return g.session.scalar(SiteSetting.select().where(SiteSetting.id == setting_id))
 
-    @staticmethod
-    def get_by_id(id):
-        return g.session.scalar(SiteSetting.select().where(SiteSetting.id == id))
 
 from persistence.model.site_setting import SiteSetting
