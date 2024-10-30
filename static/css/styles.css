@@ -326,3 +326,9 @@ margin-bottom: 2px;
 .mini_container{
     background-color: #1a46ac;
 }
+.two-line-input {
+    height: 4.5rem; /* Adjust the height for two lines */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    resize: none;
+}

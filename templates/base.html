@@ -23,16 +23,16 @@
                         <i class="fa-solid fa-user"></i> <strong class="ms-1">{{ g.user.name }}</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userDropdown">
-                        <li class="mb-1">
-                            <div class="dropdown-item text-light bg-transparent border-0"><i class="fa-solid fa-id-badge"></i> Szerepkör: {{ g.user.role_hun }}</div>
+                        <li class="mb-1 border rounded">
+                            <div class="dropdown-item text-light bg-transparent border-0"><i class="fa-solid fa-id-badge me-1"></i> Szerepkör: {{ g.user.role_hun }}</div>
                         </li>
                         <li class="mb-1">
-                            <a href="{{ url_for('pages.settings') }}" class="dropdown-item text-light bg-transparent border-0"><i class="fa-solid fa-gear"></i> Beállítások</a>
+                            <a href="{{ url_for('pages.settings') }}" class="dropdown-item text-light bg-transparent border-0"><i class="fa-solid fa-user-gear me-1"></i> Felhasználói beállítások</a>
                         </li>
                         <li>
                             <form class="d-flex me-3" action="{{ url_for('security.logout') }}" method="post" id="logoutForm">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                <button type="submit" class="dropdown-item text-light bg-transparent border-0"><strong><i class="fa-solid fa-sign-out-alt"></i> Kijelentkezés</strong></button>
+                                <button type="submit" class="dropdown-item text-light bg-transparent border-0"><strong><i class="fa-solid fa-sign-out-alt me-1"></i> Kijelentkezés</strong></button>
                             </form>
                         </li>
                     </ul>
@@ -67,6 +67,9 @@
                 {% if is_admin() %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
                 </li>
                 {% endif %}
 

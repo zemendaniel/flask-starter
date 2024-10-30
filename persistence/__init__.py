@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash
 import click
 from alchemical.flask import Alchemical
 from flask import g
