@@ -68,3 +68,8 @@ def errors():
         errors_text = ""
 
     return render_template("errors/errors.html", errors=errors_text)
+
+
+@bp.route("/about")
+def about():
+    return render_template("pages/about.html")

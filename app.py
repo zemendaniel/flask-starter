@@ -1,5 +1,7 @@
 # todo Adam css dolgok
 # todo Adam dark mode legyen vagy ne legyen
+# todo egy about oldal, ahol mind a 3-an bemutatkozunk és írunk 1-2 sort magunkról, esetleg még egy fotót és feltöltünk
+
 
 import os
 import logging
