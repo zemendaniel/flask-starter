@@ -103,14 +103,22 @@ function createFlashMessage(msg, category){
 
     const flashId = "flash-" + (idNum - 1);
 
-    document.getElementById('flashMessages').innerHTML += `
+    let insert = "";
+    if (subMessage !== "") {
+        insert = `<p>${subMessage}</p>`;
+    }
+
+
+    let result = `
         <div class="alert ${className} alert-dismissible fade show mt-3 text-center flash-message" role="alert" id="${flashId}">
             <b>${msg}</b>
-            <p>${subMessage}</p>
+            ${insert}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div class="progress-bar"></div>
         </div>
     `;
+
+    document.getElementById('flashMessages').innerHTML += result;
 
     setTimeout(function() {
         try {
