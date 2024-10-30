@@ -26,5 +26,12 @@ class SiteSettingRepository:
         g.session.add(site_setting)
         g.session.commit()
 
+    @staticmethod
+    def get_by_key(key):
+        return g.session.scalar(SiteSetting.select().where(SiteSetting.key == key))
+
+    @staticmethod
+    def get_by_id(id):
+        return g.session.scalar(SiteSetting.select().where(SiteSetting.id == id))
 
 from persistence.model.site_setting import SiteSetting
