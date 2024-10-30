@@ -1,7 +1,5 @@
 # todo Adam css dolgok
 # todo Adam dark mode legyen vagy ne legyen
-# todo Adam a users/list.html-ben pls legyen egymás mellett a mentés és a törlés gomb köszi
-# todo főadmin tudja a favicont megváltoztatni és pl vmi cégnevet ami megjelenik
 
 import os
 import logging

@@ -78,6 +78,13 @@ function validatePassword() {
 
 idNum = 0;
 function createFlashMessage(msg, category){
+    let subMessage = "";
+    if (msg.includes("|")) {
+        const tmp = msg.split("|")
+        msg = tmp[0];
+        subMessage = tmp[1];
+    }
+
     let className = "alert-dark";
     if (category === "info"){
         className = "alert-dark"
@@ -99,15 +106,21 @@ function createFlashMessage(msg, category){
     document.getElementById('flashMessages').innerHTML += `
         <div class="alert ${className} alert-dismissible fade show mt-3 text-center flash-message" role="alert" id="${flashId}">
             <b>${msg}</b>
+            <p>${subMessage}</p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div class="progress-bar"></div>
         </div>
     `;
 
     setTimeout(function() {
-        var element = document.getElementById(flashId);
-        element.style.transition = "opacity 0.25s ease-out";
-        element.style.opacity = "0"; // Fading out
+        try {
+            let element = document.getElementById(flashId);
+            element.style.transition = "opacity 0.25s ease-out";
+            element.style.opacity = "0"; // Fading out
+        }
+        catch {
+            return;
+        }
 
         setTimeout(function() {
             element.remove();

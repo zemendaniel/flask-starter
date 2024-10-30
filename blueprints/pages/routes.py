@@ -1,8 +1,9 @@
-from flask import redirect, url_for, render_template, request, g, flash
+from flask import redirect, url_for, render_template, request, g, flash, abort, send_file
 from blueprints.pages import bp
 from security.decorators import is_fully_authenticated, is_admin
-from blueprints.pages.forms import SetOrgNameForm
+from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm
 from persistence.repository.site_setting import SiteSettingRepository
+from io import BytesIO
 
 
 @bp.route('/')
@@ -15,6 +16,7 @@ def home():
 @is_admin
 def site_settings():
     org_form = SetOrgNameForm()
+    icon_form = SetFaviconForm()
 
     if org_form.validate_on_submit():
         SiteSettingRepository.set_org_name(org_form.name.data.strip())
@@ -22,7 +24,32 @@ def site_settings():
     else:
         org_form.name.data = SiteSettingRepository.get_org_name()
 
-    return render_template('pages/site-settings.html', org_form=org_form)
+    if icon_form.validate_on_submit():
+        SiteSettingRepository.set_favicon(icon_form.icon.data)
+        flash("A favicon sikeresen beállítva!"
+              "|Lehetséges, hogy üríteni kell a gyorsítótárat, hogy az új ikon jelenjen meg.", 'success')
+        return redirect(url_for('pages.site_settings'))
+
+    return render_template('pages/site-settings.html', org_form=org_form, icon_form=icon_form,
+                           favicon_exits=bool(SiteSettingRepository.find_by_key('favicon')))
+
+
+@bp.route('/delete-favicon', methods=['POST'])
+@is_fully_authenticated
+@is_admin
+def delete_favicon():
+    icon = SiteSettingRepository.find_by_key('favicon') or abort(404)
+    SiteSettingRepository.delete(icon)
+    flash("A favicon sikeresen törölve!|Lehetséges, hogy üríteni kell a gyorsítótárat,"
+          " hogy a változtatások látszódjanak.", 'success')
+    return redirect(url_for('pages.site_settings'))
+
+
+@bp.route('/favicon.ico')
+def favicon():
+    icon = SiteSettingRepository.get_favicon() or abort(404)
+
+    return send_file(BytesIO(icon), mimetype='application/octet-stream', as_attachment=False, download_name='favicon.ico')
 
 
 @bp.route('/errors')
