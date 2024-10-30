@@ -19,6 +19,12 @@
             font-size: 0.9rem;
             color: #a0aec0; /* Gray text for last seen */
         }
+
+        .gomb{
+            float: left;
+        }
+
+
     </style>
 {% endblock %}
 
@@ -41,17 +47,19 @@
                 {{ role_form.csrf_token() }}
                 {{ role_form.role(class="form-control") }}
                 {{ role_form.user_id() }}
-                <button type="submit" class="btn btn-primary-dark">
-                    <i class="fa-solid fa-floppy-disk"></i> Mentés
-                </button>
+                <div class="gomb">
+                    <button type="submit" class=" btn btn-primary-dark mt-3">
+                        <i class="fa-solid fa-floppy-disk"></i> Mentés
+                    </button>
+                </div>
             </form>
 
             <form action="{{ url_for('users.delete', user_id=user.id) }}" method="post"
                   onsubmit='return confirm("Biztosan törlöd? ({{ user.name }})")' class="d-inline">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-secondary">
-                    <i class="fas fa-trash"></i> Törlés
-                </button>
+                     <button id="torles"  type="submit" class=" btn btn-secondary mx-2 mt-3">
+                        <i class="fas fa-trash"></i> Törlés
+                    </button>
             </form>
 
         </div>
