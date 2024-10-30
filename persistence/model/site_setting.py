@@ -1,12 +1,13 @@
 from alchemical import Model
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, BLOB, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class SiteSetting(Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     key: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
-    value: Mapped[str] = mapped_column(String(255), nullable=False)
+    # BLOB so that we can store anything (text, images, etc.)
+    value: Mapped[str] = mapped_column(BLOB(255), nullable=False)
 
     def save(self):
         SiteSettingRepository.save(self)

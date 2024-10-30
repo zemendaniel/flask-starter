@@ -19,6 +19,8 @@ def site_settings():
     if org_form.validate_on_submit():
         SiteSettingRepository.set_org_name(org_form.name.data.strip())
         flash("A szervezet neve sikeresen beállítva!", 'success')
+    else:
+        org_form.name.data = SiteSettingRepository.get_org_name()
 
     return render_template('pages/site-settings.html', org_form=org_form)
 

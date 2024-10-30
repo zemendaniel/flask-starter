@@ -6,14 +6,14 @@ class SiteSettingRepository:
     def set_org_name(name):
         org_name = g.session.scalar(SiteSetting.select().where(SiteSetting.key == 'org_name')) or SiteSetting()
         org_name.key = 'org_name'
-        org_name.value = name
+        org_name.value = name.encode('utf-8')
         org_name.save()
 
     @staticmethod
     def get_org_name():
         name = g.session.scalar(SiteSetting.select().where(SiteSetting.key == 'org_name'))
         if name:
-            return name.value
+            return name.value.decode('utf-8')
         return "Szervezet neve"
 
     @staticmethod
