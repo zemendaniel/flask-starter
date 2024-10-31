@@ -2,14 +2,18 @@
 
 {% block title %}Beállítások{% endblock %}
 
+{% block head %}
+
+{% endblock %}
+
 {% block heading %}
-    {% with heading_content="Beállítások" %}
+    {% with heading_content="Felhasználói beállítások" %}
         {% include "heading.html" %}
     {% endwith %}
 {% endblock %}
 
 {% block main %}
-    <h5><u>Névváltoztatás</u></h5>
+    <h5 class="gray-text"><u>Névváltoztatás</u></h5>
     <form method="post" action="{{ url_for('users.user_settings') }}">
         {{ user_settings_form.csrf_token(id=False) }}
 
@@ -23,7 +27,7 @@
         </div>
     </form>
 
-    <h5><u>Jelszóváltoztatás</u></h5>
+    <h5 class="gray-text"><u>Jelszóváltoztatás</u></h5>
     <form method="post" action="{{ url_for('users.password_reset') }}">
         {{ user_password_form.csrf_token(id=False) }}
         <div class="form-group mb-1">
@@ -55,8 +59,8 @@
     </form>
 
     {% if not g.user.is_super_admin %}
-        <h5><u>Felhasználói fiók törlése</u></h5>
-        <form method="post" action="{{ url_for('users.delete_self') }}">
+        <h5 class="gray-text"><u>Felhasználói fiók törlése</u></h5>
+        <form method="post" action="{{ url_for('users.delete_self') }}" onsubmit="return confirm('Biztosan törli a felhasználói fiókját?')">
         {{ user_delete_form.csrf_token(id=False) }}
         {{ user_delete_form.password.label }}
         <div class="form-group">

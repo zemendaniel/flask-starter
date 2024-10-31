@@ -29,7 +29,7 @@
 
         {% if not create %}
             <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="post"
-                  onsubmit='return confirm("Biztosan törlöd?")' class="d-inline">
+                  onsubmit='return confirm("Biztosan törli?")' class="d-inline">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-dark mx-2">
                     <i class="fa-solid fa-trash-can"></i> Törlés
@@ -42,7 +42,7 @@
     let changed = false;
     function confirmChanges(){
         if (changed === true){
-            return confirm("Biztosan kilépsz? Nem mentett módosítások vannak.");
+            return confirm("Biztosan kilép? Nem mentett módosítások vannak.");
         }
         return true;
     }

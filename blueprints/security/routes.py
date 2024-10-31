@@ -34,7 +34,7 @@ def login():
         user = UserRepository.find_by_name(form.name.data.strip())
         if user is not None and user.check_password(form.password.data):
             session['user_id'] = user.id
-            flash('Sikeresen bejelentkezve!', 'success')
+            flash('Sikeresen bejeltkezett!', 'success')
             if request.args.get('redirect') is not None and urlsplit(request.args.get('redirect')).netloc == '':
                 response = redirect(request.args.get('redirect'))
             else:

@@ -1,5 +1,3 @@
-# todo Adam css dolgok
-# todo Adam dark mode legyen vagy ne legyen
 # todo egy about oldal, ahol mind a 3-an bemutatkozunk és írunk 1-2 sort magunkról, esetleg még egy fotót és feltöltünk
 
 
@@ -13,10 +11,11 @@ import blueprints.security
 import blueprints.pages
 import blueprints.users
 import security
-from flask_wtf.csrf import CSRFProtect, CSRFError
+from flask_wtf.csrf import CSRFProtect
 from config import Config
 from flask_minify import Minify
 from jinja2 import Environment, PackageLoader, select_autoescape
+from blueprints.pages import init_error_handlers
 
 csrf = CSRFProtect()
 minify = Minify(html=True, js=True, cssless=True)
@@ -36,6 +35,7 @@ def create_app(config_class=Config):
     security.init_app(app)
     csrf.init_app(app)
     minify.init_app(app)
+    init_error_handlers(app)
 
     app.register_blueprint(blueprints.posts.bp, url_prefix='/posts')
     app.register_blueprint(blueprints.pages.bp, url_prefix='/')
@@ -45,31 +45,6 @@ def create_app(config_class=Config):
     handler = RotatingFileHandler('errors.log')
     handler.setLevel(logging.ERROR)
     app.logger.addHandler(handler)
-
-    @app.errorhandler(500)
-    def internal_server_error(error):
-        app.logger.error('Server Error: %s', error)
-        return render_template('errors/500.html'), 500
-
-    @app.errorhandler(404)
-    def not_found(error):
-        return render_template('errors/404.html'), 404
-
-    @app.errorhandler(401)
-    def unauthorized(error):
-        return render_template('errors/401.html'), 401
-
-    @app.errorhandler(403)
-    def forbidden(error):
-        return render_template('errors/403.html'), 403
-
-    @app.errorhandler(405)
-    def method_not_allowed(error):
-        return render_template('errors/405.html'), 405
-
-    @app.errorhandler(CSRFError)
-    def handle_csrf_error(e):
-        return render_template('errors/403.html'), 400
 
     return app
 

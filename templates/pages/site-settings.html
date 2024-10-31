@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}Oldal beállítások{% endblock %}
+{% block title %}Weboldal beállításai{% endblock %}
 
 {% block heading %}
-    {% with heading_content="Oldal beállítások" %}
+    {% with heading_content="Weboldal beállításai" %}
         {% include "heading.html" %}
     {% endwith %}
 {% endblock %}
 
 {% block main %}
-    <h5><u>Szervezet neve</u></h5>
+    <h5 class="gray-text"><u>Szervezet neve</u></h5>
     <form method="post">
         {{ org_form.csrf_token(id=False) }}
 
@@ -24,7 +24,7 @@
     </form>
 
     <div class="d-flex align-items-center">
-    <h5><u>Favicon beállítása</u></h5>
+    <h5 class="gray-text"><u>Favicon beállítása</u></h5>
     {% if favicon_exits %}
         <img src="{{ url_for('pages.favicon') }}" alt="Jelenlegi ikon" class="ms-4 img-fluid" style="max-width: 100px;"/>
     {% endif %}
@@ -33,7 +33,7 @@
         {{ icon_form.csrf_token(id=False) }}
 
         <div class="form-group">
-            {{ icon_form.icon.label }}
+            {{ icon_form.icon.label(class="mb-1") }}
             {{ icon_form.icon(class="form-control") }}
         </div>
 

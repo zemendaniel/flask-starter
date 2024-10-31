@@ -194,9 +194,8 @@ form input[type="checkbox"] {
     box-shadow: none;
 }
 
-.small-gray {
+.small-text {
     font-size: 0.9rem;
-    color: #a0aec0;
 }
 .card{
     background-color: #d71212;
@@ -232,4 +231,8 @@ form input[type="checkbox"] {
     font-size: 1.2rem;
     margin-bottom: 10px;
     font-weight: 600;
+}
+
+.gray-text {
+    color: #a0aec0;
 }

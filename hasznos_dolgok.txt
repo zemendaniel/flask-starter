@@ -5,4 +5,4 @@ AKINEK NEM MŰKÖDIK A DEBUGGING EZT ÍRJA BE:
 mklink /J C:\PyCharm "C:\Program Files\JetBrains\PyCharm2023.3"
 Utána pedig a PyCharm parancsikonban a target: C:\PyCharm\bin\pycharm64.exe - a start in pedig C:\PyCharm\bin
 
-Richtext, custom html escape dolgok: https://chatgpt.com/c/67212c6c-d1d8-8000-87cd-d8b74ba0975f
+Richtext, custom html escape dolgok: https://chatgpt.com/share/67238221-5e80-8000-9988-9e8f6b183371
