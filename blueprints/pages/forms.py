@@ -11,7 +11,7 @@ class SetOrgNameForm(FlaskForm):
 
 
 class SetFaviconForm(FlaskForm):
-    icon = FileField("Favicon", validators=[
+    icon = FileField("Favicon - maximum 1 MB lehet, .ico és .png fájlok elfogadottak", validators=[
         FileRequired("Nincs fájl kiválasztva!"),
         FileAllowed(['ico', 'png'], 'Csak .ico és .png fájlok elfogadottak!'),
         lambda form, field: SetFaviconForm._validate_file_size(form, field, max_size=1 * 1024 * 1024)  # Max size of 1 MB

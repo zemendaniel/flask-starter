@@ -2,30 +2,6 @@
 {% block title %}Felhasználók{% endblock %}
 
 {% block head %}
-    <style>
-        .user {
-            background-color: #282828;;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .user .user-name {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .user .user-last-seen {
-            font-size: 0.9rem;
-            color: #a0aec0; /* Gray text for last seen */
-        }
-
-        .gomb{
-            float: left;
-        }
-
-
-    </style>
 {% endblock %}
 
 {% block before_main %}
@@ -47,7 +23,7 @@
                 {{ role_form.csrf_token() }}
                 {{ role_form.role(class="form-control") }}
                 {{ role_form.user_id() }}
-                <div class="gomb">
+                <div style="float: left">
                     <button type="submit" class=" btn btn-primary-dark mt-3">
                         <i class="fa-solid fa-floppy-disk"></i> Mentés
                     </button>
