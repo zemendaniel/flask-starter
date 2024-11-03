@@ -1,59 +1,33 @@
 {% extends "base.html" %}
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    {% block head %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} About us</title>
-    {% endblock %}
-</head>
-<style>
-    label{
-        display: block;
+{% block title %}A készítőkről{% endblock %}
 
-    }
-    #input-file{
-        display: none;
-    }
+{% block heading %}
+    {% with heading_content="A készítőkről" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
 
-</style>
-<body>
-    {% block main %}
-        <div class="container d-flex flex-row align-items-center flex-wrap text-start mt-5  justify-content-center ">
-          <div class="row ">
-            <div class="col w-33 p-3 h-auto0 w-auto h-auto bg-secondary rounded-3 mx-5 ">
-                <label for="nev"> Your name: </label><br>
-              <input type="text" id="nev" name="nev">
-                <img src=""  id="profile-pic"><br>
-              <button class="text-light bg-info rounded-4"><label for="input-file">update image</label></button>
-              <input style="display: none;" type="file" class="kep" id="input-file" accept="image/jpg, image/jpeg, image/png">
-              <input type="text" class="about" id="about" name="about" value="About you">
-              <button type="submit" id="mentes">Mentés</button>
-            </div>
-            <div class="col w-33 gx-4 p-3 h-auto w-auto h-auto bg-secondary rounded-3 mx-5">
-             <!--<label for="nev"> Your name: </label><br>
-              <input type="text" id="nev" name="nev">
-                <img src=""  id="profile-pic"><br>
-              <button class="text-light bg-info rounded-4"><label for="input-file">update image</label></button>
-              <input style="display: none;" type="file" class="kep" id="input-file" accept="image/jpg, image/jpeg, image/png">
-              <input type="text" class="about" id="about" name="about" value="About you">
-              <button type="submit" id="mentes">Mentés</button> -->
-            </div>
-            <div class="col w-33 gx-4 p-3 h-auto w-auto h-auto bg-secondary rounded-3 mx-5">
-
-            </div>
-          </div>
+{% block main %}
+    <div class="post my-5">
+        <h4>Szabó Bernát</h4>
+        <p>
+            Bernát, majd írj ide egy pár sort magadról...
+        </p>
+    </div>
+    <div class="post mb-5">
+        <h4>Zemen Dániel</h4>
+        <p>
+            Zemen Dániel vagyok, a Bolyai Technikum tanulója. A IT tudásom gyarapításán kívül az időm nagyrészét kajakozással
+            töltöm. Háromszoros ifjúsági Európa-bajnoknak és ifjusági világbajnoki ezüstérmesnek mondhatom magam.
+            Szoktak csodálkozni az emberek, mert a kajak és a programozás nem egy mindennapi párosítás, de én nagyon
+            szeretem mind a kettőt.
+        </p>
+        <img src="{{ url_for('static', filename='img/about/dani1.jpg') }}" alt="Dani" class="styled-image img-fluid">
         </div>
-    {% endblock %}
-
-<script>
-    let profilkep = document.getElementById('profile-pic');
-    let inputfajl = document.getElementById('input-file');
-
-    inputfajl.onchange = function (){
-        profilkep.src = URL.createObjectURL(inputfajl.files[0]);
-    };
-</script>
-</body>
-</html>
+    <div class="post mb-5">
+        <h4>Czirják Ádám</h4>
+        <p>
+            Ádám, majd írj ide egy pár sort magadról...
+        </p>
+    </div>
+{% endblock %}
