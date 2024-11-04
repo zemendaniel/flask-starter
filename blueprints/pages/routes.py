@@ -1,14 +1,14 @@
 from flask import redirect, url_for, render_template, request, g, flash, abort, send_file
 from blueprints.pages import bp
 from security.decorators import is_fully_authenticated, is_admin
-from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm
+from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm, SetWelcomeTextForm
 from persistence.repository.site_setting import SiteSettingRepository
 from io import BytesIO
 
 
 @bp.route('/')
 def home():
-    return render_template('pages/home.html')
+    return render_template('pages/home.html', welcome_text=SiteSettingRepository.get_welcome_text())
 
 
 @bp.route('/site-settings', methods=['GET', 'POST'])
@@ -17,6 +17,7 @@ def home():
 def site_settings():
     org_form = SetOrgNameForm()
     icon_form = SetFaviconForm()
+    welcome_form = SetWelcomeTextForm()
 
     if org_form.validate_on_submit():
         SiteSettingRepository.set_org_name(org_form.name.data.strip())
@@ -30,8 +31,15 @@ def site_settings():
               "|Lehetséges, hogy üríteni kell a gyorsítótárat, hogy az új ikon jelenjen meg.", 'success')
         return redirect(url_for('pages.site_settings'))
 
+    if welcome_form.validate_on_submit():
+        SiteSettingRepository.set_welcome_text(welcome_form.text.data)
+        flash("Üdvözlő szöveg sikeresen beállítva!", 'success')
+        return redirect(url_for('pages.site_settings'))
+    else:
+        welcome_form.text.data = SiteSettingRepository.get_welcome_text()
+
     return render_template('pages/site-settings.html', org_form=org_form, icon_form=icon_form,
-                           favicon_exits=bool(SiteSettingRepository.find_by_key('favicon')))
+                           favicon_exits=bool(SiteSettingRepository.find_by_key('favicon')), welcome_form=welcome_form)
 
 
 @bp.route('/delete-favicon', methods=['POST'])

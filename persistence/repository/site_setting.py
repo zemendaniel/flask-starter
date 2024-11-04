@@ -50,5 +50,19 @@ class SiteSettingRepository:
     def find_by_id(setting_id):
         return g.session.scalar(SiteSetting.select().where(SiteSetting.id == setting_id))
 
+    @staticmethod
+    def get_welcome_text():
+        welcome_text = SiteSettingRepository.find_by_key('welcome_text')
+        if welcome_text:
+            return welcome_text.value.decode('utf-8')
+        return "Üdvözlő szöveg"
+
+    @staticmethod
+    def set_welcome_text(text):
+        welcome_text = SiteSettingRepository.find_by_key('welcome_text') or SiteSetting()
+        welcome_text.key = 'welcome_text'
+        welcome_text.value = text.encode('utf-8')
+        welcome_text.save()
+
 
 from persistence.model.site_setting import SiteSetting

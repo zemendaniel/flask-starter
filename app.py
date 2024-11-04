@@ -14,8 +14,9 @@ import security
 from flask_wtf.csrf import CSRFProtect
 from config import Config
 from flask_minify import Minify
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 from blueprints.pages import init_error_handlers
+from custom_filters import safe_escape
 
 csrf = CSRFProtect()
 minify = Minify(html=True, js=True, cssless=True)
@@ -24,7 +25,10 @@ minify = Minify(html=True, js=True, cssless=True)
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    app.jinja_env.filters['safe_escape'] = safe_escape
     app.jinja_env.add_extension('jinja2.ext.do')
+
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_size': 10,
         'max_overflow': 20,

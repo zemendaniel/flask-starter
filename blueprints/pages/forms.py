@@ -25,3 +25,7 @@ class SetFaviconForm(FlaskForm):
             file.seek(0)  # Reset file pointer after reading
             raise ValidationError(f"A fájl maximum {int(max_size / 1024 * 1024)} MB lehet!")
         file.seek(0)  # Reset file pointer after reading
+
+
+class SetWelcomeTextForm(FlaskForm):
+    text = TextAreaField("Bemutatkozó szöveg", validators=[DataRequired(), Length(max=4096)])

@@ -6,6 +6,7 @@ function togglePasswordVisibility(id, element) {
     const icon = element.querySelector('i');
     icon.className = isPasswordVisible ? 'fa fa-eye' : 'fa fa-eye-slash';
 }
+
 window.onscroll = function() {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
     const btn = document.getElementById('scrollToTopButton');

@@ -2,6 +2,10 @@
 
 {% block title %}Weboldal beállításai{% endblock %}
 
+{% block head %}
+    {% include "richtext.html" %}
+{% endblock %}
+
 {% block heading %}
     {% with heading_content="Weboldal beállításai" %}
         {% include "heading.html" %}
@@ -22,7 +26,7 @@
             <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
         </div>
     </form>
-
+    <hr>
     <div class="d-flex align-items-center">
     <h5 class="gray-text"><u>Favicon beállítása</u></h5>
     {% if favicon_exits %}
@@ -43,12 +47,23 @@
     </form>
 
     {% if favicon_exits %}
-        <form method="post" action="{{ url_for('pages.delete_favicon') }}" onsubmit="return confirm('Biztosan törli a favicon-t?')">
+        <form class="mb-4" method="post" action="{{ url_for('pages.delete_favicon') }}" onsubmit="return confirm('Biztosan törli a favicon-t?')">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Favicon törlése</button>
         </form>
     {% endif %}
-
+    <hr>
+    <form method="post" class="mb-4">
+        {{ welcome_form.csrf_token(id=False) }}
+        {{ welcome_form.text.label }}
+        <div class="form-group">
+            <div id="editor"></div>
+            <!-- Hidden input field to store the Quill editor content -->
+            <input type="hidden" name="text" id="quillContent">
+        </div>
+        <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
+    </form>
+    <!-- todo itt voltam -->
 
 {% endblock %}
 
