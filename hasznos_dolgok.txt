@@ -28,3 +28,6 @@ git push --force origin Ádám
 git checkout Bernát
 git reset --hard master
 git push --force origin Bernát
+
+Hány sor a projekt?
+Linux terminálba:   git ls-files | grep -v -E '\.(jpg|jpeg|png|gif|svg|bmp|webp)$' | xargs wc -l
