@@ -17,9 +17,11 @@ from flask_minify import Minify
 from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
 from blueprints.pages import init_error_handlers
 from custom_filters import safe_escape
+from flask_ckeditor import CKEditor
 
 csrf = CSRFProtect()
 minify = Minify(html=True, js=True, cssless=True)
+ckeditor = CKEditor()
 
 
 def create_app(config_class=Config):
@@ -40,6 +42,7 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     minify.init_app(app)
     init_error_handlers(app)
+    ckeditor.init_app(app)
 
     app.register_blueprint(blueprints.posts.bp, url_prefix='/posts')
     app.register_blueprint(blueprints.pages.bp, url_prefix='/')

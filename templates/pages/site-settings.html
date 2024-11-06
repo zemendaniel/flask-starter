@@ -2,10 +2,6 @@
 
 {% block title %}Weboldal beállításai{% endblock %}
 
-{% block head %}
-    {% include "richtext.html" %}
-{% endblock %}
-
 {% block heading %}
     {% with heading_content="Weboldal beállításai" %}
         {% include "heading.html" %}
@@ -53,24 +49,19 @@
         </form>
     {% endif %}
     <hr>
+    <h5 class="gray-text"><u>Üdvözlő szöveg beállítása</u></h5>
     <form method="post" class="mb-4">
         {{ welcome_form.csrf_token(id=False) }}
         {{ welcome_form.text.label }}
         <div class="form-group">
-            <div id="editor"></div>
-            <!-- Hidden input field to store the Quill editor content -->
-            <input type="hidden" name="text" id="quillContent">
+            {{ welcome_form.text() }}
         </div>
         <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
     </form>
-    <!-- todo itt voltam -->
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='text') }}
 
 {% endblock %}
 
 {% block after_scripts %}
-     {% for error in icon_form.icon.errors %}
-         <script>
-            createFlashMessage("{{ error }}", "error");
-         </script>
-    {% endfor %}
 {% endblock %}

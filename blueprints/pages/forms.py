@@ -4,6 +4,7 @@ from wtforms.fields.simple import TextAreaField, FileField
 from wtforms.validators import DataRequired, Length
 from werkzeug.datastructures import FileStorage
 from wtforms import ValidationError
+from flask_ckeditor import CKEditorField
 
 
 class SetOrgNameForm(FlaskForm):
@@ -23,9 +24,9 @@ class SetFaviconForm(FlaskForm):
         file: FileStorage = field.data
         if file and len(file.read()) > max_size:
             file.seek(0)  # Reset file pointer after reading
-            raise ValidationError(f"A fájl maximum {int(max_size / 1024 * 1024)} MB lehet!")
+            raise ValidationError(f"A fájl maximum 1 MB lehet!")
         file.seek(0)  # Reset file pointer after reading
 
 
 class SetWelcomeTextForm(FlaskForm):
-    text = TextAreaField("Bemutatkozó szöveg", validators=[DataRequired(), Length(max=4096)])
+    text = CKEditorField("Szöveg")

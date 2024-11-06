@@ -2,7 +2,12 @@ from markupsafe import Markup, escape
 import re
 
 # Define allowed tags and attributes (e.g., for a basic RTE)
-ALLOWED_TAGS = {'b', 'i', 'u', 'strong', 'em', 'p', 'br', 'ul', 'ol', 'li', 'a', 'span'}
+ALLOWED_TAGS = {
+    'b', 'i', 'u', 'strong', 'em', 'p', 'br', 'ul', 'ol', 'li', 'a', 'span',
+    'table', 'tr', 'th', 'td', 'thead', 'tbody', 'tfoot', 'caption',
+    'blockquote', 'pre', 'code', 'sub', 'sup', 'hr', 'h1', 'h2', 'h3', 'h4',
+    'h5', 'h6', 'div', 'dl', 'dt', 'dd', 's'
+}
 ALLOWED_ATTRS = {'href', 'title', 'style'}
 
 # Regex to match tags and attributes

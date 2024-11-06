@@ -22,21 +22,35 @@ def site_settings():
     if org_form.validate_on_submit():
         SiteSettingRepository.set_org_name(org_form.name.data.strip())
         flash("A szervezet neve sikeresen beállítva!", 'success')
+        return redirect(url_for('pages.site_settings'))
     else:
         org_form.name.data = SiteSettingRepository.get_org_name()
 
-    if icon_form.validate_on_submit():
-        SiteSettingRepository.set_favicon(icon_form.icon.data)
-        flash("A favicon sikeresen beállítva!"
-              "|Lehetséges, hogy üríteni kell a gyorsítótárat, hogy az új ikon jelenjen meg.", 'success')
-        return redirect(url_for('pages.site_settings'))
-
-    if welcome_form.validate_on_submit():
-        SiteSettingRepository.set_welcome_text(welcome_form.text.data)
-        flash("Üdvözlő szöveg sikeresen beállítva!", 'success')
-        return redirect(url_for('pages.site_settings'))
+    if welcome_form.is_submitted():
+        if welcome_form.validate():
+            SiteSettingRepository.set_welcome_text(welcome_form.text.data)
+            flash("Üdvözlő szöveg sikeresen beállítva!", 'success')
+            return redirect(url_for('pages.site_settings'))
+        elif welcome_form.errors:
+            for field, err in welcome_form.errors.items():
+                for error in err:
+                    flash(error, 'error')
+            return redirect(url_for('pages.site_settings'))
     else:
         welcome_form.text.data = SiteSettingRepository.get_welcome_text()
+
+    # This has to be the last form validation
+    if icon_form.is_submitted():
+        if icon_form.validate():
+            SiteSettingRepository.set_favicon(icon_form.icon.data)
+            flash("A favicon sikeresen beállítva!"
+                  "|Lehetséges, hogy üríteni kell a gyorsítótárat, hogy az új ikon jelenjen meg.", 'success')
+            return redirect(url_for('pages.site_settings'))
+        elif icon_form.errors:
+            for field, err in icon_form.errors.items():
+                for error in err:
+                    flash(error, 'error')
+            return redirect(url_for('pages.site_settings'))
 
     return render_template('pages/site-settings.html', org_form=org_form, icon_form=icon_form,
                            favicon_exits=bool(SiteSettingRepository.find_by_key('favicon')), welcome_form=welcome_form)
