@@ -1,17 +1,27 @@
+from sqlalchemy import or_, and_
+from persistence.model.language import Language
+
+
 def filter(table, *args):
     """
-        filter filters stuff
+    filter function to generate a SQLAlchemy statement with dynamic filters and joins.
 
-        :param table: the table in witch to filter
-        :param args: list of filters in this format: Table.column == stuff ("," for and, "|" or)
-        :return: a statement that filters stuff you just have tu run it like: g.session.scalars(result of this filter)
-        """
-    statement = (
-        table
-        .select()
-    )
+    :param table: the main table (model) to filter on.
+    :param args: list of filters in this format: Table.column == value ("," for and, "|" for or).
+    :return: a SQLAlchemy Select statement with the applied filters.
+    """
+    # Start building the statement with a select on the main table
+    statement = table.select()
+
     for arg in args:
         if arg is not None:
+            if isinstance(arg, Language):
+                print('siker!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                statement = statement.join(Team.language)
+
             statement = statement.where(arg)
 
     return statement
+
+
+from persistence.model.team import Team

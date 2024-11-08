@@ -42,10 +42,16 @@ def delete(user_id):
     return redirect(url_for('users.list_all'))
 
 
-@base_bp.route('/register', methods=['GET', 'POST'])
-def register():
-    if g.user is not None:
-        return redirect(url_for('pages.home'))
+@base_bp.route('/create-admin', methods=['GET', 'POST'])
+def create_admin():
+    form = RegisterUserForm()
+    if form.validate_on_submit():
+        user = User()
+        user.role = "admin"
+        user.name = form.name.data.strip()
+        user.password = form.password.data
+        user.save()
+        flash("Adminisztrátor sikeresen hozzáadva!", 'success')
 
     return render_template('users/../../templates/teams/create.html')
 

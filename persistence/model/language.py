@@ -8,7 +8,7 @@ class Language(Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
 
-    teams: Mapped[List["Team"]] = relationship(back_populates="language")
+    teams: Mapped[List["Team"]] = relationship("Team", back_populates="language")
 
     def save(self):
         LanguageRepository.save(self)

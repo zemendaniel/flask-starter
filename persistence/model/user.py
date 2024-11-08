@@ -10,8 +10,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 roles = {
     'super_admin': 'Főszervező',
     'admin': 'Szervező',
-    'schools': 'Iskola',
-    'teams': 'Csapat'
+    'school': 'Iskola',
+    'team': 'Csapat'
 }
 
 

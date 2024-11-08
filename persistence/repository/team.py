@@ -4,6 +4,9 @@ from sqlalchemy import func
 from .user import UserRepository
 from persistence.model.team import Team
 from persistence.repository.__init__ import filter
+from ..model.category import Category
+from ..model.language import Language
+from ..model.school import School
 
 
 class TeamRepository:
@@ -18,17 +21,19 @@ class TeamRepository:
         :return: list of search results
         """
 
-        statement = filter(Team, Team.name1.like(f"%{query}%")
-                           | Team.name2.like(f"%{query}%")
-                           | Team.name3.like(f"%{query}%")
-                           | Team.name_extra.like(f"%{query}%")
-                           | Team.teachers.like(f"%{query}%")
-                           | Team.language.join(Team.language.name).name.like(f"%{query}%")
-                           | Team.category.like(f"%{query}%")
-                           | Team.school.school_name.like(f"%{query}%")
-                           | Team.team_name.like(f"%{query}%")
-                           | TeamRepository.year_criteria(query),
-                           *extra_filters)
+        statement = filter(
+            Team,
+            Team.name1.like(f"%{query}%")
+            | Team.name2.like(f"%{query}%")
+            | Team.name3.like(f"%{query}%")
+            | Team.name_extra.like(f"%{query}%")
+            | Team.teachers.like(f"%{query}%")
+            | ('language', Language.name.like(f"%{query}%"))  # Requires join on `Language`
+            | Category.name.like(f"%{query}%")  # Requires join on `Category`
+            | School.school_name.like(f"%{query}%")  # Requires join on `School`
+            | Team.team_name.like(f"%{query}%"),
+            *extra_filters  # Additional filters
+        )
 
         if ascending:
             statement = statement.order_by(Team.id)
