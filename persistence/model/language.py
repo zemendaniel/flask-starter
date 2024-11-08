@@ -1,5 +1,4 @@
 from typing import List
-
 from alchemical import Model
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,3 +16,5 @@ class Language(Model):
     def delete(self):
         LanguageRepository.delete(self)
 
+
+from persistence.repository.language import LanguageRepository

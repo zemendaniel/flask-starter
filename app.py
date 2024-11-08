@@ -6,10 +6,11 @@ import logging
 import persistence
 from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template
-import blueprints.posts
 import blueprints.security
 import blueprints.pages
 import blueprints.users
+import blueprints.schools
+import blueprints.teams
 import security
 from flask_wtf.csrf import CSRFProtect
 from config import Config
@@ -47,6 +48,8 @@ def create_app(config_class=Config):
     app.register_blueprint(blueprints.pages.bp, url_prefix='/')
     app.register_blueprint(blueprints.security.bp, url_prefix='/')
     app.register_blueprint(blueprints.users.bp, url_prefix='/users')
+    app.register_blueprint(blueprints.schools.bp, url_prefix='/schools')
+    app.register_blueprint(blueprints.teams.bp, url_prefix='/teams')
 
     handler = RotatingFileHandler('errors.log')
     handler.setLevel(logging.ERROR)

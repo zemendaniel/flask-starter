@@ -23,4 +23,29 @@
         <h5>Kategória</h5>
         <p>{{ team.category.category_name }}</p>
     {% endif %}
+    <br>
+    <form method="post">
+        <input type="hidden" value="{{ team.id }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token(id=False) }}"/>
+        <button type="submit">
+            {% if g.user.role == 'school' %}
+
+                {% if team.school_approved %}
+                    Jóváhagyás visszavonása
+                {% else %}
+                    Jóváhaygás
+                {% endif %}
+
+                {% else  %}
+                {% if team.admin_approved %}
+                    Jóváhagyás visszavonása
+                {% else %}
+                    Jóváhaygás
+                {% endif %}
+
+            {% endif %}
+
+
+        </button>
+    </form>
 </div>

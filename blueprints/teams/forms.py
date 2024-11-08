@@ -6,10 +6,10 @@ from blueprints.users.forms import RegisterUserForm
 from persistence.repository.category import CategoryRepository
 from persistence.repository.language import LanguageRepository
 from persistence.repository.school import SchoolRepository
+from blueprints.users.forms import RegisterUserForm
 
 
-class RegisterTeamForm(RegisterUserForm):
-    team_name = StringField('Csapat neve', validators=[DataRequired(), length(max=64)])
+class EditTeamForm(RegisterUserForm):
     name1 = StringField('Első csapattag neve', validators=[DataRequired(), length(max=64)])
     name2 = StringField('Masodik csapattag neve', validators=[length(max=64), DataRequired()])
     name3 = StringField('Harmadik csapattag neve', validators=[length(max=64), DataRequired()])
@@ -29,3 +29,7 @@ class RegisterTeamForm(RegisterUserForm):
         self.school_id.choices = [(school.id, school.name) for school in SchoolRepository.find_all()]
         self.language_id.choices = [(language.id, language.language_name) for language in LanguageRepository.find_all()]
         self.category_id.choices = [(category.id, category.category_name) for category in CategoryRepository.find_all()]
+
+
+class CreateTeamForm(EditTeamForm, RegisterUserForm):
+    team_name = StringField('Csapat neve', validators=[DataRequired(), length(max=64)])

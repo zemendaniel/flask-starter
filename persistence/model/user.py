@@ -10,7 +10,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 roles = {
     'super_admin': 'Főszervező',
     'admin': 'Szervező',
-    'school': 'Iskola',
+    'schools': 'Iskola',
     'teams': 'Csapat'
 }
 
@@ -20,6 +20,9 @@ class User(Model):
     name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
     _password: Mapped[str] = mapped_column(String(180), nullable=False)
     _role: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    school: Mapped["School"] = relationship("School", back_populates="user", uselist=False, lazy="joined", post_update=True)
+    team: Mapped["Team"] = relationship("Team", back_populates="user", uselist=False, lazy="joined", post_update=True)
 
     @property
     def password(self) -> None:

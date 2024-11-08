@@ -47,7 +47,7 @@ def register():
     if g.user is not None:
         return redirect(url_for('pages.home'))
 
-    return render_template('users/register.html')
+    return render_template('users/../../templates/teams/create.html')
 
 
 @base_bp.route('/settings')

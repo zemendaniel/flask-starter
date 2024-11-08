@@ -1,10 +1,12 @@
+from typing_extensions import Self
+
 from sqlalchemy import String, Integer, ForeignKey, Boolean
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, InstanceState
 
-from .user import User
+from alchemical import Model
 
 
-class Team(User):
+class Team(Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
     team_name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
@@ -20,10 +22,10 @@ class Team(User):
     teachers: Mapped[str] = mapped_column(String(255), nullable=False)
 
     language_id: Mapped[int] = mapped_column(ForeignKey('language.id'), nullable=True)
-    language: Mapped["Language"] = relationship()
+    language: Mapped["Language"] = relationship("Language", back_populates="teams")
 
     category_id: Mapped[int] = mapped_column(ForeignKey('category.id'), nullable=False)
-    category: Mapped["Category"] = relationship()
+    category: Mapped["Category"] = relationship("Category", back_populates="teams")
 
     school_id: Mapped[int] = mapped_column(ForeignKey('school.id'), nullable=True)
     school: Mapped["School"] = relationship()
@@ -33,12 +35,16 @@ class Team(User):
 
     declared_incomplete: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=True, unique=True)
+    user: Mapped["User"] = relationship("User", back_populates="team", uselist=False)
+
     @property
     def ready(self) -> bool:
         return (self.school_approved and self.admin_approved and (not self.declared_incomplete) and self.school_id
                 and self.language_id)
 
     def team_form_update(self, form):
+        self.team_name = form.team_name.data.strip()
         self.name1 = form.name1.data.strip()
         self.name2 = form.name2.data.strip()
         self.name3 = form.name3.data.strip()
@@ -49,3 +55,12 @@ class Team(User):
         self.language_id = form.language_id.data
         self.category_id = form.category_id.data
         self.school_id = form.school_id.data
+
+    def save(self):
+        TeamRepository.save(self)
+
+    def delete(self):
+        TeamRepository.delete(self)
+
+
+from persistence.repository.team import TeamRepository

@@ -28,7 +28,7 @@ class LanguageRepository:
         g.session.commit()
 
     @staticmethod
-    def delete():
+    def delete(language):
         g.session.delete(language)
         g.session.commit()
 

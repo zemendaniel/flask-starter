@@ -1,10 +1,12 @@
 from flask import g
-from user import UserRepository
+from sqlalchemy import func
+
+from .user import UserRepository
 from persistence.model.team import Team
 from persistence.repository.__init__ import filter
 
 
-class TeamRepository(UserRepository):
+class TeamRepository:
     @staticmethod
     def search(query: str, ascending: bool, *extra_filters):
         """
@@ -25,8 +27,8 @@ class TeamRepository(UserRepository):
                                           | Team.category.like(f"%{query}%")
                                           | Team.school.like(f"%{query}%")
                                           | Team.team_name.like(f"%{query}%")
-                                          | TeamRepository.year_criteria()
-                                          , *extra_filters)
+                                          | TeamRepository.year_criteria(query),
+                                            *extra_filters)
 
         if ascending:
             statement = statement.order_by(Team.id)
@@ -45,3 +47,26 @@ class TeamRepository(UserRepository):
 
         return criteria
 
+    @staticmethod
+    def save(team):
+        g.session.commit(team)
+
+    @staticmethod
+    def delete(team):
+        g.session.delete(team)
+        g.session.commit()
+
+    @staticmethod
+    def find_by_id(team_id):
+        return g.session.scalar(Team.select().where(Team.id == team_id))
+
+    @staticmethod
+    def find_by_name(name):
+        name = name.lower()
+        statement = (
+            Team
+            .select()
+            .where(func.lower(Team.team_name) == name)
+        )
+
+        return g.session.scalar(statement)
