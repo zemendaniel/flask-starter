@@ -44,7 +44,6 @@ def create_app(config_class=Config):
     init_error_handlers(app)
     ckeditor.init_app(app)
 
-    app.register_blueprint(blueprints.posts.bp, url_prefix='/posts')
     app.register_blueprint(blueprints.pages.bp, url_prefix='/')
     app.register_blueprint(blueprints.security.bp, url_prefix='/')
     app.register_blueprint(blueprints.users.bp, url_prefix='/users')

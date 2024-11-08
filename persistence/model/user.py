@@ -8,9 +8,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 # Maximum 64 characters
 roles = {
-    'super_admin': 'Főadminisztrátor',
-    'admin': 'Adminisztrátor',
-    'user': 'Felhasználó',
+    'super_admin': 'Főszervező',
+    'admin': 'Szervező',
+    'school': 'Iskola',
+    'team': 'Csapat'
 }
 
 
@@ -19,8 +20,6 @@ class User(Model):
     name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
     _password: Mapped[str] = mapped_column(String(180), nullable=False)
     _role: Mapped[str] = mapped_column(String(64), nullable=False)
-    posts: Mapped[List["Post"]] = relationship(back_populates="author")
-
 
     @property
     def password(self) -> None:
@@ -64,7 +63,7 @@ class User(Model):
 
     def form_update(self, form):
         self.name = form.name.data
-        self.role = 'user'
+        self.role = form.role.data.strip()
         self.password = form.password.data
 
 
