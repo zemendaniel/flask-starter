@@ -24,6 +24,7 @@ def install():
 
 
 def reset_admin():
+    # Ezt csak az alkalmazás telepítésekor használjuk
     with db.Session() as session:
         admin = session.scalar(User.select().where(User.role == 'super_admin'))
         if admin:
@@ -32,12 +33,12 @@ def reset_admin():
         admin = User()
 
         while True:
-            name = input("Admin neve (max. 64 karakter hosszú): ").strip()
+            name = input("Főszervező neve (max. 64 karakter hosszú): ").strip()
             if len(name) <= 64:
                 break
 
         while True:
-            password = input("Admin jelszava (min. 4, max. 32 karakter hosszú): ")
+            password = input("Főszervező jelszava (min. 4, max. 32 karakter hosszú): ")
             if 4 <= len(password) <= 32:
                 break
 

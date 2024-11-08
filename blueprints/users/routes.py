@@ -47,19 +47,7 @@ def register():
     if g.user is not None:
         return redirect(url_for('pages.home'))
 
-    form = RegisterUserForm()
-    user = User()
-    if form.validate_on_submit():
-        if UserRepository.find_by_name(form.name.data.strip()):
-            flash('A név már foglalt!', 'error')
-            return redirect(url_for('pages.register'))
-        user.form_update(form)
-        user.save()
-        flash("Sikeres regisztráció!", 'success')
-
-        return redirect(url_for('security.login'))
-
-    return render_template('users/register.html', form=form)
+    return render_template('users/register.html')
 
 
 @base_bp.route('/settings')

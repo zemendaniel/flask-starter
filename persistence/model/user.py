@@ -63,7 +63,6 @@ class User(Model):
 
     def form_update(self, form):
         self.name = form.name.data
-        self.role = form.role.data.strip()
         self.password = form.password.data
 
 

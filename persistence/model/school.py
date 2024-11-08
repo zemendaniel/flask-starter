@@ -18,3 +18,8 @@ class School(User):
         cascade="all, delete-orphan",
         back_populates="parent")
 
+    def school_form_update(self, form):
+        self.school_name = form.school_name.data.strip()
+        self.address = form.address.data.strip()
+        self.contact_name = form.contact_name.data.strip()
+        self.contact_email = form.contact_email.data.strip()
