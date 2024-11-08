@@ -20,7 +20,24 @@ def register():
         flash("Sikeresen regisztrálta az iskolát!", 'success')
         return redirect(url_for("pages.home"))
 
-    return render_template('schools/register.html', form=form)
+    return render_template('schools/form.html', form=form, create=True)
+
+
+@bp.route('/edit/<int:school_id>', methods=['GET', 'POST'])
+@is_fully_authenticated
+@is_admin
+def edit(school_id):
+    school = SchoolRepository.find_by_id(school_id)
+    form = SchoolForm(obj=school)
+
+    if form.validate_on_submit():
+        school.form_update(form)
+        school.school_form_update(form)
+        school.save()
+        flash("Sikeresen mentette az iskolát!", 'success')
+        return redirect(url_for("pages.home"))
+
+    return render_template('schools/form.html', form=form, create=False)
 
 
 @bp.route('/validate-name', methods=['POST'])

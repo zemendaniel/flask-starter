@@ -1,17 +1,17 @@
-<div class="post">
-    <h4>{{ team.name }}</h4>
-    <hr>
-    <h5>Első csapattag</h5>
-    <p>Neve: {{ team.name1 }}, évfolyama: {{ team.year1 }}</p>
-    <h5>Második csapattag</h5>
-    <p>Neve: {{ team.name2 }}, évfolyama: {{ team.year2 }}</p>
-    <h5>Harmadik csapattag</h5>
-    <p>Neve: {{ team.name3 }}, évfolyama: {{ team.year3 }}</p>
-    {% if team.name_extra or team.year_extra %}
-        <h5>Póttag</h5>
-        <p>Neve: {{ team.name_extra }}, évfolyama: {{ team.year_extra }}</p>
-    {% endif %}
-    <h5>Felkészítő tanár(ok)</h5>
-    <p>{{ team.teachers }}</p>
-    <h5>Iskola neve: {{ team.school.school_name }}</h5>
-</div>
+{% extends "base.html" %}
+
+{% block title %}Csapatok{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Csapatok" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block main %}
+    <div id="content">
+        {% for team in teams %}
+            {% include "teams/list.html" %}
+        {% endfor %}
+    </div>
+{% endblock %}

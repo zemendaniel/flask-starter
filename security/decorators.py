@@ -45,7 +45,7 @@ def has_role(*roles):
     return has_role_decorator
 
 
-def is_deadline_over(view):
+def is_deadline_not_over(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if SiteSettingRepository.get_deadline():

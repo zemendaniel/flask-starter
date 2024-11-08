@@ -10,13 +10,17 @@
 
 {% block main %}
     <form method="post" class="form">
-        {% include "base_register.html" %}
+        {{ form.csrf_token() }}
 
-        <div class="form-group">
-            {{ form.team_name.label }}
-            {{ form.team_name(class="form-control", hx_post=url_for('teams.validate_name'), hx_trigger="input", hx_target="#response") }}
-        </div>
-        <div id="response" class="mb-1"></div>
+        {% if create %}
+            {% include "base_register.html" %}
+
+            <div class="form-group">
+                {{ form.team_name.label }}
+                {{ form.team_name(class="form-control", hx_post=url_for('teams.validate_name'), hx_trigger="input", hx_target="#response") }}
+            </div>
+            <div id="response" class="mb-1"></div>
+        {% endif %}
 
         <div class="form-group mb-1">
             {{ form.name1.label }}
@@ -70,9 +74,10 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> Csapat regisztrálása</button>
+            <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
         </div>
     </form>
 {% endblock %}
+
 
 

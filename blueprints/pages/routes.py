@@ -1,7 +1,7 @@
 from flask import redirect, url_for, render_template, request, g, flash, abort, send_file
 from blueprints.pages import bp
 from security.decorators import is_fully_authenticated, is_admin
-from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm, SetWelcomeTextForm
+from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm, SetWelcomeTextForm, SetDeadlineForm
 from persistence.repository.site_setting import SiteSettingRepository
 from io import BytesIO
 
@@ -95,3 +95,19 @@ def errors():
 @bp.route("/about")
 def about():
     return render_template("pages/about.html")
+
+
+@bp.route("/deadline")
+@is_fully_authenticated
+@is_admin
+def deadline():
+    form = SetDeadlineForm()
+
+    if form.validate_on_submit():
+        SiteSettingRepository.set_deadline(form.deadline.data)
+        flash("A határidő sikeresen beállítva!", 'success')
+        return redirect(url_for('pages.deadline'))
+    else:
+        form.deadline.data = SiteSettingRepository.get_deadline()
+
+    return render_template("pages/deadline.html", form=form)
