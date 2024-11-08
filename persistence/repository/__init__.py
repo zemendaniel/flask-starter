@@ -11,6 +11,7 @@ def filter(table, *args):
         .select()
     )
     for arg in args:
-        statement = statement.where(arg)
+        if arg is not None:
+            statement = statement.where(arg)
 
     return statement

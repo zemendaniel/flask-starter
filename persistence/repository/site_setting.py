@@ -1,5 +1,8 @@
 from flask import g
 from werkzeug.datastructures import FileStorage
+from datetime import datetime
+from pickle import loads, dumps
+from typing import Optional
 
 
 class SiteSettingRepository:
@@ -63,6 +66,20 @@ class SiteSettingRepository:
         welcome_text.key = 'welcome_text'
         welcome_text.value = text.encode('utf-8')
         welcome_text.save()
+
+    @staticmethod
+    def set_deadline(d: datetime):
+        deadline = SiteSettingRepository.find_by_key('deadline') or SiteSetting()
+        deadline.key = 'deadline'
+        deadline.value = dumps(d)
+        deadline.save()
+
+    @staticmethod
+    def get_deadline() -> Optional[datetime]:
+        deadline = SiteSettingRepository.find_by_key('deadline')
+        if deadline:
+            return loads(deadline.value)
+        return None
 
 
 from persistence.model.site_setting import SiteSetting

@@ -1,0 +1,24 @@
+{{ form.csrf_token() }}
+
+<div class="form-group">
+    {{ form.name.label }}
+    {{ form.team_name(class="form-control", hx_post=url_for('users.validate_name'), hx_trigger="input", hx_target="#base-name-response") }}
+</div>
+<div id="base-name-response" class="mb-1"></div>
+
+ <div class="form-group mb-1">
+        <label for="password">{{ form.password.label }}</label>
+        <div class="input-group">
+            {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
+            <span class="show-password-btn ms-4 mt-1" style="font-size: 1.2em" onclick="togglePasswordVisibility('password', this); togglePasswordVisibility('password_again', this)">
+                <i class="fa fa-eye"></i>
+            </span>
+        </div>
+    </div>
+    <div class="form-group mb-1">
+        <label for="password_again">{{ form.password_again.label }}</label>
+        {{ form.password_again(class="form-control", id="password_again", onkeyup="validatePassword()") }}
+    </div>
+    <div class="match" id="passwordMatchMessage"></div>
+
+{% include "htmx.html" %}

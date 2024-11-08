@@ -11,7 +11,7 @@ roles = {
     'super_admin': 'Főszervező',
     'admin': 'Szervező',
     'school': 'Iskola',
-    'team': 'Csapat'
+    'teams': 'Csapat'
 }
 
 

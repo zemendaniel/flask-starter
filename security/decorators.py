@@ -1,5 +1,7 @@
 import functools
 
+from datetime import datetime
+from persistence.repository.site_setting import SiteSettingRepository
 from flask import redirect, url_for, request, g, abort
 
 
@@ -41,3 +43,19 @@ def has_role(*roles):
         return wrapped_view
 
     return has_role_decorator
+
+
+def is_deadline_over(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if SiteSettingRepository.get_deadline():
+            return view(**kwargs)
+
+        if SiteSettingRepository.get_deadline() < datetime.now():
+            abort(403)
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
