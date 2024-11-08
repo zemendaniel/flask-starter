@@ -9,3 +9,4 @@ SQLAlchemy
 flask-wtf
 wtforms
 flask-minify
+flask_ckeditor

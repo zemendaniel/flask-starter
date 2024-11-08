@@ -4,7 +4,6 @@ from flask_wtf.csrf import CSRFError
 bp = Blueprint('pages', __name__)
 
 from blueprints.pages import routes
-# from blueprints.users.routes import settings
 
 
 def init_error_handlers(app):
