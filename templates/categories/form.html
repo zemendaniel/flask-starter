@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% if create %}
-
     {% set phrase = "Kategória létrehozása" %}
 {% else %}
     {% set phrase = "Kategória módosítása" %}
@@ -30,7 +29,13 @@
     </div>
 
     <div class="form-group">
-        <button type="submit" class="btn btn-dark"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
+        <button type="submit" class="btn btn-dark me-1"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
     </div>
 </form>
+
+<form method="post" action="{{ url_for("categories.delete", category_id=category.id) }}" onsubmit="return confirm('Biztosan törli?')">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button style="float: left" class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Törlés</button>
+</form>
+
 {% endblock %}

@@ -23,9 +23,9 @@ class TeamRepository:
                            | Team.name3.like(f"%{query}%")
                            | Team.name_extra.like(f"%{query}%")
                            | Team.teachers.like(f"%{query}%")
-                           | Team.language.like(f"%{query}%")
+                           | Team.language.join(Team.language.name).name.like(f"%{query}%")
                            | Team.category.like(f"%{query}%")
-                           | Team.school.like(f"%{query}%")
+                           | Team.school.school_name.like(f"%{query}%")
                            | Team.team_name.like(f"%{query}%")
                            | TeamRepository.year_criteria(query),
                            *extra_filters)
