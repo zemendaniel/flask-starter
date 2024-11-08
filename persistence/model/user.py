@@ -21,8 +21,8 @@ class User(Model):
     _password: Mapped[str] = mapped_column(String(180), nullable=False)
     _role: Mapped[str] = mapped_column(String(64), nullable=False)
 
-    school: Mapped["School"] = relationship("School", back_populates="user", uselist=False, lazy="joined", post_update=True)
-    team: Mapped["Team"] = relationship("Team", back_populates="user", uselist=False, lazy="joined", post_update=True)
+    school: Mapped["School"] = relationship("School", back_populates="user", uselist=False, lazy="joined", post_update=True, cascade="all, delete-orphan")
+    team: Mapped["Team"] = relationship("Team", back_populates="user", uselist=False, lazy="joined", post_update=True, cascade="all, delete-orphan")
 
     @property
     def password(self) -> None:

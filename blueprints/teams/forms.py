@@ -1,8 +1,8 @@
-from wtforms.fields.simple import StringField
+from wtforms.fields.simple import StringField, BooleanField
 from wtforms.fields.numeric import IntegerField
 from wtforms.fields.choices import SelectField
-from wtforms.validators import DataRequired, length, NumberRange
-from blueprints.users.forms import RegisterUserForm
+from flask_wtf import FlaskForm
+from wtforms.validators import DataRequired, length, NumberRange, Length
 from persistence.repository.category import CategoryRepository
 from persistence.repository.language import LanguageRepository
 from persistence.repository.school import SchoolRepository
@@ -33,3 +33,19 @@ class EditTeamForm(RegisterUserForm):
 
 class CreateTeamForm(EditTeamForm, RegisterUserForm):
     team_name = StringField('Csapat neve', validators=[DataRequired(), length(max=64)])
+
+
+class SearchTeamsForm(FlaskForm):
+    query = StringField('Keresendő szöveg', validators=[Length(max=255)])
+    ascending = BooleanField('Növekvő sorrend?')
+    year = IntegerField('Osztály', validators=[NumberRange(max=13, min=9)])
+
+    language_id = SelectField('Választott programnyelv', validators=[DataRequired()],
+                              choices=[(0, "Még nem választok")])
+    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Még nem választok")])
+    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Még nem választok")])
+
+    def set_dropdown_choices(self):
+        self.school_id.choices = [(school.id, school.name) for school in SchoolRepository.find_all()]
+        self.language_id.choices = [(language.id, language.language_name) for language in LanguageRepository.find_all()]
+        self.category_id.choices = [(category.id, category.category_name) for category in CategoryRepository.find_all()]

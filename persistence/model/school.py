@@ -3,6 +3,7 @@ from typing import List
 from sqlalchemy import Integer, String, BLOB, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from alchemical import Model
+from werkzeug.datastructures import FileStorage
 
 
 class School(Model):
@@ -12,6 +13,7 @@ class School(Model):
     contact_name: Mapped[str] = mapped_column(String(128), nullable=False)
     contact_email: Mapped[str] = mapped_column(String(128), nullable=False)
     application_form: Mapped[bytes] = mapped_column(BLOB, nullable=True) # todo ha nincs akkor nem lehet csapatot jovahagyni, az edit oldalon lehessen utolag feltolteni
+    form_extension: Mapped[str] = mapped_column(String(64), nullable=True)
 
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=True, unique=True)
     user: Mapped["User"] = relationship("User", back_populates="team", uselist=False)
@@ -20,7 +22,17 @@ class School(Model):
         cascade="all, delete-orphan",
         back_populates="school",)
 
-    def form_update(self, form):
+    def edit_form_update(self, form):
+        self.contact_name = form.contact_name.data.strip()
+        self.contact_email = form.contact_email.data.strip()
+        self.address = form.address.data.strip()
+        file = form.application_form.data
+        if file:
+            file = FileStorage(file)
+            self.application_form = file.read()
+            self.form_extension = file.filename.split(".")[-1]
+
+    def create_form_update(self, form):
         self.contact_name = form.contact_name.data.strip()
         self.contact_email = form.contact_email.data.strip()
         self.address = form.address.data.strip()

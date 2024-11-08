@@ -44,7 +44,10 @@ class Team(Model):
                 and self.language_id)
 
     def team_form_update(self, form):
-        self.team_name = form.team_name.data.strip()
+        team_name = form.team_name.data
+        if team_name:
+            self.team_name = team_name.strip()
+
         self.name1 = form.name1.data.strip()
         self.name2 = form.name2.data.strip()
         self.name3 = form.name3.data.strip()

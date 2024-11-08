@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Iskolák{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Iskolák" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block main %}
+        <a href="{{ url_for('schools.create') }}" class="btn btn-dark me-2">
+            <i class="fa-solid fa-plus-circle"></i> Iskola hozzáadása
+        </a>
+    {% include "schools/school.html" %}
+{% endblock %}

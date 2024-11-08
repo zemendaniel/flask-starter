@@ -1,11 +1,10 @@
-from flask import redirect, url_for, render_template, request, g, flash, abort, send_file
+from flask import redirect, url_for, render_template, request, g, flash, abort
 from . import bp
 from persistence.model.team import Team
-from blueprints.teams.forms import CreateTeamForm, EditTeamForm
-from security.decorators import has_role, is_deadline_not_over, is_fully_authenticated, is_admin
+from blueprints.teams.forms import CreateTeamForm, EditTeamForm, SearchTeamsForm
+from security.decorators import has_role, is_deadline_not_over, is_fully_authenticated
 from persistence.repository.team import TeamRepository
 from persistence.model.user import User
-from persistence.repository.user import UserRepository
 
 
 @bp.route('/create', methods=['GET', 'POST'])
@@ -35,6 +34,7 @@ def create():
 
 
 @bp.route('/edit/<int:team_id>', methods=['GET', "POST"])
+@is_fully_authenticated
 @has_role('team')
 def edit(team_id):
     team = TeamRepository.find_by_id(team_id)
@@ -50,26 +50,51 @@ def edit(team_id):
     return render_template('teams/edit.html', form=form)
 
 
+@bp.route('/delete/<int:team_id>')
+@is_fully_authenticated
+# ide nem kell is_admin
+def delete(team_id):
+    team = TeamRepository.find_by_id(team_id) or abort(404)
+    if g.user.is_admin or g.user.team_id == team_id:
+        team.delete()
+        flash("Sikeresen törölte a csapatot!", 'success')
+        if g.user.is_admin:
+            return redirect(url_for("teams.list_all"))
+        else:
+            return redirect(url_for("pages.home"))
+    else:
+        abort(401)
+
+
 @bp.route('/', methods=['GET', 'POST'])
-@has_role('schools', 'super_admin', 'admin')
+@is_fully_authenticated
+@has_role('school', 'super_admin', 'admin')
 def list_all():
-    query = request.args.get('search')
-    user_role = g.user.role
-    teams = TeamRepository.search(
-        query if query else '', False,
-        Team.school == g.user.school if user_role == 'schools' else None
-    )
+    form = SearchTeamsForm(request.args)
+
+    if form.validate():
+        teams = TeamRepository.search(
+            form.query,
+            form.ascending,
+            Team.school == g.user.school if g.user.role == 'schools' else None,
+            TeamRepository.year_criteria(form.year),
+            Team.language_id == form.language_id,
+            Team.school_id == form.school_id,
+            Team.category_id == form.category_id
+        )
+    else:
+        teams = TeamRepository.search('', True, Team.school == g.user.school if g.user.role == 'schools' else None)
 
     if request.method == "POST":
         team = TeamRepository.find_by_id(request.form.get('id'))
 
         if team:
-            if user_role == 'schools':
+            if g.user.role == 'schools':
                 team.school_approved = not team.school_approved
             elif team.school_approved:
                 team.admin_approved = not team.admin_approved
 
-    return render_template('teams/list.html', teams=teams)
+    return render_template('teams/list.html', teams=teams, form=form)
 
 
 @bp.route('/validate-name', methods=['POST'])

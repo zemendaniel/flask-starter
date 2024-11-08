@@ -11,21 +11,29 @@
 {% block main %}
     <div id="searchTeamsFormDiv">
         <form id="searchTeamsForm" method="get">
+            <div class="form-group">
+                {{ form.query.label }}
+                {{ form.query() }}
+            </div>
             <div class="form-group mb-3">
-                <label for="search">Keresendő szöveg</label>
-                <input type="text" name="search" id="search" class="form-control">
+                {{ form.ascending.label }}
+                {{ form.ascending(onchange="document.getElementById('searchTeamsForm').submit();") }}
             </div>
             <div class="form-group">
-                <label for="ascending" class="checkbox-label">Növekvő sorrend?</label>
-                <input type="checkbox" name="ascending" id="ascending" onchange="document.getElementById('searchTeamsForm').submit();">
+                {{ form.year.label }}
+                {{ form.year(onchange="document.getElementById('searchTeamsForm').submit();") }}
             </div>
             <div class="form-group">
-                <label for="year" class="checkbox-label">Osztály</label>
-                <input type="number" min="9" max="13" name="year" id="year" onchange="document.getElementById('searchTeamsForm').submit();">
+                {{ form.language_id.label }}
+                {{ form.language_id(onchange="document.getElementById('searchTeamsForm').submit();") }}
             </div>
             <div class="form-group">
-                <label for="laungage" class="checkbox-label">Programnyelv</label>
-                <input type="" name="laungage" id="laungage" onchange="document.getElementById('searchTeamsForm').submit();">
+                {{ form.school_id.label }}
+                {{ form.school_id(onchange="document.getElementById('searchTeamsForm').submit();") }}
+            </div>
+            <div class="form-group">
+                {{ form.category_id.label }}
+                {{ form.category_id(onchange="document.getElementById('searchTeamsForm').submit();") }}
             </div>
             <div class="d-flex align-items-center mb-3">
                 <button type="submit" class="btn btn-primary-dark me-2"><i class="fa-solid fa-search"></i> Keresés</button>

@@ -1,0 +1,20 @@
+<div class="post">
+    <h4>{{ school.school_name }}</h4>
+    <hr>
+    <h5>Cím</h5>
+    <p>{{ school.address }}</p>
+    <h5>Kapcsolattartó</h5>
+    <p>Neve: {{ school.contact_name }}, email címe: {{ school.contact_email }}</p>
+
+    <h5>Jelentkezési lap</h5>
+    {% if school.application_form %}
+        <a href="{{ url_for("schools.application_form", school_id=school.id) }}">Letöltés</a>
+    {% else %}
+        <p class="text-danger">Nincs</p>
+    {% endif %}
+
+    <form method="post" action="{{ url_for("schools.delete", school_id=school.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token(id=False) }}"/>
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+    </form>
+</div>

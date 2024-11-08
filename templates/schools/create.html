@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Új iskola létrehozása{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Új iskola létrehozása" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        {{ form.csrf_token() }}
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control", hx_post=url_for('users.validate_name'), hx_trigger="input", hx_target="#username-response") }}
+        </div>
+        <div id="username-response" class="mb-1"></div>
+
+        <div class="form-group mb-1">
+            <label for="password">{{ form.password.label }}</label>
+            <div class="input-group">
+                {{ form.password(class="form-control", id="password", onkeyup="validatePassword()") }}
+                <span class="show-password-btn ms-4 mt-1" style="font-size: 1.2em" onclick="togglePasswordVisibility('password', this); togglePasswordVisibility('password_again', this)">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+        </div>
+        <div class="form-group mb-1">
+            <label for="password_again">{{ form.password_again.label }}</label>
+            {{ form.password_again(class="form-control", id="password_again", onkeyup="validatePassword()") }}
+        </div>
+        <div class="match" id="passwordMatchMessage"></div>
+
+        <div class="form-group">
+            {{ form.school_name.label }}
+            {{ form.school_name(class="form-control", hx_post=url_for('schools.validate_name'), hx_trigger="input", hx_target="#response") }}
+        </div>
+        <div id="response" class="mb-1"></div>
+
+        <div class="form-group mb-1">
+            {{ form.address.label }}
+            {{ form.address(class="form-control") }}
+        </div>
+        <div class="form-group mb-1">
+            {{ form.contact_name.label }}
+            {{ form.contact_name(class="form-control") }}
+        </div>
+
+        <div class="form-group mb-1">
+            {{ form.contact_email.label }}
+            {{ form.contact_email(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
+        </div>
+    </form>
+
+
+{% endblock %}

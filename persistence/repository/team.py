@@ -19,16 +19,16 @@ class TeamRepository:
         """
 
         statement = filter(Team, Team.name1.like(f"%{query}%")
-                                          | Team.name2.like(f"%{query}%")
-                                          | Team.name3.like(f"%{query}%")
-                                          | Team.name_extra.like(f"%{query}%")
-                                          | Team.teachers.like(f"%{query}%")
-                                          | Team.language.like(f"%{query}%")
-                                          | Team.category.like(f"%{query}%")
-                                          | Team.school.like(f"%{query}%")
-                                          | Team.team_name.like(f"%{query}%")
-                                          | TeamRepository.year_criteria(query),
-                                            *extra_filters)
+                           | Team.name2.like(f"%{query}%")
+                           | Team.name3.like(f"%{query}%")
+                           | Team.name_extra.like(f"%{query}%")
+                           | Team.teachers.like(f"%{query}%")
+                           | Team.language.like(f"%{query}%")
+                           | Team.category.like(f"%{query}%")
+                           | Team.school.like(f"%{query}%")
+                           | Team.team_name.like(f"%{query}%")
+                           | TeamRepository.year_criteria(query),
+                           *extra_filters)
 
         if ascending:
             statement = statement.order_by(Team.id)
@@ -46,6 +46,10 @@ class TeamRepository:
                     )
 
         return criteria
+
+    @staticmethod
+    def find_all():
+        return g.session.scalar(Team.select())
 
     @staticmethod
     def save(team):
