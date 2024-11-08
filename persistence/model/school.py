@@ -16,7 +16,7 @@ class School(Model):
     form_extension: Mapped[str] = mapped_column(String(64), nullable=True)
 
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=True, unique=True)
-    user: Mapped["User"] = relationship("User", back_populates="team", uselist=False)
+    user: Mapped["User"] = relationship("User", back_populates="school", uselist=False)
 
     teams: Mapped[List["Team"]] = relationship(
         cascade="all, delete-orphan",

@@ -1,22 +1,19 @@
 {% extends "base.html" %}
 
 {% if create %}
-        Kategória létrehozása
-    {% else %}
-        Kategória módosítása
-    {% endif %}
- %}
+
+    {% set phrase = "Kategória létrehozása" %}
+{% else %}
+    {% set phrase = "Kategória módosítása" %}
+{% endif %}
+
 
 {% block title %}
-    {% if create %}
-        Kategória létrehozása
-    {% else %}
-        Kategória módosítása
-    {% endif %}
+    {{ phrase }}
 {% endblock %}
 
 {% block heading %}
-    {% with heading_content= "asd" %}
+    {% with heading_content = phrase %}
         {% include "heading.html" %}
     {% endwith %}
 {% endblock %}
