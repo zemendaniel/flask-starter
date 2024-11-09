@@ -36,11 +36,11 @@ class TeamRepository:
         )
 
         if ascending:
-            statement = statement.order_by(Team.team_name)
+            statement = statement.order_by(Team.team_name.asc())
         else:
             statement = statement.order_by(Team.team_name.desc())
 
-        return g.session.scalars(statement)
+        return g.session.scalars(statement).all()
 
     @staticmethod
     def year_criteria(query):
