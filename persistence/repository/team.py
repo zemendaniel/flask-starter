@@ -29,16 +29,16 @@ class TeamRepository:
             | Team.name_extra.like(f"%{query}%")
             | Team.teachers.like(f"%{query}%")
             | Team.language.has(Language.name.like(f"%{query}%"))  # Requires join on `Language`
-            | Category.name.like(f"%{query}%")  # Requires join on `Category`
-            | School.school_name.like(f"%{query}%")  # Requires join on `School`
+            | Team.category.has(Category.name.like(f"%{query}%"))  # Requires join on `Category`
+            | Team.school.has(School.school_name.like(f"%{query}%"))
             | Team.team_name.like(f"%{query}%"),
             *extra_filters  # Additional filters
         )
 
         if ascending:
-            statement = statement.order_by(Team.id)
+            statement = statement.order_by(Team.team_name.asc())
         else:
-            statement = statement.order_by(Team.id.desc())
+            statement = statement.order_by(Team.team_name.desc())
 
         return g.session.scalars(statement).all()
 

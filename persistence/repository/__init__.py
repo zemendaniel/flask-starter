@@ -14,9 +14,6 @@ def filter(table, *args):
 
     for arg in args:
         if arg is not None:
-            if isinstance(arg, Language):
-                statement = statement.join(Team.language)
-
             statement = statement.where(arg)
 
     return statement

@@ -24,10 +24,10 @@
         {% endif %}
 
         <h5>Nyelv</h5>
-        <p>{{ team.language.language_name or "Nincs" }}</p>
+        <p>{{ team.language.name or "Nincs" }}</p>
 
         <h5>Kategória</h5>
-        <p>{{ team.category.category_name or "Nincs" }}</p>
+        <p>{{ team.category.name or "Nincs" }}</p>
 
     <form method="post">
         <input type="hidden" value="{{ team.id }}" name="team_id">
