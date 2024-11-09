@@ -2,6 +2,7 @@ from flask import g
 from sqlalchemy import func
 
 from persistence.model.school import School
+from persistence.model.team import Team
 from .user import UserRepository
 from persistence.repository import filter
 
@@ -21,13 +22,13 @@ class SchoolRepository:
         statement = filter(School.school_name.like(f"%{query}%")
                            | School.address.like(f"%{query}%")
                            | School.contact_name.like(f"%{query}%")
-                           | School.contact_email.like(f"%{query}%")
-                           , *extra_filters)
+                           | School.contact_email.like(f"%{query}%"),
+                           *extra_filters)
 
         if ascending:
-            statement = statement.order_by(School.id)
+            statement = statement.order_by(School.school_name)
         else:
-            statement = statement.order_by(School.id.desc())
+            statement = statement.order_by(School.school_name.desc())
 
         return g.session.scalars(statement)
 

@@ -81,7 +81,7 @@
         </li>
 
              <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'users.user_create' %}active{% endif %}" href="{{ url_for("users.user_create") }}"><i class="fas fa-gear"></i> Felhasználó</a>
+            <a class="nav-link {% if request.endpoint == 'pages.create_admin' %}active{% endif %}" href="{{ url_for("pages.create_admin") }}"><i class="fas fa-gear"></i> Felhasználó</a>
         </li>
 
         {% endif %}

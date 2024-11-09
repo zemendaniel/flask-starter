@@ -54,6 +54,8 @@ class TeamRepository:
         if value == '2':
             return Team.admin_approved == True
 
+        return None
+
     @staticmethod
     def year_criteria(query):
         criteria = (Team.year1.like(f"%{query}%")

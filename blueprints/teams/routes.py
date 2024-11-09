@@ -63,7 +63,8 @@ def list_all():
     form.set_dropdown_choices()
 
     if (request.args.get('search') or request.args.get('ascending') or request.args.get('year')
-            or request.args.get('language_id') or request.args.get('school_id') or request.args.get('category_id') or request.args.get('approved')):
+            or request.args.get('language_id') or request.args.get('school_id')
+            or request.args.get('category_id') or request.args.get('status')):
         teams = TeamRepository.search(
             form.query.data if form.query.data else '',
             True if form.ascending.data == '1' else False,
@@ -139,4 +140,4 @@ def export():
         return redirect(url_for("teams.list_all"))
 
     # todo charset dolog
-    return send_file(file, as_attachment=True, mimetype='text/csv; charset=utf-8', download_name='csapatok.csv')
+    return send_file(file, as_attachment=True, mimetype='application/csv; charset=utf-8', download_name='csapatok.csv')

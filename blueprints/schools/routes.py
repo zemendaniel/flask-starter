@@ -62,7 +62,14 @@ def edit(school_id):
 @is_admin
 def list_all():
     schools = SchoolRepository.find_all()
-    # todo keresés
+
+    search = request.args.get('search')
+    has_application_form = request.args.get('has_application_form')
+    #teams_status = request.args.get('teams_status')
+    ascending = request.args.get('ascending')
+
+    if search or has_application_form:
+        schools = SchoolRepository.search(search, bool(ascending))
 
     return render_template('schools/list.html', schools=schools)
 
