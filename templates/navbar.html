@@ -27,7 +27,6 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
 
@@ -39,8 +38,18 @@
                     <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
                 </li>
 
+            <li class="nav-item active">
+                <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link {% if request.endpoint == 'teams.create' %}active{% endif %}" href="{{ url_for("teams.create") }}"></i>Csapat regisztrációja</a>
+            </li>
             {% endif %}
-
+            {%if g.user.role == "team" %}
+                <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'teams.view' %}active{% endif %}" href="{{ url_for("teams.view") }}"></i>Saját csapatom</a>
+                </li>
+            {% endif %}
             <li class="nav-item active">
                 <a class="nav-link {% if request.endpoint == 'pages.home' %}active{% endif %}" href="{{ url_for("pages.home") }}"><i class="fa-solid fa-house"></i> Főoldal</a>
             </li>
@@ -53,6 +62,10 @@
             {% endif %}
         {% endif %}
 
+        <li class="nav-item active">
+            <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
+        </li>
+
         {% if is_admin() %}
             <li class="nav-item">
                 <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
@@ -60,6 +73,17 @@
             <li class="nav-item">
                 <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
             </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
+        </li>
+
+             <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'users.user_create' %}active{% endif %}" href="{{ url_for("users.user_create") }}"><i class="fas fa-gear"></i> Felhasználó</a>
+        </li>
+
         {% endif %}
 
         </ul>
