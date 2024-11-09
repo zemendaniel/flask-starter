@@ -119,3 +119,4 @@ def validate_name():
         return '<div class="text-danger">A megadott név már foglalt</div>'
     else:
         return '<div class="text-success">A megadott név nem foglalt</div>'
+
