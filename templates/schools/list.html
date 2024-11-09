@@ -12,5 +12,7 @@
         <a href="{{ url_for('schools.create') }}" class="btn btn-dark me-2">
             <i class="fa-solid fa-plus-circle"></i> Iskola hozzáadása
         </a>
-    {% include "schools/school.html" %}
+    {% for school in schools %}
+        {% include "schools/school.html" %}
+    {% endfor %}
 {% endblock %}

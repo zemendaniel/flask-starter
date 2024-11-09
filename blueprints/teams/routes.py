@@ -89,7 +89,7 @@ def list_all():
     if request.method == "POST":
         team = TeamRepository.find_by_id(request.form.get('team_id')) or abort(404)
 
-        if g.user.role == 'schools':
+        if g.user.role == 'school' and team.school_id == g.user.school.id and not team.admin_approved:
             team.school_approved = not team.school_approved
 
         elif team.school_approved and g.user.is_admin:

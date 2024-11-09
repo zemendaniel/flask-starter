@@ -16,13 +16,13 @@ def create():
     if form.validate_on_submit():
         user = User()
         user.form_update(form)
+        user.role = 'school'
+        user.save()
 
         school = School()
         school.create_form_update(form)
+        school.user_id = user.id
         school.save()
-
-        user.school_id = school.id
-        user.save()
 
         flash("Sikeresen regisztrálta az iskolát!", 'success')
         return redirect(url_for("pages.home"))
@@ -34,7 +34,7 @@ def create():
 @is_fully_authenticated
 @is_admin
 def edit(school_id):
-    school = SchoolRepository.find_by_id(school_id)
+    school = SchoolRepository.find_by_id(school_id) or abort(404)
     form = EditSchoolForm(obj=school)
 
     if form.validate_on_submit():
@@ -46,17 +46,17 @@ def edit(school_id):
     return render_template('schools/edit.html', form=form)
 
 
-@bp.route('/delete/<int:school_id>')
+@bp.route('/delete/<int:school_id>', methods=['POST'])
 @is_fully_authenticated
 @is_admin
 def delete(school_id):
     school = SchoolRepository.find_by_id(school_id) or abort(404)
-    school.delete()
+    school.user.delete()
     flash("Sikeresen törlte az iskolát!", 'success')
     return redirect(url_for("schools.list_all"))
 
 
-@bp.route('/list')
+@bp.route('/')
 @is_fully_authenticated
 @is_admin
 def list_all():
@@ -72,7 +72,7 @@ def list_all():
 def application_form(school_id):
     school = SchoolRepository.find_by_id(school_id) or abort(404)
     return send_file(BytesIO(school.application_form), mimetype='application/octet-stream', as_attachment=True,
-                     download_name=f"{school.name}.{school.form_extension}")
+                     download_name=f"{school.school_name}.{school.form_extension}")
 
 
 @bp.route('/validate-name', methods=['POST'])

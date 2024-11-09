@@ -15,29 +15,28 @@
 
     <p>{{ team.teachers }}</p>
 
-    {% if team.school_id %}
         <h5>Iskola</h5>
-        <p>Neve: {{ team.school.school_name }}, címe: {{ team.school.address }}</p>
-    {% endif %}
+        {% if not team.school %}
+            Nincs
+        {% else %}
+            <p>Neve: {{ team.school.school_name }}, címe: {{ team.school.address }}</p>
+        {% endif %}
 
-    {% if team.language_id %}
         <h5>Nyelv</h5>
-        <p>{{ team.language.language_name }}</p>
-    {% endif %}
+        <p>{{ team.language.language_name or "Nincs" }}</p>
 
-    {% if team.category_id %}
         <h5>Kategória</h5>
-        <p>{{ team.category.category_name }}</p>
-    {% endif %}
+        <p>{{ team.category.category_name or "Nincs" }}</p>
 
     <form method="post">
         <input type="hidden" value="{{ team.id }}" name="team_id">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <button type="submit" class="btn btn-primary-dark">
+            <!-- todo adam ha nincs gomb tartalma akk ne latszodjon -->
             {% if g.user.is_admin and team.school_approved %}
-                {% if team.admin_approved %}Jóváhagyás{% else %}Jóváhagyás visszavonása{% endif %}
+                {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
             {% elif g.user.role == "school" and not team.admin_approved %}
-                {% if team.admin_approved %}Jováhagyás{% else %}Jóváhagyás visszavonása{% endif %}
+                {% if team.school_approved %}Jováhagyás visszavonása{% else %}Jóváhagyás{% endif %}
             {% endif %}
         </button>
     </form>

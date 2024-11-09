@@ -13,7 +13,11 @@
         {{ form.csrf_token() }}
         <div class="form-group">
             {{ form.name.label }}
-            {{ form.name(class="form-control", hx-post=url_for('users.validate_name'), hx-trigger="input", hx-target="#username-response") }}
+            {{ form.name(class_="form-control", **{
+                'hx-post': url_for('users.validate_name'),
+                'hx-trigger': 'input',
+                'hx-target': '#username-response'
+            }) }}
         </div>
         <div id="username-response" class="mb-1"></div>
 
@@ -34,7 +38,11 @@
 
         <div class="form-group">
             {{ form.school_name.label }}
-            {{ form.school_name(class="form-control", hx_post=url_for('schools.validate_name'), hx_trigger="input", hx_target="#response") }}
+            {{ form.school_name(class_="form-control", **{
+                'hx-post': url_for('schools.validate_name'),
+                'hx-trigger': 'input',
+                'hx-target': '#response'
+            }) }}
         </div>
         <div id="response" class="mb-1"></div>
 
@@ -58,4 +66,8 @@
     </form>
 
 
+{% endblock %}
+
+{% block after_scripts %}
+    {% include "htmx.html" %}
 {% endblock %}

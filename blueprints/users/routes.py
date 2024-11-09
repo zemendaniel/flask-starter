@@ -13,19 +13,8 @@ from persistence.model.user import User
 @is_admin
 def list_all():
     users = UserRepository.find_all()
-    role_form = EditUserRoleForm()
 
-    if role_form.validate_on_submit():
-        user = UserRepository.find_by_id(role_form.user_id.data) or abort(404)
-        if user.is_super_admin or g.user.id == user.id:
-            abort(403)
-
-        user.role = role_form.role.data
-        user.save()
-        flash(f"{user.name} szerepköre sikeresen megváltozva erre: {user.role_hun}", 'success')
-        return redirect(url_for('users.list_all'))
-
-    return render_template("users/list.html", users=users, role_form=role_form)
+    return render_template("users/list.html", users=users)
 
 
 @bp.route('/delete/<int:user_id>', methods=['POST'])

@@ -23,14 +23,14 @@ class EditTeamForm(RegisterUserForm):
     teachers = StringField('Felkészítő tanárok (több is megadható, vesszővel elválasztva, pl.: Nagy Ferenc, Kovács János)',
                            validators=[DataRequired(), length(max=255)])
 
-    language_id = SelectField('Választott programnyelv', validators=[DataRequired()], choices=[(0, "Még nincsenek elérhető nyelvek!")])
-    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Még nincsenek elérhető iskolák!")])
-    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Még nincsenek elérhető kategóriák!")])
+    language_id = SelectField('Választott programnyelv', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
+    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
+    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
 
     def set_dropdown_choices(self):
-        self.school_id.choices = [(school.id, school.name) for school in SchoolRepository.find_all()] or self.school_id.choices
-        self.language_id.choices = [(language.id, language.language_name) for language in LanguageRepository.find_all()] or self.language_id.choices
-        self.category_id.choices = [(category.id, category.category_name) for category in CategoryRepository.find_all()] or self.category_id.choices
+        self.school_id.choices += [(school.id, school.school_name) for school in SchoolRepository.find_all()]
+        self.language_id.choices += [(language.id, language.language_name) for language in LanguageRepository.find_all()]
+        self.category_id.choices += [(category.id, category.category_name) for category in CategoryRepository.find_all()]
 
 
 def team_name_in_use(form, field):
@@ -53,6 +53,6 @@ class SearchTeamsForm(FlaskForm):
     category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Üres")])
 
     def set_dropdown_choices(self):
-        self.school_id.choices += [(school.id, school.name) for school in SchoolRepository.find_all()]
+        self.school_id.choices += [(school.id, school.school_name) for school in SchoolRepository.find_all()]
         self.language_id.choices += [(language.id, language.language_name) for language in LanguageRepository.find_all()]
         self.category_id.choices += [(category.id, category.category_name) for category in CategoryRepository.find_all()]
