@@ -53,7 +53,6 @@
             {% endif %}
         {% endif %}
 
-
         {% if is_admin() %}
             <li class="nav-item">
                 <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>

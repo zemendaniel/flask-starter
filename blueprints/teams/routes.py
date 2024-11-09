@@ -70,10 +70,9 @@ def list_all():
             TeamRepository.year_criteria(form.year.data) if form.year.data else None,
             (Team.language_id == form.language_id.data) if form.language_id.data and form.language_id.data != '-1' else None,
             (Team.school_id == form.school_id.data) if form.school_id.data and form.school_id.data != '-1' else None,
-            (Team.category_id == form.category_id.data) if form.category_id.data and form.category_id.data != '-1' else None
+            (Team.category_id == form.category_id.data) if form.category_id.data and form.category_id.data != '-1' else None,
+            TeamRepository.completeness_criteria(form.status.data)
         )
-        if form.admin_approved:
-            print('admin arpoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     else:
         teams = TeamRepository.find_all()
 
@@ -85,9 +84,13 @@ def list_all():
             abort(403)
 
         if g.user.role == 'school' and team.school_id == g.user.school.id and not team.admin_approved:
+            if team.declared_incomplete:
+                abort(403)
             team.school_approved = not team.school_approved
 
         elif team.school_approved and g.user.is_admin:
+            if team.declared_incomplete:
+                abort(403)
             team.admin_approved = not team.admin_approved
 
         team.save()

@@ -1,3 +1,5 @@
+from random import choices
+
 from wtforms.fields.simple import StringField, BooleanField
 from wtforms.fields.numeric import IntegerField
 from wtforms.fields.choices import SelectField
@@ -51,7 +53,7 @@ class SearchTeamsForm(FlaskForm):
     school_id = SelectField('Iskola neve', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
     category_id = SelectField('Kategória', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
 
-    admin_approved = BooleanField('Szervezők által jóváhagyva')
+    status = SelectField('Álapot', choices=[(0, 'Hiányos'), (1, 'Iskola által elfogadott'), (2, 'Mindenki által elfogadott')])
 
     def set_dropdown_choices(self):
         self.school_id.choices += [(school.id, school.school_name) for school in SchoolRepository.find_all()]

@@ -37,7 +37,7 @@ class Team(Model):
     school_approved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     admin_approved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
-    declared_incomplete: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    _declared_incomplete: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=True, unique=True)
     user: Mapped["User"] = relationship("User", back_populates="team", uselist=False)
@@ -46,6 +46,21 @@ class Team(Model):
     def ready(self) -> bool:
         return (self.school_approved and self.admin_approved and (not self.declared_incomplete) and self.school_id
                 and self.language_id)
+
+
+    @property
+    def declared_incomplete(self):
+        return  self._declared_incomplete
+
+    @declared_incomplete.setter
+    def declared_incomplete(self, value):
+        if value is True:
+            self._declared_incomplete = True
+            self.admin_approved = False
+            self.school_id = False
+        else:
+            self._declared_incomplete = False
+
 
     def team_form_update(self, form):
         team_name = form.team_name.data if hasattr(form, 'team_name') else None
