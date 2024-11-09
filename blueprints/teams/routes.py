@@ -62,14 +62,18 @@ def list_all():
     form = SearchTeamsForm(request.args)
     form.set_dropdown_choices()
 
-    if request.args.get('search') or request.args.get('ascending') or request.args.get('year') or request.args.get('language_id') or request.args.get('school_id') or request.args.get('category_id'):
+    if (request.args.get('search') or request.args.get('ascending') or request.args.get('year')
+            or request.args.get('language_id') or request.args.get('school_id') or request.args.get('category_id') or request.args.get('approved')):
         teams = TeamRepository.search(
             form.query.data if form.query.data else '',
             True if form.ascending.data == '1' else False,
+            TeamRepository.year_criteria(form.year.data) if form.year.data else None,
             (Team.language_id == form.language_id.data) if form.language_id.data and form.language_id.data != '-1' else None,
             (Team.school_id == form.school_id.data) if form.school_id.data and form.school_id.data != '-1' else None,
             (Team.category_id == form.category_id.data) if form.category_id.data and form.category_id.data != '-1' else None
         )
+        if form.admin_approved:
+            print('admin arpoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     else:
         teams = TeamRepository.find_all()
 

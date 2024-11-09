@@ -23,6 +23,7 @@ def init_app(app):
     # Organization name, for example "Bolyai Technikum"
     app.jinja_env.globals['org_name'] = lambda: SiteSettingRepository.get_org_name()
     app.jinja_env.globals['has_unread'] = lambda: has_unread()
+    app.jinja_env.globals['deadline'] = lambda: SiteSettingRepository.get_deadline() or "Még nincs határidő!"
 
 
 def __load_current_user():

@@ -80,3 +80,7 @@ class TeamRepository:
         )
 
         return g.session.scalar(statement)
+
+    @staticmethod
+    def asd():
+        pass

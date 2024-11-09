@@ -34,7 +34,7 @@
 </form>
 
     {% if not create %}
-    <form method="post" action="{{ url_for("categories.delete", language_id=language.id) }}" onsubmit="return confirm('Biztosan törli?')">
+    <form method="post" action="{{ url_for("languages.delete", language_id=language.id) }}" onsubmit="return confirm('Biztosan törli?')">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button style="float: left" class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Törlés</button>
     </form>

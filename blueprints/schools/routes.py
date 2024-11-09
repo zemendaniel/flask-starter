@@ -67,6 +67,13 @@ def list_all():
     return render_template('schools/list.html', schools=schools)
 
 
+@bp.route('/view')
+@is_fully_authenticated
+@has_role("school")
+def view():
+    return render_template('schools/view.html', school=g.user.school)
+
+
 @bp.route('/application-form/<int:school_id>')
 @is_fully_authenticated
 @has_role("school", "admin", "super_admin")

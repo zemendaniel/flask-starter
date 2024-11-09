@@ -33,7 +33,7 @@ def delete(category_id):
     return redirect(url_for('categories.list_all'))
 
 
-@bp.route('edit/<int:category_id>', methods=['post'])
+@bp.route('edit/<int:category_id>', methods=['post', 'get'])
 @is_fully_authenticated
 @is_admin
 def edit(category_id):
@@ -49,8 +49,10 @@ def edit(category_id):
     return render_template('categories/form.html', form=form, category=category, create=False)
 
 
-@bp.route('/list')
+@bp.route('/')
 @is_fully_authenticated
 @is_admin
 def list_all():
-    return "pina"
+    categories = CategoryRepository.find_all()
+
+    return render_template("categories/list.html", categories=categories)

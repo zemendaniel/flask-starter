@@ -13,10 +13,12 @@
         <p class="text-danger">Nincs</p>
     {% endif %}
 
-    <form method="post" action="{{ url_for("users.delete", user_id=school.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ school.school_name }})')">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
-    </form>
+    {% if is_admin() %}
+        <form method="post" action="{{ url_for("users.delete", user_id=school.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ school.school_name }})')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+        </form>
+    {% endif %}
     <!-- todo adam ikon es egyvonal -->
     <a href="{{ url_for("schools.edit", school_id=school.id) }}" class="btn btn-primary-dark">Szerkesztés</a>
 </div>

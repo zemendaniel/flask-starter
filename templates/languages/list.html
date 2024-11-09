@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Programnyelvek{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Programnyelvek" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block main %}
+    <a href="{{ url_for('languages.create') }}" class="btn btn-dark me-2"><i class="fa-solid fa-plus-circle"></i> Programnyelv hozzáadása</a>
+    {% for language in languages %}
+        <div class="post">
+            <h5>{{ language.name }}</h5>
+            <a href="{{ url_for('languages.edit', language_id=language.id) }}" class="btn btn-dark"><i class="fa-solid fa-pen-to-square"></i> Szerkesztés</a>
+            <form action="{{ url_for("languages.delete", language_id=language.id) }}" method="post" onsubmit="return confirm('Biztosan törli a programnyelvet? ({{ language.name }})')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+            </form>
+        </div>
+    {% endfor %}
+{% endblock %}

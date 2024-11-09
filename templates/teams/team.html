@@ -63,10 +63,12 @@
     {% if is_admin() or team.id == g.user.team.id %}
         <a class="btn btn-warning" href="{{ url_for("teams.edit", team_id=team.id) }}">Szerkesztés</a>
 
-        <form method="post" action="{{ url_for("users.delete", user_id=team.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ team.team_name }})') ">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
-        </form>
+        {% if is_admin() %}
+            <form method="post" action="{{ url_for("users.delete", user_id=team.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ team.team_name }})') ">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+            </form>
+        {% endif %}
     {% endif %}
 
 </div>

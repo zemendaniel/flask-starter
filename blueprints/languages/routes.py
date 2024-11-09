@@ -22,7 +22,7 @@ def create():
     return render_template('languages/form.html', form=form, create=True)
 
 
-@bp.route('delete/<int:language_id>')
+@bp.route('delete/<int:language_id>', methods=['post'])
 @is_fully_authenticated
 @is_admin
 def delete(language_id):
@@ -30,14 +30,14 @@ def delete(language_id):
     language.delete()
     flash('Programnyelv sikeresen törölve!', 'success')
 
-    return redirect(url_for('categories.list_all'))
+    return redirect(url_for('languages.list_all'))
 
 
-@bp.route('edit/<int:language_id>', methods=['post'])
+@bp.route('edit/<int:language_id>', methods=['post', 'get'])
 @is_fully_authenticated
 @is_admin
 def edit(language_id):
-    language = LanguageRepository.find_by_id(language_id)
+    language = LanguageRepository.find_by_id(language_id) or abort(404)
     form = CreateLanguageForm(obj=language)
 
     if form.validate_on_submit():
@@ -46,11 +46,13 @@ def edit(language_id):
         flash('Programnyelv sikeresen módosítva!', 'success')
         return redirect(url_for('languages.edit', language_id=language_id))
 
-    return render_template('languages/form.html', form=form, create=False)
+    return render_template('languages/form.html', form=form, create=False, language=language)
 
 
 @bp.route('/')
 @is_fully_authenticated
 @is_admin
 def list_all():
-    return 'asd'
+    languages = LanguageRepository.find_all()
+
+    return render_template('languages/list.html', languages=languages)
