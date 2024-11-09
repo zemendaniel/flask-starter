@@ -1,5 +1,5 @@
 <div class="post">
-    <h4>{{ team.name }}</h4>
+    <h4>{{ team.team_name }}</h4>
     <hr>
     <h5>Első csapattag</h5>
     <p>Neve: {{ team.name1 }}, évfolyama: {{ team.year1 }}</p>
@@ -12,40 +12,33 @@
         <p>Neve: {{ team.name_extra }}, évfolyama: {{ team.year_extra }}</p>
     {% endif %}
     <h5>Felkészítő tanár(ok)</h5>
+
     <p>{{ team.teachers }}</p>
-    <h5>Iskola</h5>
-    <p>Neve: {{ team.school.school_name }}, címe: {{ team.school.address }}</p>
+
+    {% if team.school_id %}
+        <h5>Iskola</h5>
+        <p>Neve: {{ team.school.school_name }}, címe: {{ team.school.address }}</p>
+    {% endif %}
+
     {% if team.language_id %}
         <h5>Nyelv</h5>
         <p>{{ team.language.language_name }}</p>
     {% endif %}
+
     {% if team.category_id %}
         <h5>Kategória</h5>
         <p>{{ team.category.category_name }}</p>
     {% endif %}
-    <br>
+
     <form method="post">
-        <input type="hidden" value="{{ team.id }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token(id=False) }}"/>
-        <button type="submit">
-            {% if g.user.role == 'school' %}
-
-                {% if team.school_approved %}
-                    Jóváhagyás visszavonása
-                {% else %}
-                    Jóváhaygás
-                {% endif %}
-
-                {% else  %}
-                {% if team.admin_approved %}
-                    Jóváhagyás visszavonása
-                {% else %}
-                    Jóváhaygás
-                {% endif %}
-
+        <input type="hidden" value="{{ team.id }}" name="team_id">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="btn btn-primary-dark">
+            {% if g.user.is_admin and team.school_approved %}
+                {% if team.admin_approved %}Jóváhagyás{% else %}Jóváhagyás visszavonása{% endif %}
+            {% elif g.user.role == "school" and not team.admin_approved %}
+                {% if team.admin_approved %}Jováhagyás{% else %}Jóváhagyás visszavonása{% endif %}
             {% endif %}
-
-
         </button>
     </form>
 </div>

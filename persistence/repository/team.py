@@ -40,7 +40,7 @@ class TeamRepository:
         else:
             statement = statement.order_by(Team.id.desc())
 
-        return g.session.scalars(statement)
+        return g.session.scalars(statement).all()
 
     @staticmethod
     def year_criteria(query):
@@ -54,7 +54,7 @@ class TeamRepository:
 
     @staticmethod
     def find_all():
-        return g.session.scalar(Team.select())
+        return g.session.scalars(Team.select().order_by(Team.id.desc())).all()
 
     @staticmethod
     def save(team):

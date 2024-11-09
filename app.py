@@ -1,6 +1,3 @@
-# todo egy about oldal, ahol mind a 3-an bemutatkozunk és írunk 1-2 sort magunkról, esetleg még egy fotót és feltöltünk
-
-
 import os
 import logging
 import persistence
@@ -60,4 +57,5 @@ def create_app(config_class=Config):
 
 if __name__ == '__main__':
     create_app().run(host="0.0.0.0", debug=True)
+
 

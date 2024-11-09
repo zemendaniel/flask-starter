@@ -74,28 +74,30 @@ def delete(team_id):
 @has_role('school', 'super_admin', 'admin')
 def list_all():
     form = SearchTeamsForm(request.args)
-
     if form.validate():
         teams = TeamRepository.search(
             form.query,
             form.ascending,
-            Team.school == g.user.school if g.user.role == 'schools' else None,
             TeamRepository.year_criteria(form.year),
             Team.language_id == form.language_id,
             Team.school_id == form.school_id,
             Team.category_id == form.category_id
         )
     else:
-        teams = TeamRepository.search('', True, Team.school == g.user.school if g.user.role == 'schools' else None)
+        teams = TeamRepository.find_all()
 
     if request.method == "POST":
-        team = TeamRepository.find_by_id(request.form.get('id'))
+        team = TeamRepository.find_by_id(request.form.get('team_id')) or abort(404)
 
-        if team:
-            if g.user.role == 'schools':
-                team.school_approved = not team.school_approved
-            elif team.school_approved:
-                team.admin_approved = not team.admin_approved
+        if g.user.role == 'schools':
+            team.school_approved = not team.school_approved
+
+        elif team.school_approved and g.user.is_admin:
+            team.admin_approved = not team.admin_approved
+
+        team.save()
+        flash("A csapat sikeresen frissítve!", 'success')
+        return redirect(url_for("teams.list_all"))
 
     return render_template('teams/list.html', teams=teams, form=form)
 

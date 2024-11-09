@@ -44,7 +44,9 @@
     </div>
     <div id="content">
         {% for team in teams %}
-            {% include "teams/team.html" %}
+            {% if (g.user.role == "school" and team.school_id == g.user.school_id) or (g.user.is_admin)  %}
+                {% include "teams/team.html" %}
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
