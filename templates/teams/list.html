@@ -42,6 +42,13 @@
             </div>
         </form>
     </div>
+
+    <div>
+        {% if g.user.is_admin and teams %}
+            <a href="{{ url_for('teams.export') }}" class="btn btn-primary-dark"><i class="fa-solid fa-file-arrow-down"></i> Csapatok exportálása</a>
+        {% endif %}
+    </div>
+
     <div id="content">
         {% for team in teams %}
             {% if (g.user.role == "school" and team.school_id == g.user.school.id) or (g.user.is_admin)  %}

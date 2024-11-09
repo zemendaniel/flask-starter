@@ -87,9 +87,16 @@ class Team(Model):
         TeamRepository.delete(self)
 
     def to_csv_line(self):
-        return (f"{self.user.name};{self.team_name};{self.name1};{self.year1};{self.name2};{self.year2};{self.name3};{self.year3};"
-                f"{self.name_extra};{self.year_extra};{self.teachers};{self.language.name};{self.category.name};"
-                f"{self.school.school_name};{self.school_approved};{self.admin_approved};{self.declared_incomplete}")
+        return (
+            f"{self.user.name};{self.team_name};{self.name1};{self.year1};{self.name2};{self.year2};{self.name3};{self.year3};"
+            f"{self.name_extra};{self.year_extra};{self.teachers};"
+            f"{self.language.name if self.language else 'nincs'};"
+            f"{self.category.name if self.category else 'nincs'};"
+            f"{self.school.school_name if self.school else 'nincs'};"
+            f"{'igen' if self.school_approved else 'nem'};"
+            f"{'igen' if self.admin_approved else 'nem'};"
+            f"{'igen' if self.declared_incomplete else 'nem'}"
+        )
 
 
 from persistence.repository.team import TeamRepository

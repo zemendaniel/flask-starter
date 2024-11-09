@@ -7,6 +7,7 @@ from persistence.repository.__init__ import filter
 from ..model.category import Category
 from ..model.language import Language
 from ..model.school import School
+from io import StringIO
 
 
 class TeamRepository:
@@ -82,5 +83,16 @@ class TeamRepository:
         return g.session.scalar(statement)
 
     @staticmethod
-    def asd():
-        pass
+    def create_csv_file():
+        teams = TeamRepository.find_all()
+        if not teams:
+            return None
+
+        header_line = [';'.join(["Felhasználónév", "Csapatnév", "Első tag neve", "Első tag évfolyama", "Második tag neve",
+                       "Második tag évfolyama", "Harmadik tag neve", "Harmadik tag évfolyama", "Póttag neve",
+                       "Póttag évfolyama", "Felkészítő tanár(ok)", "Programnyelv", "Kategória", "Iskola neve",
+                       "Iskola által jóváhagyva", "Szervező által jóváhagyva", "Hiánypótlásra szorul"])]
+        team_lines = [team.to_csv_line() for team in teams]
+
+        csv = "\n".join(header_line + team_lines)
+        return StringIO(csv)
