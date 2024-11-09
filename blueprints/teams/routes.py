@@ -1,4 +1,4 @@
-from flask import redirect, url_for, render_template, request, g, flash, abort
+from flask import redirect, url_for, render_template, request, g, flash, abort, session
 from . import bp
 from persistence.model.team import Team
 from blueprints.teams.forms import CreateTeamForm, EditTeamForm, SearchTeamsForm
@@ -27,7 +27,9 @@ def create():
         team.user_id = user.id
         team.save()
 
-        flash("Sikeresen regisztrálta a csapatot!|Kérem jelentkezzen be, ha módosítani szeretné az adatait", 'success')
+        session['user_id'] = user.id
+
+        flash("Sikeresen regisztrálta a csapatot!", 'success')
         return redirect(url_for("pages.home"))
     elif form.errors:
         [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
@@ -40,16 +42,15 @@ def create():
 @has_role('team')
 @is_deadline_not_over
 def edit(team_id):
-    team = TeamRepository.find_by_id(team_id)
+    team = TeamRepository.find_by_id(team_id) or abort(404)
     form = EditTeamForm(obj=team)
     form.set_dropdown_choices()
 
     if form.validate_on_submit():
-        team.form_update(form)
         team.team_form_update(form)
         team.save()
         flash("Sikeresen szerkesztette a csapatot!", 'success')
-        return redirect(url_for("teams.view", team_id=team_id))
+        return redirect(url_for("teams.edit", team_id=team_id))
 
     return render_template('teams/edit.html', form=form)
 
@@ -119,3 +120,13 @@ def validate_name():
         return '<div class="text-danger">A megadott név már foglalt</div>'
     else:
         return '<div class="text-success">A megadott név nem foglalt</div>'
+
+
+@bp.route('/incomplete/<int:team_id>', methods=['POST'])
+@is_fully_authenticated
+def incomplete(team_id):
+    team = TeamRepository.find_by_id(team_id) or abort(404)
+    team.declared_incomplete = not team.declared_incomplete
+    team.save()
+    flash("Hiánypótlás állapota sikeresen frissítve!", 'success')
+    return redirect(url_for('teams.list_all'))

@@ -11,6 +11,12 @@ class MessageRepository:
         return g.session.scalars(Message.select().order_by(Message.id.desc())).all()
 
     @staticmethod
+    def find_own_unread_amount():
+        if g.role == "team":
+            return g.user.team.messages.filter_by(read=False).count()
+        return None
+
+    @staticmethod
     def save(message):
         g.session.add(message)
         g.session.commit()

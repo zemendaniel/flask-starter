@@ -10,7 +10,7 @@ from blueprints.users.forms import RegisterUserForm
 from persistence.repository.team import TeamRepository
 
 
-class EditTeamForm(RegisterUserForm):
+class EditTeamForm(FlaskForm):
     name1 = StringField('Első csapattag neve', validators=[DataRequired(), length(max=64)])
     name2 = StringField('Masodik csapattag neve', validators=[length(max=64), DataRequired()])
     name3 = StringField('Harmadik csapattag neve', validators=[length(max=64), DataRequired()])

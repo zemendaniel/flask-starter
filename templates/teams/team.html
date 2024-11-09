@@ -31,13 +31,30 @@
     <form method="post">
         <input type="hidden" value="{{ team.id }}" name="team_id">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit" class="btn btn-primary-dark">
-            <!-- todo adam ha nincs gomb tartalma akk ne latszodjon -->
-            {% if g.user.is_admin and team.school_approved %}
-                {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
-            {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}
-                {% if team.school_approved %}Jováhagyás visszavonása{% else %}Jóváhagyás{% endif %}
-            {% endif %}
-        </button>
+        {% if (g.user.is_admin and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
+            <button type="submit" class="btn btn-primary-dark">
+                {% if g.user.is_admin and team.school_approved %}
+                    {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
+                {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}
+                    {% if team.school_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
+                {% endif %}
+            </button>
+        {% endif %}
     </form>
+
+    {% if g.user.is_admin  %}
+        <form method="post" action="{{ url_for("teams.incomplete", team_id=team.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            {% if team.declared_incomplete %}
+                <button type="submit" class="btn btn-danger">
+                    Hiánypótlás kérés visszavonása
+                </button>
+            {% else %}
+                <button type="submit" class="btn btn-success">
+                    Hiánypótlás kérése
+                </button>
+            {% endif %}
+        </form>
+    {% endif %}
 </div>

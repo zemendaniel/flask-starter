@@ -1,5 +1,6 @@
 from flask import g, session, request
 from blueprints.security.routes import verify_login_token
+from persistence.repository.message import MessageRepository
 from persistence.repository.user import UserRepository
 from persistence.repository.site_setting import SiteSettingRepository
 
@@ -10,6 +11,7 @@ def init_app(app):
     app.jinja_env.globals['is_admin'] = lambda: g.user and g.user.is_admin
     # Organization name, for example "Bolyai Technikum"
     app.jinja_env.globals['org_name'] = lambda: SiteSettingRepository.get_org_name()
+    app.jinja_env.globals['unread_messages_amount'] = lambda: MessageRepository.find_own_unread_amount()
 
 
 def __load_current_user():

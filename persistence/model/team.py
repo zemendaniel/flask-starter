@@ -47,7 +47,7 @@ class Team(Model):
                 and self.language_id)
 
     def team_form_update(self, form):
-        team_name = form.team_name.data
+        team_name = form.team_name.data if hasattr(form, 'team_name') else None
         if team_name:
             self.team_name = team_name.strip()
 

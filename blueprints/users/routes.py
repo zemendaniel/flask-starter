@@ -32,6 +32,8 @@ def delete(user_id):
 
 
 @base_bp.route('/create-admin', methods=['GET', 'POST'])
+@is_fully_authenticated
+@is_admin
 def create_admin():
     form = RegisterUserForm()
     if form.validate_on_submit():
