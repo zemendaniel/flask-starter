@@ -8,7 +8,6 @@ from persistence.repository.language import LanguageRepository
 from persistence.repository.school import SchoolRepository
 from blueprints.users.forms import RegisterUserForm
 from persistence.repository.team import TeamRepository
-from persistence.repository.user import UserRepository
 
 
 class EditTeamForm(RegisterUserForm):
@@ -23,14 +22,14 @@ class EditTeamForm(RegisterUserForm):
     teachers = StringField('Felkészítő tanárok (több is megadható, vesszővel elválasztva, pl.: Nagy Ferenc, Kovács János)',
                            validators=[DataRequired(), length(max=255)])
 
-    language_id = SelectField('Választott programnyelv', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
-    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
-    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Még nem látom a sajátomat")])
+    language_id = SelectField('Választott programnyelv', validators=[DataRequired()], choices=[(0, "Még nincs itt a sajátom")])
+    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Még nincs itt a sajátom")])
+    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Még nincs itt a sajátom")])
 
     def set_dropdown_choices(self):
         self.school_id.choices += [(school.id, school.school_name) for school in SchoolRepository.find_all()]
-        self.language_id.choices += [(language.id, language.language_name) for language in LanguageRepository.find_all()]
-        self.category_id.choices += [(category.id, category.category_name) for category in CategoryRepository.find_all()]
+        self.language_id.choices += [(language.id, language.name) for language in LanguageRepository.find_all()]
+        self.category_id.choices += [(category.id, category.name) for category in CategoryRepository.find_all()]
 
 
 def team_name_in_use(form, field):
@@ -44,15 +43,15 @@ class CreateTeamForm(EditTeamForm, RegisterUserForm):
 
 class SearchTeamsForm(FlaskForm):
     query = StringField('Keresendő szöveg', validators=[Length(max=255)])
-    ascending = BooleanField('Növekvő sorrend?')
+    ascending = SelectField('Sorrend?', choices=[(0, "Növekvő"), (1, "Csökkenő")], validators=[DataRequired()])
     year = IntegerField('Osztály', validators=[NumberRange(max=13, min=9)])
 
-    language_id = SelectField('Választott programnyelv', validators=[DataRequired()],
-                              choices=[(0, "Üres")])
-    school_id = SelectField('Iskola neve', validators=[DataRequired()], choices=[(0, "Üres")])
-    category_id = SelectField('Kategória', validators=[DataRequired()], choices=[(0, "Üres")])
+    language_id = SelectField('Választott programnyelv',
+                              choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
+    school_id = SelectField('Iskola neve', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
+    category_id = SelectField('Kategória', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
 
     def set_dropdown_choices(self):
         self.school_id.choices += [(school.id, school.school_name) for school in SchoolRepository.find_all()]
-        self.language_id.choices += [(language.id, language.language_name) for language in LanguageRepository.find_all()]
-        self.category_id.choices += [(category.id, category.category_name) for category in CategoryRepository.find_all()]
+        self.language_id.choices += [(language.id, language.name) for language in LanguageRepository.find_all()]
+        self.category_id.choices += [(category.id, category.name) for category in CategoryRepository.find_all()]

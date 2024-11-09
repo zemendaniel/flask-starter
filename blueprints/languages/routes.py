@@ -1,27 +1,28 @@
-from flask import redirect, url_for, abort, flash
+from flask import redirect, url_for, abort, flash, render_template
 from security.decorators import is_fully_authenticated, is_admin
 from . import bp
-from blueprints.categories.forms import CreateCategoryForm
 from persistence.repository.language import LanguageRepository
 from persistence.model.language import Language
+from .forms import CreateLanguageForm
 
 
-@bp.route('/creaate')
+@bp.route('/create', methods=['GET', 'POST'])
 @is_fully_authenticated
 @is_admin
 def create():
-    form = CreateCategoryForm()
+    form = CreateLanguageForm()
 
     if form.validate_on_submit():
         language = Language()
-        language.name = form.name
+        language.name = form.name.data.strip()
         language.save()
-        flash('Programnyelv sikeresen létrehozva!', 'success')
+        flash('Programnyelv sikeresen hozzáadva!', 'success')
+        return redirect(url_for('languages.list_all'))
 
-    return redirect(url_for('pages.home'))
+    return render_template('languages/form.html', form=form, create=True)
 
 
-@bp.route('delete/<int:language_id')
+@bp.route('delete/<int:language_id>')
 @is_fully_authenticated
 @is_admin
 def delete(language_id):
@@ -29,18 +30,27 @@ def delete(language_id):
     language.delete()
     flash('Programnyelv sikeresen törölve!', 'success')
 
-    return  redirect(url_for('categories.list_all'))
+    return redirect(url_for('categories.list_all'))
 
 
-@bp.route('edit/<int:language_id', methods=['post'])
+@bp.route('edit/<int:language_id>', methods=['post'])
 @is_fully_authenticated
 @is_admin
 def edit(language_id):
     language = LanguageRepository.find_by_id(language_id)
-    form = CreateCategoryForm()
+    form = CreateLanguageForm(obj=language)
 
     if form.validate_on_submit():
-        language.name = form.name
+        language.name = form.name.data.strip()
         language.save()
         flash('Programnyelv sikeresen módosítva!', 'success')
+        return redirect(url_for('languages.edit', language_id=language_id))
 
+    return render_template('languages/form.html', form=form, create=False)
+
+
+@bp.route('/')
+@is_fully_authenticated
+@is_admin
+def list_all():
+    return 'asd'

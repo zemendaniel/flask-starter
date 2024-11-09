@@ -97,7 +97,7 @@ def about():
     return render_template("pages/about.html")
 
 
-@bp.route("/deadline")
+@bp.route("/deadline", methods=['GET', 'POST'])
 @is_fully_authenticated
 @is_admin
 def deadline():
@@ -106,6 +106,10 @@ def deadline():
     if form.validate_on_submit():
         SiteSettingRepository.set_deadline(form.deadline.data)
         flash("A határidő sikeresen beállítva!", 'success')
+        return redirect(url_for('pages.deadline'))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
+
         return redirect(url_for('pages.deadline'))
     else:
         form.deadline.data = SiteSettingRepository.get_deadline()

@@ -1,10 +1,11 @@
-from flask import render_template, redirect, flash, url_for, request, abort
+from flask import render_template, redirect, flash, url_for, request, abort, g, send_file
 from .forms import CreateSchoolForm, EditSchoolForm
 from persistence.model.school import School
 from persistence.repository.school import SchoolRepository
 from . import bp
 from security.decorators import is_admin, is_fully_authenticated, has_role
 from persistence.model.user import User
+from io import BytesIO
 
 
 @bp.route('/create', methods=['GET', 'POST'])
@@ -32,18 +33,28 @@ def create():
 
 @bp.route('/edit/<int:school_id>', methods=['GET', 'POST'])
 @is_fully_authenticated
-@is_admin
+@has_role("school", "admin", "super_admin")
 def edit(school_id):
+    if g.user.role == "school" and g.user.school.id != school_id:
+        abort(401)
+
     school = SchoolRepository.find_by_id(school_id) or abort(404)
-    form = EditSchoolForm(obj=school)
+    form = EditSchoolForm()
 
     if form.validate_on_submit():
+        if g.user.is_admin and form.application_form.data:
+            abort(403)
+
         school.edit_form_update(form)
         school.save()
         flash("Sikeresen mentette az iskolát!", 'success')
-        return redirect(url_for("pages.home"))
+        return redirect(url_for("schools.edit", school_id=school.id))
 
-    return render_template('schools/edit.html', form=form)
+    form.address.data = school.address
+    form.contact_name.data = school.contact_name
+    form.contact_email.data = school.contact_email
+
+    return render_template('schools/edit.html', form=form, school=school)
 
 
 @bp.route('/delete/<int:school_id>', methods=['POST'])

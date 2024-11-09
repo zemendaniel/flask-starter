@@ -41,8 +41,9 @@ def create_admin():
         user.password = form.password.data
         user.save()
         flash("Adminisztrátor sikeresen hozzáadva!", 'success')
+        return redirect(url_for('users.list_all'))
 
-    return render_template('users/../../templates/teams/create.html')
+    return render_template('users/create.html', form=form)
 
 
 @base_bp.route('/settings')

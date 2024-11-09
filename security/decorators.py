@@ -52,7 +52,7 @@ def is_deadline_not_over(view):
             return view(**kwargs)
 
         if SiteSettingRepository.get_deadline() < datetime.now():
-            flash("Sajnos a határidő már lejárt!", "error$")
+            flash("Sajnos a határidő már lejárt!", "error")
             abort(403)
 
         return view(**kwargs)

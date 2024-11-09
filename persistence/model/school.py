@@ -26,11 +26,13 @@ class School(Model):
         self.contact_name = form.contact_name.data.strip()
         self.contact_email = form.contact_email.data.strip()
         self.address = form.address.data.strip()
-        file = form.application_form.data
-        if file:
-            file = FileStorage(file)
-            self.application_form = file.read()
-            self.form_extension = file.filename.split(".")[-1]
+        file_data = form.application_form.data
+        if file_data:
+            file_data = file_data.read()
+            file_extension = form.application_form.data.filename.split('.')[-1]
+
+            self.application_form = file_data
+            self.form_extension = file_extension
 
     def create_form_update(self, form):
         self.contact_name = form.contact_name.data.strip()

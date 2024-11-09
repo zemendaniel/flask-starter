@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% if create %}
-    {% set phrase = "Kategória létrehozása" %}
+    {% set phrase = "Programnyelv hozzáadása" %}
 {% else %}
-    {% set phrase = "Kategória módosítása" %}
+    {% set phrase = "Programnyelv módosítása" %}
 {% endif %}
 
 
@@ -20,7 +20,7 @@
 {% block main %}
 
 
-<form method="post" class="form">
+<form method="post">
     {{ form.csrf_token() }}
 
     <div class="form-group mb-3">
@@ -33,11 +33,11 @@
     </div>
 </form>
 
-{% if not create %}
-    <form method="post" action="{{ url_for("categories.delete", category_id=category.id) }}" onsubmit="return confirm('Biztosan törli?')">
+    {% if not create %}
+    <form method="post" action="{{ url_for("categories.delete", language_id=language.id) }}" onsubmit="return confirm('Biztosan törli?')">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button style="float: left" class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Törlés</button>
     </form>
-{% endif %}
+    {% endif %}
 
 {% endblock %}

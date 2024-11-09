@@ -35,7 +35,7 @@
             <!-- todo adam ha nincs gomb tartalma akk ne latszodjon -->
             {% if g.user.is_admin and team.school_approved %}
                 {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
-            {% elif g.user.role == "school" and not team.admin_approved %}
+            {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}
                 {% if team.school_approved %}Jováhagyás visszavonása{% else %}Jóváhagyás{% endif %}
             {% endif %}
         </button>

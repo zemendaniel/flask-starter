@@ -1,9 +1,10 @@
+from alchemical import Model
+from typing import List
+
 from typing_extensions import Self
 
 from sqlalchemy import String, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship, InstanceState
-
-from alchemical import Model
 
 
 class Team(Model):
@@ -21,13 +22,15 @@ class Team(Model):
     year_extra: Mapped[int] = mapped_column(Integer, nullable=True)
     teachers: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    language_id: Mapped[int] = mapped_column(ForeignKey('language.id'), nullable=True)
+    messages: Mapped[List["Message"]] = relationship("Message", back_populates="team", cascade="all, delete-orphan")
+
+    language_id: Mapped[int | None] = mapped_column(ForeignKey('language.id'), nullable=True)
     language: Mapped["Language"] = relationship("Language", back_populates="teams")
 
-    category_id: Mapped[int] = mapped_column(ForeignKey('category.id'), nullable=True)
+    category_id: Mapped[int | None] = mapped_column(ForeignKey('category.id'), nullable=True)
     category: Mapped["Category"] = relationship("Category", back_populates="teams")
 
-    school_id: Mapped[int] = mapped_column(ForeignKey('school.id'), nullable=True)
+    school_id: Mapped[int | None] = mapped_column(ForeignKey('school.id'), nullable=True)
     school: Mapped["School"] = relationship()
 
     school_approved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
@@ -57,9 +60,24 @@ class Team(Model):
         self.year_extra = form.year_extra.data
         self.name_extra = form.name_extra.data
         self.teachers = form.teachers.data.strip()
-        self.language_id = form.language_id.data
-        self.category_id = form.category_id.data
-        self.school_id = form.school_id.data
+
+        language_id = form.language_id.data
+        if language_id == 0:
+            self.language_id = None
+        else:
+            self.language_id = language_id
+
+        category_id = form.category_id.data
+        if category_id == 0:
+            self.category_id = None
+        else:
+            self.category_id = category_id
+
+        school_id = form.school_id.data
+        if school_id == 0:
+            self.school_id = None
+        else:
+            self.school_id = school_id
 
     def save(self):
         TeamRepository.save(self)
@@ -69,3 +87,4 @@ class Team(Model):
 
 
 from persistence.repository.team import TeamRepository
+from persistence.model.message import Message

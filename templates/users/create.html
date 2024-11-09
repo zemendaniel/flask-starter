@@ -10,11 +10,16 @@
 
 {% block main %}
     <form method="post">
+        {{ form.csrf_token() }}
         <div class="form-group">
             {{ form.name.label }}
-            {{ form.name(class="form-control", hx-post=url_for('users.validate_name'), hx-trigger="input", hx-target="#base-name-response") }}
+            {{ form.name(class_="form-control", **{
+                'hx-post': url_for('users.validate_name'),
+                'hx-trigger': 'input',
+                'hx-target': '#username-response'
+            }) }}
         </div>
-        <div id="base-name-response" class="mb-1"></div>
+        <div id="username-response" class="mb-1"></div>
 
          <div class="form-group mb-1">
             <label for="password">{{ form.password.label }}</label>
@@ -33,4 +38,8 @@
 
         <button class="btn btn-primary-dark" type="submit"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
     </form>
+{% endblock %}
+
+{% block after_scripts %}
+    {% include "htmx.html" %}
 {% endblock %}

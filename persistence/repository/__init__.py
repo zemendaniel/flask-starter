@@ -1,5 +1,4 @@
 from sqlalchemy import or_, and_
-from persistence.model.language import Language
 
 
 def filter(table, *args):
@@ -16,7 +15,6 @@ def filter(table, *args):
     for arg in args:
         if arg is not None:
             if isinstance(arg, Language):
-                print('siker!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 statement = statement.join(Team.language)
 
             statement = statement.where(arg)
@@ -25,3 +23,5 @@ def filter(table, *args):
 
 
 from persistence.model.team import Team
+from persistence.model.language import Language
+

@@ -27,7 +27,7 @@ def create():
         team.user_id = user.id
         team.save()
 
-        flash("Sikeresen regisztrálta a csapatot!", 'success')
+        flash("Sikeresen regisztrálta a csapatot!|Kérem jelentkezzen be, ha módosítani szeretné az adatait", 'success')
         return redirect(url_for("pages.home"))
     elif form.errors:
         [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
@@ -38,6 +38,7 @@ def create():
 @bp.route('/edit/<int:team_id>', methods=['GET', "POST"])
 @is_fully_authenticated
 @has_role('team')
+@is_deadline_not_over
 def edit(team_id):
     team = TeamRepository.find_by_id(team_id)
     form = EditTeamForm(obj=team)
@@ -74,10 +75,12 @@ def delete(team_id):
 @has_role('school', 'super_admin', 'admin')
 def list_all():
     form = SearchTeamsForm(request.args)
+    form.set_dropdown_choices()
+
     if form.validate():
         teams = TeamRepository.search(
             form.query,
-            form.ascending,
+            bool(form.ascending),
             TeamRepository.year_criteria(form.year),
             Team.language_id == form.language_id,
             Team.school_id == form.school_id,
@@ -88,6 +91,10 @@ def list_all():
 
     if request.method == "POST":
         team = TeamRepository.find_by_id(request.form.get('team_id')) or abort(404)
+
+        if g.user.role == 'school' and not g.user.school.application_form:
+            flash("Először fel kell tölteni a jelentkezési lapot!", 'error')
+            abort(403)
 
         if g.user.role == 'school' and team.school_id == g.user.school.id and not team.admin_approved:
             team.school_approved = not team.school_approved
