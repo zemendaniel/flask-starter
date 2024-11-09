@@ -39,7 +39,7 @@ def create():
 
 @bp.route('/edit/<int:team_id>', methods=['GET', "POST"])
 @is_fully_authenticated
-@has_role('team')
+@has_role('team', 'admin', 'super_admin')
 @is_deadline_not_over
 def edit(team_id):
     team = TeamRepository.find_by_id(team_id) or abort(404)
@@ -53,22 +53,6 @@ def edit(team_id):
         return redirect(url_for("teams.edit", team_id=team_id))
 
     return render_template('teams/edit.html', form=form)
-
-
-@bp.route('/delete/<int:team_id>')
-@is_fully_authenticated
-# ide nem kell is_admin
-def delete(team_id):
-    team = TeamRepository.find_by_id(team_id) or abort(404)
-    if g.user.is_admin or g.user.team_id == team_id:
-        team.delete()
-        flash("Sikeresen törölte a csapatot!", 'success')
-        if g.user.is_admin:
-            return redirect(url_for("teams.list_all"))
-        else:
-            return redirect(url_for("pages.home"))
-    else:
-        abort(401)
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -108,6 +92,13 @@ def list_all():
         return redirect(url_for("teams.list_all"))
 
     return render_template('teams/list.html', teams=teams, form=form)
+
+
+@bp.route('/view')
+@is_fully_authenticated
+@has_role("team")
+def view():
+    return render_template('teams/view.html', team=g.user.team)
 
 
 @bp.route('/validate-name', methods=['POST'])

@@ -23,6 +23,7 @@ class Team(Model):
     teachers: Mapped[str] = mapped_column(String(255), nullable=False)
 
     messages: Mapped[List["Message"]] = relationship("Message", back_populates="team", cascade="all, delete-orphan")
+    has_unred_messages: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     language_id: Mapped[int | None] = mapped_column(ForeignKey('language.id'), nullable=True)
     language: Mapped["Language"] = relationship("Language", back_populates="teams")

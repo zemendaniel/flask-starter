@@ -57,16 +57,6 @@ def edit(school_id):
     return render_template('schools/edit.html', form=form, school=school)
 
 
-@bp.route('/delete/<int:school_id>', methods=['POST'])
-@is_fully_authenticated
-@is_admin
-def delete(school_id):
-    school = SchoolRepository.find_by_id(school_id) or abort(404)
-    school.user.delete()
-    flash("Sikeresen törlte az iskolát!", 'success')
-    return redirect(url_for("schools.list_all"))
-
-
 @bp.route('/')
 @is_fully_authenticated
 @is_admin

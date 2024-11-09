@@ -1,5 +1,6 @@
 <div class="post">
     <h4>{{ team.team_name }}</h4>
+    {% if team.declared_incomplete %}<span class="text-danger">Hiánypótlás szükséges!</span>{% endif %}
     <hr>
     <h5>Első csapattag</h5>
     <p>Neve: {{ team.name1 }}, évfolyama: {{ team.year1 }}</p>
@@ -31,7 +32,7 @@
     <form method="post">
         <input type="hidden" value="{{ team.id }}" name="team_id">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        {% if (g.user.is_admin and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
+        {% if (is_admin() and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
             <button type="submit" class="btn btn-primary-dark">
                 {% if g.user.is_admin and team.school_approved %}
                     {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
@@ -42,7 +43,7 @@
         {% endif %}
     </form>
 
-    {% if g.user.is_admin  %}
+    {% if is_admin()  %}
         <form method="post" action="{{ url_for("teams.incomplete", team_id=team.id) }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
@@ -55,6 +56,17 @@
                     Hiánypótlás kérése
                 </button>
             {% endif %}
+            <a href="{{ url_for("messages.send", team_id=team.id) }}" class="btn btn-secondary">Üzenet küldése</a>
         </form>
     {% endif %}
+
+    {% if is_admin() or team.id == g.user.team.id %}
+        <a class="btn btn-warning" href="{{ url_for("teams.edit", team_id=team.id) }}">Szerkesztés</a>
+
+        <form method="post" action="{{ url_for("users.delete", user_id=team.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ team.team_name }})') ">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+        </form>
+    {% endif %}
+
 </div>

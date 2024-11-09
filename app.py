@@ -10,6 +10,7 @@ import blueprints.schools
 import blueprints.categories
 import blueprints.languages
 import blueprints.teams
+import blueprints.messages
 import security
 from flask_wtf.csrf import CSRFProtect
 from config import Config
@@ -51,6 +52,7 @@ def create_app(config_class=Config):
     app.register_blueprint(blueprints.teams.bp, url_prefix='/teams')
     app.register_blueprint(blueprints.categories.bp, url_prefix='/categories')
     app.register_blueprint(blueprints.languages.bp, url_prefix='/languages')
+    app.register_blueprint(blueprints.messages.bp, url_prefix='/messages')
 
     handler = RotatingFileHandler('errors.log')
     handler.setLevel(logging.ERROR)
