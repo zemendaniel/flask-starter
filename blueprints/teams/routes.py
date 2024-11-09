@@ -120,3 +120,4 @@ def validate_name():
     else:
         return '<div class="text-success">A megadott név nem foglalt</div>'
 
+
