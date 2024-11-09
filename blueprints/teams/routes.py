@@ -37,7 +37,7 @@ def create():
 
 @bp.route('/edit/<int:team_id>', methods=['GET', "POST"])
 @is_fully_authenticated
-@has_role('team')
+@has_role('team', 'admin', 'super_admin')
 @is_deadline_not_over
 def edit(team_id):
     team = TeamRepository.find_by_id(team_id)
@@ -77,14 +77,14 @@ def list_all():
     form = SearchTeamsForm(request.args)
     form.set_dropdown_choices()
 
-    if form.validate():
+    if request.args.get('search') or request.args.get('ascending') or request.args.get('year') or request.args.get('language_id') or request.args.get('school_id') or request.args.get('category_id'):
         teams = TeamRepository.search(
-            form.query,
-            bool(form.ascending),
-            TeamRepository.year_criteria(form.year),
-            Team.language_id == form.language_id,
-            Team.school_id == form.school_id,
-            Team.category_id == form.category_id
+            form.query.data,
+            bool(form.ascending.data),
+            (TeamRepository.year_criteria(form.year.data)) if form.year.data else None,
+            (Team.language_id == form.language_id.data) if not (form.language_id.data or (form.language_id.data != '-1')) else None,
+            (Team.school_id == form.school_id.data) if not (form.school_id.data or (form.school_id.data != '-1')) else None,
+            (Team.category_id == form.category_id.data) if not (form.category_id.data or (form.category_id.data != '-1')) else None
         )
     else:
         teams = TeamRepository.find_all()

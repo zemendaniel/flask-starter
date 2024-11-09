@@ -43,7 +43,7 @@ class CreateTeamForm(EditTeamForm, RegisterUserForm):
 
 class SearchTeamsForm(FlaskForm):
     query = StringField('Keresendő szöveg', validators=[Length(max=255)])
-    ascending = SelectField('Sorrend?', choices=[(0, "Növekvő"), (1, "Csökkenő")], validators=[DataRequired()])
+    ascending = SelectField('Sorrend?', choices=[(0, "Csökkenő"), (1, "Növekvő")], validators=[DataRequired()])
     year = IntegerField('Osztály', validators=[NumberRange(max=13, min=9)])
 
     language_id = SelectField('Választott programnyelv',
