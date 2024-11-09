@@ -6,7 +6,7 @@ from persistence.repository.category import CategoryRepository
 from persistence.model.category import Category
 
 
-@bp.route('/create', methods=['post'])
+@bp.route('/create', methods=['post', 'get'])
 @is_fully_authenticated
 @is_admin
 def create():

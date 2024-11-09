@@ -48,7 +48,7 @@ def has_role(*roles):
 def is_deadline_not_over(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if SiteSettingRepository.get_deadline():
+        if not SiteSettingRepository.get_deadline():
             return view(**kwargs)
 
         if SiteSettingRepository.get_deadline() < datetime.now():

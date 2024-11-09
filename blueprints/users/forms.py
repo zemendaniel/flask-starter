@@ -2,12 +2,18 @@ from flask import g
 from flask_wtf import FlaskForm
 from wtforms.fields.simple import SubmitField, StringField, PasswordField, HiddenField
 from wtforms.fields.choices import SelectField
-from wtforms.validators import DataRequired, length, EqualTo
+from wtforms.validators import DataRequired, length, EqualTo, ValidationError
 from persistence.model.user import roles
+from persistence.repository.user import UserRepository
+
+
+def username_in_use(form, field):
+    if UserRepository.find_by_name(field.data.strip()):
+        raise ValidationError("A felhasználonév már foglalt!")
 
 
 class RegisterUserForm(FlaskForm):
-    name = StringField('Név', validators=[DataRequired(), length(max=32)])
+    name = StringField('Felhasználonév', validators=[DataRequired(), length(max=32), username_in_use])
     password = PasswordField('Jelszó', validators=[DataRequired(), length(max=32, min=4)])
     password_again = PasswordField('Jelszó újra', validators=[DataRequired(), length(max=32, min=4), EqualTo('password')])
     submit = SubmitField('Létrehozás')

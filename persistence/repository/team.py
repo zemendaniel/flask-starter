@@ -28,7 +28,7 @@ class TeamRepository:
             | Team.name3.like(f"%{query}%")
             | Team.name_extra.like(f"%{query}%")
             | Team.teachers.like(f"%{query}%")
-            | ('language', Language.name.like(f"%{query}%"))  # Requires join on `Language`
+            | Team.language.has(Language.name.like(f"%{query}%"))  # Requires join on `Language`
             | Category.name.like(f"%{query}%")  # Requires join on `Category`
             | School.school_name.like(f"%{query}%")  # Requires join on `School`
             | Team.team_name.like(f"%{query}%"),
@@ -58,7 +58,8 @@ class TeamRepository:
 
     @staticmethod
     def save(team):
-        g.session.commit(team)
+        g.session.add(team)
+        g.session.commit()
 
     @staticmethod
     def delete(team):

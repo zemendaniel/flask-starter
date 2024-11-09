@@ -24,7 +24,7 @@ class Team(Model):
     language_id: Mapped[int] = mapped_column(ForeignKey('language.id'), nullable=True)
     language: Mapped["Language"] = relationship("Language", back_populates="teams")
 
-    category_id: Mapped[int] = mapped_column(ForeignKey('category.id'), nullable=False)
+    category_id: Mapped[int] = mapped_column(ForeignKey('category.id'), nullable=True)
     category: Mapped["Category"] = relationship("Category", back_populates="teams")
 
     school_id: Mapped[int] = mapped_column(ForeignKey('school.id'), nullable=True)
@@ -54,6 +54,8 @@ class Team(Model):
         self.year1 = form.year1.data
         self.year2 = form.year2.data
         self.year3 = form.year3.data
+        self.year_extra = form.year_extra.data
+        self.name_extra = form.name_extra.data
         self.teachers = form.teachers.data.strip()
         self.language_id = form.language_id.data
         self.category_id = form.category_id.data

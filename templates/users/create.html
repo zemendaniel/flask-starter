@@ -12,7 +12,7 @@
     <form method="post">
         <div class="form-group">
             {{ form.name.label }}
-            {{ form.name(class="form-control", hx_post=url_for('users.validate_name'), hx_trigger="input", hx_target="#base-name-response") }}
+            {{ form.name(class="form-control", hx-post=url_for('users.validate_name'), hx-trigger="input", hx-target="#base-name-response") }}
         </div>
         <div id="base-name-response" class="mb-1"></div>
 

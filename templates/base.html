@@ -49,9 +49,7 @@
                     <li class="nav-item active">
                         <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link {% if request.endpoint == 'pages.register' %}active{% endif %}" href="{{ url_for("pages.register") }}"><i class="fa-solid fa-user-plus"></i> Regisztráció</a>
-                    </li>
+
                     {% endif %}
 
                     <li class="nav-item active">
@@ -60,7 +58,6 @@
 
                 {% if g.user %}
                     <li class="nav-item active">
-                        <a class="nav-link {% if request.endpoint == 'posts.list_all' %}active{% endif %}" href="{{ url_for("posts.list_all") }}"><i class="fa-solid fa-book"></i> Posztok</a>
                     </li>
                 {% endif %}
 
@@ -73,6 +70,9 @@
                     <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
+                </li>
+                    <li class="nav-item">
                     <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
                 </li>
                 {% endif %}

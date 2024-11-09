@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block main %}
-<!-- <a href="{{ url_for('pages.register') }}" class="btn btn-dark my-3"><i class="fa-solid fa-plus-circle"></i> Felhasználó hozzáadása</a><br> -->
 {% for user in users %}
     {% if not (user.is_super_admin or user.id == g.user.id) %}
         <div class="user p-4 my-3">

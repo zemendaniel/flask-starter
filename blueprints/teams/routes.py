@@ -19,16 +19,18 @@ def create():
     if form.validate_on_submit():
         user = User()
         user.form_update(form)
+        user.role = 'team'
+        user.save()
 
         team = Team()
         team.team_form_update(form)
+        team.user_id = user.id
         team.save()
-
-        user.team_id = team.id
-        user.save()
 
         flash("Sikeresen regisztrálta a csapatot!", 'success')
         return redirect(url_for("pages.home"))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('teams/create.html', form=form)
 
@@ -42,9 +44,10 @@ def edit(team_id):
     form.set_dropdown_choices()
 
     if form.validate_on_submit():
-        team.form_update(request.form)
-        team.team_form_update(request.form)
+        team.form_update(form)
+        team.team_form_update(form)
         team.save()
+        flash("Sikeresen szerkesztette a csapatot!", 'success')
         return redirect(url_for("teams.view", team_id=team_id))
 
     return render_template('teams/edit.html', form=form)
@@ -102,8 +105,8 @@ def validate_name():
     team_name = request.form.get('team_name')
     if not team_name:
         return ''
-    team = TeamRepository.find_by_name(team_name)
+    team = TeamRepository.find_by_name(team_name.strip())
     if team:
-        return '<div class="text-danger">A megadott név már foglalt"></div>'
+        return '<div class="text-danger">A megadott név már foglalt</div>'
     else:
-        return '<div class="text-success">A megadott név nem foglalt"></div>'
+        return '<div class="text-success">A megadott név nem foglalt</div>'

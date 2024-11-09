@@ -83,8 +83,8 @@ def validate_name():
     if not school_name:
         return ''
 
-    school = SchoolRepository.find_by_name(school_name)
+    school = SchoolRepository.find_by_name(school_name.strip())
     if school:
-        return '<div class="text-danger">A megadott név már foglalt"></div>'
+        return '<div class="text-danger">A megadott név már foglalt</div>'
     else:
-        return '<div class="text-success">A megadott név nem foglalt"></div>'
+        return '<div class="text-success">A megadott név nem foglalt</div>'

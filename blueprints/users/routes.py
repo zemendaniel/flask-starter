@@ -125,15 +125,13 @@ def delete_self():
 
 
 @bp.route('/validate-name', methods=['POST'])
-@is_fully_authenticated
-@is_admin
 def validate_name():
     username = request.form.get('name')
     if not username:
         return ''
 
-    user = UserRepository.find_by_name(username)
+    user = UserRepository.find_by_name(username.strip())
     if user:
-        return '<div class="text-danger">A megadott név már foglalt"></div>'
+        return '<div class="text-danger">A megadott név már foglalt</div>'
     else:
-        return '<div class="text-success">A megadott név nem foglalt"></div>'
+        return '<div class="text-success">A megadott név nem foglalt</div>'
