@@ -41,7 +41,7 @@
                 <a class="nav-link {% if request.endpoint == 'pages.home' %}active{% endif %}" href="{{ url_for("pages.home") }}"><i class="fa-solid fa-house"></i> Főoldal</a>
             </li>
 
-        {% if g.user.role in ["admin", "super_admin", "team"] %}
+        {% if g.user and g.user.role in ["admin", "super_admin", "team"] %}
             <li class="nav-item active">
                   <a class="nav-link {% if request.endpoint == 'messages.list_all' %}active{% endif %}" href="{{ url_for("messages.list_all") }}"><i class="fa-solid fa-envelope {% if has_unread() %}text-danger{% endif %}"></i> Üzenetek</a>
             </li>

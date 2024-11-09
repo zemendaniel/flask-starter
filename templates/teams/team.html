@@ -33,7 +33,7 @@
         <input type="hidden" value="{{ team.id }}" name="team_id">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         {% if (is_admin() and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
-            <button type="submit" class="btn btn-primary-dark">
+            <button type="submit" class="btn btn-primary-dark" {% if team.declared_incomplete %}disabled{% endif %}>
                 {% if g.user.is_admin and team.school_approved %}
                     {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
                 {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}

@@ -43,6 +43,17 @@ class TeamRepository:
         return g.session.scalars(statement).all()
 
     @staticmethod
+    def completeness_criteria(value):
+        if value == '0':
+            return Team._declared_incomplete == True
+
+        if value == '1':
+            return Team.school_approved == True
+
+        if value == '2':
+            return Team.admin_approved == True
+
+    @staticmethod
     def year_criteria(query):
         criteria = (Team.year1.like(f"%{query}%")
                     | Team.year2.like(f"%{query}%")
