@@ -27,13 +27,17 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
 
             {% if not g.user %}
-            <li class="nav-item active">
-                <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
-            </li>
+                <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
+                </li>
 
             {% endif %}
 
@@ -41,23 +45,22 @@
                 <a class="nav-link {% if request.endpoint == 'pages.home' %}active{% endif %}" href="{{ url_for("pages.home") }}"><i class="fa-solid fa-house"></i> Főoldal</a>
             </li>
 
-        {% if g.user.role in ["admin", "super_admin", "team"] %}
-            <li class="nav-item active">
-                  <a class="nav-link {% if request.endpoint == 'messages.list_all' %}active{% endif %}" href="{{ url_for("messages.list_all") }}"><i class="fa-solid fa-envelope {% if has_unread() %}text-danger{% endif %}"></i> Üzenetek</a>
-            </li>
+        {% if g.user %}
+            {% if g.user.role in ["admin", "super_admin", "team"] %}
+                <li class="nav-item active">
+                      <a class="nav-link {% if request.endpoint == 'messages.list_all' %}active{% endif %}" href="{{ url_for("messages.list_all") }}"><i class="fa-solid fa-envelope {% if has_unread() %}text-danger{% endif %}"></i> Üzenetek</a>
+                </li>
+            {% endif %}
         {% endif %}
 
-        <li class="nav-item active">
-            <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
-        </li>
 
         {% if is_admin() %}
-        <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
+            </li>
         {% endif %}
 
         </ul>

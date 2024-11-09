@@ -135,4 +135,5 @@ def export():
         flash("A csapatok exportálaása sikertelen!|Még nincsnek felvéve csapatok.", 'error')
         return redirect(url_for("teams.list_all"))
 
-    return send_file(file.getvalue(), as_attachment=True, mimetype='text/csv', download_name='csapatok.csv')
+    # todo charset dolog
+    return send_file(file, as_attachment=True, mimetype='text/csv; charset=utf-8', download_name='csapatok.csv')

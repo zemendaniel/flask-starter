@@ -3,11 +3,26 @@
 {% block title %}{{ org_name() }}{% endblock %}
 
 {% block heading %}
-    {% with heading_content="Bemutatkozás" %}
+    {% with heading_content=org_name() %}
         {% include "heading.html" %}
     {% endwith %}
 {% endblock %}
 
 {% block main %}
-    <div>{{ welcome_text|safe_escape }}</div>
+    <h3>Jelentkezési határidő: {{ deadline() }}</h3>
+    {% if not g.user %}
+        <div>{{ welcome_text | safe_escape }}</div>
+    {% elif is_admin() %}
+
+    {% elif g.user.role == "team" %}
+        {% if g.user.team.declared_incomplete %}
+            <h5 class="text-danger">A jelentkezés hiánypótlást igényel!</h5>
+        {% elif g.user.team.school_approved and not g.user.team.admin_approved %}
+            <h5 class="text-success">A iskola jóváhagyta a jelentkezést!</h5>
+        {% elif g.user.team.admin_approved %} %}
+            <h5 class="text-success">A szervezők jóváhagyták a jelentkezést!</h5>
+        {% endif %}
+    {% elif g.user.role == "school" %}
+
+    {% endif %}
 {% endblock %}

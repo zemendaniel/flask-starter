@@ -7,7 +7,7 @@ from persistence.repository.__init__ import filter
 from ..model.category import Category
 from ..model.language import Language
 from ..model.school import School
-from io import StringIO
+from io import BytesIO
 
 
 class TeamRepository:
@@ -95,4 +95,4 @@ class TeamRepository:
         team_lines = [team.to_csv_line() for team in teams]
 
         csv = "\n".join(header_line + team_lines)
-        return StringIO(csv)
+        return BytesIO(csv.encode('utf-8'))
