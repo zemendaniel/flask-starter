@@ -79,9 +79,9 @@
                     <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
                 </li>
 
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link {% if request.endpoint == 'stats.list_all' %}active{% endif %}" href="{{ url_for("stats.list_all") }}"><i class="fa-solid fa-chart-simple"></i> Statisztikák</a>#}
-{#                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'pages.stats' %}active{% endif %}" href="{{ url_for("pages.stats") }}"><i class="fa-solid fa-chart-bar"></i> Statisztikák</a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
