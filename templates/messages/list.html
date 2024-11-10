@@ -9,6 +9,18 @@
 {% endblock %}
 
 {% block main %}
+    <form id="messagesSchoolsForm" method="get">
+            <div class="form-group mb-1">
+                <label for="search">Keresés</label>
+                <input type="text" name="search" id="search" class="form-control">
+            </div>
+
+            <div class="d-flex align-items-center mb-1">
+                <button type="submit" class="btn btn-primary-dark me-2"><i class="fa-solid fa-search"></i> Keresés</button>
+                <a href="{{ url_for('messages.list_all') }}" class="btn btn-dark me-2">
+                    <i class="fa-solid fa-rotate-left"></i> Visszaállítás</a>
+            </div>
+    </form>
     {% for message in messages %}
         {% if is_admin() or message.team_id == g.user.team.id %}
             <div class="post">

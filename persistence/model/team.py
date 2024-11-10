@@ -47,20 +47,18 @@ class Team(Model):
         return (self.school_approved and self.admin_approved and (not self.declared_incomplete) and self.school_id
                 and self.language_id)
 
-
     @property
     def declared_incomplete(self):
-        return  self._declared_incomplete
+        return self._declared_incomplete
 
     @declared_incomplete.setter
     def declared_incomplete(self, value):
         if value is True:
             self._declared_incomplete = True
             self.admin_approved = False
-            self.school_id = False
+            self.school_approved = False
         else:
             self._declared_incomplete = False
-
 
     def team_form_update(self, form):
         team_name = form.team_name.data if hasattr(form, 'team_name') else None

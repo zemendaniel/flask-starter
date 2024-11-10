@@ -132,7 +132,6 @@ body {
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
     align-items: center;
-    font-size: 0.95em;
 }
 
 .info-container i {
@@ -201,9 +200,6 @@ form input[type="checkbox"] {
     background-color: #d71212;
     font-style: italic;
 }
-.badge{
-    color: #4d0000;
-}
 .mini_container{
     background-color: #1a46ac;
 }
@@ -241,3 +237,10 @@ form input[type="checkbox"] {
     border: 2px solid #333333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.team-section {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+

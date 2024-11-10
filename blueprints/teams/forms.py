@@ -53,7 +53,7 @@ class SearchTeamsForm(FlaskForm):
     school_id = SelectField('Iskola neve', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
     category_id = SelectField('Kategória', choices=[(-1, 'Nincs szűrés'), (0, "Üresen van hagyva")])
 
-    status = SelectField('Álapot', choices=[(-1, 'Nem nézték át idk'), (0, 'Hiányos'),
+    status = SelectField('Álapot', choices=[(-1, 'Még nincs ellenőrizve'), (0, 'Hiányos'),
                                             (1, 'Iskola által elfogadott'), (2, 'Mindenki által elfogadott')]) #todo jobb szöveg
 
     def set_dropdown_choices(self):

@@ -32,8 +32,12 @@
             <a href="{{ url_for("schools.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Iskolám</a>
 
         {% elif is_admin() %}
-            <div class="text-center">
-                <a href="{{ url_for("pages.deadline") }}" class="btn btn-dark"><i class="fa-solid fa-pen-to-square"></i> Jelentkezési határidő megváltoztatása</a>
+            <div class="text-center mt-4">
+                <a href="{{ url_for("pages.deadline") }}" class="btn btn-dark me-3"><i class="fa-solid fa-pen-to-square"></i> Jelentkezési határidő megváltoztatása</a>
+                <a href="{{ url_for("teams.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-user-group"></i> Csapatok</a>
+                <a href="{{ url_for("schools.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-school"></i> Iskolák</a>
+                <a href="{{ url_for("categories.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-list"></i> Kategóriák</a>
+                <a href="{{ url_for("languages.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-terminal"></i> Programnyelvek</a>
             </div>
 
         {% endif %}

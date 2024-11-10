@@ -9,7 +9,14 @@
 {% endblock %}
 
 {% block main %}
-    <div id="searchTeamsFormDiv">
+    <div class="mb-2">
+        <a href="{{ url_for("pages.home") }}" class="btn btn-dark me-2"><i class="fa-solid fa-arrow-left"></i> Vissza a főoldalra</a>
+        {% if g.user.is_admin and teams %}
+            <a href="{{ url_for('teams.export') }}" class="btn btn-primary-dark"><i class="fa-solid fa-file-arrow-down"></i> Csapatok exportálása</a>
+        {% endif %}
+    </div>
+
+    <div id="searchTeamsFormDiv" class="mb-2">
         <form id="searchTeamsForm" method="get">
             <div class="form-group mb-1">
                 {{ form.query.label }}
@@ -46,13 +53,11 @@
             </div>
         </form>
     </div>
-
-    <div>
-        {% if g.user.is_admin and teams %}
-            <a href="{{ url_for('teams.export') }}" class="btn btn-primary-dark"><i class="fa-solid fa-file-arrow-down"></i> Csapatok exportálása</a>
+    {% if g.user.role == 'school' %}
+        {% if not g.user.school.application_form %}
+            <h5 class="text-danger">Mielőtt jóváhagyná a jelentkezéseket, kérem töltse fel a jelentkezésilapot!</h5>
         {% endif %}
-    </div>
-
+    {% endif %}
     <div id="content">
         {% for team in teams %}
             {% if (g.user.role == "school" and team.school_id == g.user.school.id) or (g.user.is_admin)  %}

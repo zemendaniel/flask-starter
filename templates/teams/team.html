@@ -1,33 +1,75 @@
 <div class="post">
-    <h4>{{ team.team_name }}</h4>
-    {% if team.declared_incomplete %}<span class="text-danger">Hiánypótlás szükséges!</span>{% endif %}
+    <h3 class="text-center">{{ team.team_name }}</h3>
     <hr>
-    <h5>Első csapattag</h5>
-    <p>Neve: {{ team.name1 }}, évfolyama: {{ team.year1 }}</p>
-    <h5>Második csapattag</h5>
-    <p>Neve: {{ team.name2 }}, évfolyama: {{ team.year2 }}</p>
-    <h5>Harmadik csapattag</h5>
-    <p>Neve: {{ team.name3 }}, évfolyama: {{ team.year3 }}</p>
+        {% if team.declared_incomplete %}<div style="font-size: 1.1rem" class="text-danger ms-1 mb-2">Hiánypótlás szükséges!</div>{% endif %}
+
+    <div class="info-container p-2 mb-3">
+
+        <div class="team-section">
+            Első csapattag:
+        </div>
+        <div style="font-size: 1.1rem">{{ team.name1 }} <span style="font-size: 0.9em" class="badge badge-custom ms-1">{{ team.year1 }}. évfolyam</span></div>
+    </div>
+
+    <div class="info-container p-2 mb-3">
+
+        <div class="team-section">
+            Második csapattag:
+        </div>
+        <div style="font-size: 1.1rem">{{ team.name2 }} <span style="font-size: 0.9em" class="badge badge-custom ms-1">{{ team.year2 }}. évfolyam</span></div>
+    </div>
+
+    <div class="info-container p-2 mb-3">
+
+        <div class="team-section">
+            Harmadik csapattag:
+        </div>
+        <div style="font-size: 1.1rem">{{ team.name3 }} <span style="font-size: 0.9em" class="badge badge-custom ms-1">{{ team.year3 }}. évfolyam</span></div>
+    </div>
+
     {% if team.name_extra or team.year_extra %}
-        <h5>Póttag</h5>
-        <p>Neve: {{ team.name_extra }}, évfolyama: {{ team.year_extra }}</p>
+        <div class="info-container p-2 mb-3">
+            <div class="team-section">
+                Póttag:
+            </div>
+            <div style="font-size: 1.1rem">{{ team.name_extra }} <span style="font-size: 0.9em" class="badge badge-custom ms-1">{{ team.year_extra }}. évfolyam</span></div>
+        </div>
     {% endif %}
-    <h5>Felkészítő tanár(ok)</h5>
 
-    <p>{{ team.teachers }}</p>
 
-        <h5>Iskola</h5>
-        {% if not team.school %}
-            Nincs
-        {% else %}
-            <p>Neve: {{ team.school.school_name }}, címe: {{ team.school.address }}</p>
-        {% endif %}
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Felkészítő tanár(ok):
+        </div>
+        <div style="font-size: 1.1rem">{{ team.teachers }}</div>
+    </div>
 
-        <h5>Nyelv</h5>
-        <p>{{ team.language.name or "Nincs" }}</p>
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Iskola:
+        </div>
+        <div style="font-size: 1.1rem">
+            {% if not team.school %}
+                Még nincs megadva
+            {% else %}
+                <div>{{ team.school.school_name }} <span class="badge badge-custom ms-1">{{ team.school.address }}</span></div>
+            {% endif %}
+        </div>
+    </div>
 
-        <h5>Kategória</h5>
-        <p>{{ team.category.name or "Nincs" }}</p>
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Programnyelv:
+        </div>
+        <div style="font-size: 1.1rem">{{ team.language.name or "Még nincs megadva" }}</div>
+    </div>
+
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Kategória:
+        </div>
+        <div style="font-size: 1.1rem">{{ team.category.name or "Még nincs megadva" }}</div>
+    </div>
 
     <form method="post">
         <input type="hidden" value="{{ team.id }}" name="team_id">
@@ -56,12 +98,13 @@
                     Hiánypótlás kérése
                 </button>
             {% endif %}
-            <a href="{{ url_for("messages.send", team_id=team.id) }}" class="btn btn-secondary">Üzenet küldése</a>
+            <br>
+            <a href="{{ url_for("messages.send", team_id=team.id) }}" class="btn btn-secondary"><i class="fa-solid fa-envelope"></i> Üzenet küldése</a>
         </form>
     {% endif %}
 
     {% if is_admin() or team.id == g.user.team.id %}
-        <a class="btn btn-warning" href="{{ url_for("teams.edit", team_id=team.id) }}">Szerkesztés</a>
+        <a class="btn btn-warning" href="{{ url_for("teams.edit", team_id=team.id) }}"><i class="fa-solid fa-pen-to-square"></i> Szerkesztés</a>
 
         {% if is_admin() %}
             <form method="post" action="{{ url_for("users.delete", user_id=team.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ team.team_name }})') ">
