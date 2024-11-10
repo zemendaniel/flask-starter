@@ -144,9 +144,11 @@ function requiredAutoSetter() {
 
     name.addEventListener('change', function(e) {
             year.required = name.value !== '';
+            year.validationMessage = 'A Póttag neve kötelező ha van póttag évfolyama!';
     });
 
     year.addEventListener('change', function(e) {
             name.required = year.value !== '';
+            year.validationMessage = 'A Póttag lyama kötelező ha van póttag neve!';
     });
 }

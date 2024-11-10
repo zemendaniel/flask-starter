@@ -1,0 +1,24 @@
+Főszervező:
+Kiss József : Jozsef76
+
+Szervezők (2):
+Tóth Mária : mari09
+Lovász Béla : eszti98
+
+Iskola (2):
+felhasználónév: bolyai
+jelszó: bolyai2024
+
+felhasználónév: péchy
+jelszó: p1908
+
+
+Csapat(3):
+- felhasználónév: huncut1
+jelszó: huncutb2024
+
+felhasználónév: undefined04
+jelszó: variable8
+
+felhasználónév: hiba
+jelszó: timeouterror9

@@ -157,6 +157,7 @@ def stats():
 @is_fully_authenticated
 @is_admin
 def close_now():
-    SiteSettingRepository.set_deadline(datetime.now())
+    current_datetime = datetime.now().replace(second=0, microsecond=0)
+    SiteSettingRepository.set_deadline(current_datetime)
     return redirect(url_for('pages.home'))
 

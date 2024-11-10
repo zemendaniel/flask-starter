@@ -61,7 +61,7 @@ class UserRepository:
     @staticmethod
     def search(username, role_name):
         statement = filter(User, User.name.ilike(f"%{username}%"),
-                           (User.role == role_name) if role_name != 'minden' else None)
+                           (User._role == role_name) if role_name != 'minden' else None)
 
         return g.session.scalars(statement).all()
 
