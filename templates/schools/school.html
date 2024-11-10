@@ -1,7 +1,9 @@
 <div class="post">
     <h3 class="text-center">{{ school.school_name }}</h3>
-    <hr>
-
+    <hr class="mb-0">
+    {% if is_admin() %}
+        <a href="{{ url_for("teams.list_all", school_id=school.id) }}" class="btn btn-secondary my-2"><i class="fa-solid fa-users"></i> Iskola csapatai</a>
+    {% endif %}
     <div class="info-container p-2 mb-3">
         <div class="team-section">
             Cím:
