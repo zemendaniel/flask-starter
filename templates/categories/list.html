@@ -15,13 +15,16 @@
     </div>
 
     {% for category in categories %}
-        <div class="post">
+
+        <div class="post ">
             <h5>{{ category.name }}</h5>
-            <a href="{{ url_for('categories.edit', category_id=category.id) }}" class="btn btn-dark"><i class="fa-solid fa-pen-to-square"></i> Szerkesztés</a>
-            <form action="{{ url_for("categories.delete", category_id=category.id) }}" method="post" onsubmit="return confirm('Biztosan törli a kategóriát? ({{ category.name }})')">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
-            </form>
+            <div class="d-flex align-items-center flex-wrap">
+                <a href="{{ url_for('categories.edit', category_id=category.id) }}" class="btn btn-dark me-2"><i class="fa-solid fa-pen-to-square"></i> Szerkesztés</a>
+                <form action="{{ url_for("categories.delete", category_id=category.id) }}" method="post" onsubmit="return confirm('Biztosan törli a kategóriát? ({{ category.name }})')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
+                </form>
+            </div>
         </div>
     {% endfor %}
 {% endblock %}
