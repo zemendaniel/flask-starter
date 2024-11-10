@@ -3,6 +3,8 @@
     <hr class="mb-0">
     {% if is_admin() %}
         <a href="{{ url_for("teams.list_all", school_id=school.id) }}" class="btn btn-secondary my-2"><i class="fa-solid fa-users"></i> Iskola csapatai</a>
+    {% else %}
+        <div class="my-3"></div>
     {% endif %}
     <div class="info-container p-2 mb-3">
         <div class="team-section">

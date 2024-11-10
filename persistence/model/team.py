@@ -102,7 +102,7 @@ class Team(Model):
     def to_csv_line(self):
         return (
             f"{self.user.name};{self.team_name};{self.name1};{self.year1};{self.name2};{self.year2};{self.name3};{self.year3};"
-            f"{self.name_extra};{self.year_extra};{self.teachers};"
+            f"{self.name_extra if self.name_extra else 'nincs'};{self.year_extra if self.year_extra else 'nincs'};{self.teachers};"
             f"{self.language.name if self.language else 'nincs'};"
             f"{self.category.name if self.category else 'nincs'};"
             f"{self.school.school_name if self.school else 'nincs'};"
