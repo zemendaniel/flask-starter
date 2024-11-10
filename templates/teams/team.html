@@ -74,19 +74,30 @@
         <div style="font-size: 1.1rem">{{ team.category.name or "Még nincs megadva" }}</div>
     </div>
 
-    <form method="post">
-        <input type="hidden" value="{{ team.id }}" name="team_id">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        {% if (is_admin() and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
-            <button type="submit" class="btn btn-primary-dark" {% if team.declared_incomplete %}disabled{% endif %}>
+<form method="post">
+    <input type="hidden" value="{{ team.id }}" name="team_id">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    {% if (is_admin() and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
+        {% if not team.declared_incomplete %}
+            <button type="submit" class="btn btn-primary-dark">
                 {% if g.user.is_admin and team.school_approved %}
-                    {% if team.admin_approved %}<i class="fa-solid fa-x"></i> Jóváhagyás visszavonása{% else %}<i class="fa-solid fa-check"></i> Jóváhagyás{% endif %}
+                    {% if team.admin_approved %}
+                        <i class="fa-solid fa-x"></i> Jóváhagyás visszavonása
+                    {% else %}
+                        <i class="fa-solid fa-check"></i> Jóváhagyás
+                    {% endif %}
                 {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}
-                    {% if team.school_approved %}<i class="fa-solid fa-x"></i> Jóváhagyás visszavonása{% else %}<i class="fa-solid fa-check"></i> Jóváhagyás{% endif %}
+                    {% if team.school_approved %}
+                        <i class="fa-solid fa-x"></i> Jóváhagyás visszavonása
+                    {% else %}
+                        <i class="fa-solid fa-check"></i> Jóváhagyás
+                    {% endif %}
                 {% endif %}
             </button>
         {% endif %}
-    </form>
+    {% endif %}
+</form>
 
     {% if is_admin()  %}
         <form method="post" action="{{ url_for("teams.incomplete", team_id=team.id) }}">

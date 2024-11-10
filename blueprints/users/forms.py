@@ -9,11 +9,11 @@ from persistence.repository.user import UserRepository
 
 def username_in_use(form, field):
     if UserRepository.find_by_name(field.data.strip()):
-        raise ValidationError("A felhasználonév már foglalt!")
+        raise ValidationError("A felhasználónév már foglalt!")
 
 
 class RegisterUserForm(FlaskForm):
-    name = StringField('Felhasználonév', validators=[DataRequired(), length(max=32), username_in_use])
+    name = StringField('Felhasználónév', validators=[DataRequired(), length(max=32), username_in_use])
     password = PasswordField('Jelszó', validators=[DataRequired(), length(max=32, min=4)])
     password_again = PasswordField('Jelszó újra', validators=[DataRequired(), length(max=32, min=4), EqualTo('password')])
     submit = SubmitField('Létrehozás')
