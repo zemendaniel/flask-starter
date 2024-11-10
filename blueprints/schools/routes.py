@@ -64,12 +64,13 @@ def list_all():
     schools = SchoolRepository.find_all()
 
     search = request.args.get('search')
-    has_application_form = request.args.get('has_application_form')
+    application_form = request.args.get('application_form')
     #teams_status = request.args.get('teams_status')
     ascending = request.args.get('ascending')
 
-    if search or has_application_form:
-        schools = SchoolRepository.search(search, bool(ascending))
+    if search or application_form or ascending:
+        schools = SchoolRepository.search(search, not bool(ascending),
+            SchoolRepository.application_form_criteria(application_form) )
 
     return render_template('schools/list.html', schools=schools)
 

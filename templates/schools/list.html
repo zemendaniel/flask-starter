@@ -12,6 +12,29 @@
         <a href="{{ url_for('schools.create') }}" class="btn btn-dark me-2">
             <i class="fa-solid fa-plus-circle"></i> Iskola hozzáadása
         </a>
+
+    <form id="searchSchoolsForm" method="get">
+            <div class="form-group mb-1">
+                <label for="search">Keresés</label>
+                <input type="text" name="search" id="search" class="form-control">
+            </div>
+            <label for="ascending">Csökkenő sorrend (név szerint)</label>                                    <!--todo design javitas (form-grupe?) -->
+            <input type="checkbox" name="ascending" id="ascending" onchange="document.getElementById('searchSchoolsForm').submit()">
+            <div class="form-group mb-1">
+                <label for="application_form">Jelentkezési lap</label>
+                <select id="application_form" name="application_form" class="form-select" onchange="document.getElementById('searchSchoolsForm').submit()">
+                    <option value="0">Nincs szűrés</option>
+                    <option value="1">Nics beküldve</option>
+                    <option value="2">Beküldve</option>
+                </select>
+            </div>
+
+            <div class="d-flex align-items-center mb-1">
+                <button type="submit" class="btn btn-primary-dark me-2"><i class="fa-solid fa-search"></i> Keresés</button>
+                <a href="{{ url_for('schools.list_all') }}" class="btn btn-dark me-2">
+                    <i class="fa-solid fa-rotate-left"></i> Visszaállítás</a>
+            </div>
+    </form>
     {% for school in schools %}
         {% include "schools/school.html" %}
     {% endfor %}

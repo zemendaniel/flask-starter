@@ -1,6 +1,3 @@
-from sqlalchemy import or_, and_
-
-
 def filter(table, *args):
     """
     filter function to generate a SQLAlchemy statement with dynamic filters and joins.
@@ -18,7 +15,4 @@ def filter(table, *args):
 
     return statement
 
-
-from persistence.model.team import Team
-from persistence.model.language import Language
 

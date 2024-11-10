@@ -19,7 +19,7 @@ class SchoolRepository:
         :return: list of search results
         """
 
-        statement = filter(School.school_name.like(f"%{query}%")
+        statement = filter(School, School.school_name.like(f"%{query}%")
                            | School.address.like(f"%{query}%")
                            | School.contact_name.like(f"%{query}%")
                            | School.contact_email.like(f"%{query}%"),
@@ -31,6 +31,15 @@ class SchoolRepository:
             statement = statement.order_by(School.school_name.desc())
 
         return g.session.scalars(statement)
+
+
+    @staticmethod
+    def application_form_criteria(choice):
+        if choice == '0': return None
+        if choice == '1':
+            return School.application_form == None
+        if choice == '2':
+            return School.application_form != None
 
     @staticmethod
     def find_by_id(school_id):
