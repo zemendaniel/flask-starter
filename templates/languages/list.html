@@ -9,7 +9,8 @@
 {% endblock %}
 
 {% block main %}
-    <a href="{{ url_for('languages.create') }}" class="btn btn-dark me-2"><i class="fa-solid fa-plus-circle"></i> Programnyelv hozzáadása</a>
+    <a href="{{ url_for('languages.create') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-plus-circle"></i> Programnyelv hozzáadása</a>
+
     {% for language in languages %}
         <div class="post">
             <h5>{{ language.name }}</h5>

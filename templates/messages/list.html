@@ -10,11 +10,13 @@
 
 {% block main %}
     {% for message in messages %}
-        <div class="post">
-            <h5>Tárgy: {{ message.subject }}</h5>
-            <div class="small-text gray-text">Feladó: {{ message.sender_name }}</div>
-            <hr>
-            <p>{{ message.content | safe_escape }}</p>
-        </div>
+        {% if is_admin() or message.team_id == g.user.team.id %}
+            <div class="post">
+                <h5>Tárgy: {{ message.subject }}</h5>
+                <div class="small-text gray-text">Feladó: {{ message.sender_name }}</div>
+                <hr>
+                <p>{{ message.content | safe_escape }}</p>
+            </div>
+        {% endif %}
     {% endfor %}
 {% endblock %}

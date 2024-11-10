@@ -30,59 +30,64 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
 
-            {% if not g.user %}
-                <li class="nav-item active">
-                    <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
-                </li>
-
-            <li class="nav-item active">
-                <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link {% if request.endpoint == 'teams.create' %}active{% endif %}" href="{{ url_for("teams.create") }}"></i>Csapat regisztrációja</a>
-            </li>
-            {% endif %}
-            {%if g.user.role == "team" %}
-                <li class="nav-item active">
-                    <a class="nav-link {% if request.endpoint == 'teams.view' %}active{% endif %}" href="{{ url_for("teams.view") }}"></i>Saját csapatom</a>
-                </li>
-            {% endif %}
             <li class="nav-item active">
                 <a class="nav-link {% if request.endpoint == 'pages.home' %}active{% endif %}" href="{{ url_for("pages.home") }}"><i class="fa-solid fa-house"></i> Főoldal</a>
             </li>
 
-        {% if g.user %}
-            {% if g.user.role in ["admin", "super_admin", "team"] %}
+            {% if not g.user %}
                 <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'security.login' %}active{% endif %}" href="{{ url_for("security.login") }}"><i class="fa-solid fa-right-to-bracket"></i> Bejelentkezés</a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'teams.create' %}active{% endif %}" href="{{ url_for("teams.create") }}"><i class="fa-solid fa-person-circle-plus"></i> Csapat regisztrációja</a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> A készítők</a>
+                </li>
+
+            {% endif %}
+
+
+
+        {% if g.user %}
+
+            {% if g.user.role in ["admin", "super_admin", "team"] %}
+                <li class="nav-item">
                       <a class="nav-link {% if request.endpoint == 'messages.list_all' %}active{% endif %}" href="{{ url_for("messages.list_all") }}"><i class="fa-solid fa-envelope {% if has_unread() %}text-danger{% endif %}"></i> Üzenetek</a>
                 </li>
             {% endif %}
+
+            {% if g.user.role == "school" %}
+               <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'schools.view' %}active{% endif %}" href="{{ url_for("schools.view") }}"><i class="fa-solid fa-school"></i> Iskolám</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'teams.list_all' %}active{% endif %}" href="{{ url_for("teams.list_all") }}"><i class="fa-solid fa-people-group"></i> Saját csapataim</a>
+                </li>
+            {% endif %}
+
+            {% if g.user.role == "team" %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'teams.view' %}active{% endif %}" href="{{ url_for("teams.view") }}"><i class="fa-solid fa-people-group"></i> Saját csapatom</a>
+                </li>
+            {% endif %}
+
+            {% if is_admin() %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
+                </li>
+
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link {% if request.endpoint == 'stats.list_all' %}active{% endif %}" href="{{ url_for("stats.list_all") }}"><i class="fa-solid fa-chart-simple"></i> Statisztikák</a>#}
+{#                </li>#}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
+                </li>
+
         {% endif %}
-
-        <li class="nav-item active">
-            <a class="nav-link {% if request.endpoint == 'pages.about' %}active{% endif %}" href="{{ url_for("pages.about") }}"><i class="fa-solid fa-circle-info"></i> Rólunk</a>
-        </li>
-
-        {% if is_admin() %}
-            <li class="nav-item">
-                <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
-            </li>
-        <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'users.list_all' %}active{% endif %}" href="{{ url_for("users.list_all") }}"><i class="fas fa-users"></i> Felhasználók</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
-        </li>
-
-             <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'pages.create_admin' %}active{% endif %}" href="{{ url_for("pages.create_admin") }}"><i class="fas fa-gear"></i> Felhasználó</a>
-        </li>
 
         {% endif %}
 

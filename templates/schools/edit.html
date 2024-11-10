@@ -9,6 +9,12 @@
 {% endblock %}
 
 {% block main %}
+    {% if is_admin() %}
+        <a href="{{ url_for('schools.list_all') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolákhoz</a>
+    {% elif %}
+        <a href="{{ url_for("schools.view") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolákhoz</a>
+    {% endif %}
+
     <form method="post" enctype="multipart/form-data">
         {{ form.csrf_token() }}
         <div class="form-group mb-1">

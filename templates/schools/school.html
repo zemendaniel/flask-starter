@@ -19,6 +19,5 @@
             <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
         </form>
     {% endif %}
-    <!-- todo adam ikon es egyvonal -->
-    <a href="{{ url_for("schools.edit", school_id=school.id) }}" class="btn btn-primary-dark">Szerkesztés</a>
+    <a href="{{ url_for("schools.edit", school_id=school.id) }}" class="btn btn-primary-dark"><i class="fa-solid fa-circle-plus"></i> Szerkesztés</a>
 </div>

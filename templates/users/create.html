@@ -10,6 +10,8 @@
 
 {% block main %}
     <form method="post">
+        <a href="{{ url_for("users.list_all") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza a felhasználókhoz</a>
+
         {{ form.csrf_token() }}
         <div class="form-group">
             {{ form.name.label }}

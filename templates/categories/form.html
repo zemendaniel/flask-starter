@@ -19,11 +19,12 @@
 
 {% block main %}
 
+<a href="{{ url_for("categories.list_all") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza a kategóriákhoz</a>
 
 <form method="post" class="form">
     {{ form.csrf_token() }}
 
-    <div class="form-group mb-3">
+    <div class="form-group mb-1">
         {{ form.name.label }}
         {{ form.name(class="form-control") }}
     </div>
@@ -36,7 +37,7 @@
 {% if not create %}
     <form method="post" action="{{ url_for("categories.delete", category_id=category.id) }}" onsubmit="return confirm('Biztosan törli?')">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button style="float: left" class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Törlés</button>
+        <button class="btn btn-danger" type="submit"><i class="fa-solid fa-trash"></i> Törlés</button>
     </form>
 {% endif %}
 

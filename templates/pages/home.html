@@ -9,20 +9,35 @@
 {% endblock %}
 
 {% block main %}
-    <h3>Jelentkezési határidő: {{ deadline() }}</h3>
+    <h4 class="text-center pt-3">Jelentkezési határidő: <span class="text-warning" style="font-weight: bold">{{ deadline() }}</span></h4>
+
     {% if not g.user %}
         <div>{{ welcome_text | safe_escape }}</div>
-    {% elif is_admin() %}
+    {% endif %}
 
-    {% elif g.user.role == "team" %}
-        {% if g.user.team.declared_incomplete %}
-            <h5 class="text-danger">A jelentkezés hiánypótlást igényel!</h5>
-        {% elif g.user.team.school_approved and not g.user.team.admin_approved %}
-            <h5 class="text-success">A iskola jóváhagyta a jelentkezést!</h5>
-        {% elif g.user.team.admin_approved %} %}
-            <h5 class="text-success">A szervezők jóváhagyták a jelentkezést!</h5>
+    {% if g.user %}
+        {% if g.user.role == "team" %}
+
+            {% if g.user.team.declared_incomplete %}
+                <h5 class="text-danger">A jelentkezés hiánypótlást igényel!</h5>
+            {% elif g.user.team.school_approved and not g.user.team.admin_approved %}
+                <h5 class="text-success">A iskola jóváhagyta a jelentkezést!</h5>
+            {% elif g.user.team.admin_approved %} %}
+                <h5 class="text-success">A szervezők jóváhagyták a jelentkezést!</h5>
+            {% endif %}
+
+            <a href="{{ url_for("teams.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Csapatom</a>
+
+        {% elif g.user.role == "school" %}
+            <a href="{{ url_for("schools.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Iskolám</a>
+
+        {% elif is_admin() %}
+            <div class="text-center">
+                <a href="{{ url_for("pages.deadline") }}" class="btn btn-dark"><i class="fa-solid fa-pen-to-square"></i> Jelentkezési határidő megváltoztatása</a>
+            </div>
+
         {% endif %}
-    {% elif g.user.role == "school" %}
 
     {% endif %}
+
 {% endblock %}

@@ -9,6 +9,8 @@
 {% endblock %}
 
 {% block main %}
+    <a href="{{ url_for('schools.list_all') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolákhoz</a>
+
     <form method="post">
         {{ form.csrf_token() }}
         <div class="form-group">
@@ -60,7 +62,7 @@
             {{ form.contact_email(class="form-control") }}
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-1">
             <button type="submit" class="btn btn-dark" id="submit"><i class="fa-solid fa-floppy-disk"></i> Mentés</button>
         </div>
     </form>
