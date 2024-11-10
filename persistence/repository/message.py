@@ -6,12 +6,11 @@ from persistence.model.language import Language
 
 class MessageRepository:
     @staticmethod
-    def search(query: str, descanding=True, *extra_filters):
+    def search(query: str, *extra_filters):
         """
         search in PostRepository
 
         :param query: the query
-        :param descanding: if you want it descanding
         :param extra_filters: list of filters in this format: Table.column == stuff ("," for and, "|" or)
         :return: list of search results
         """
@@ -20,13 +19,9 @@ class MessageRepository:
                            | Message.sender.has(User.name.like(f"%{query}%")),
                             *extra_filters)
 
-        if descanding:
-            statement = statement.order_by(Message.id.desc())
-        else:
-            statement = statement.order_by(Message.id)
+        statement = statement.order_by(Message.id.desc())
 
         return g.session.scalars(statement).all()
-
 
     @staticmethod
     def find_by_id(message_id):

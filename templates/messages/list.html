@@ -9,13 +9,17 @@
 {% endblock %}
 
 {% block main %}
+    {% if is_admin() %}
+    <a href="{{ url_for("teams.list_all") }}" class="btn btn-dark mb-1"><i class="fa fa-arrow-left"></i> Vissza a csapatokhoz</a>
+    {% endif %}
+
     <form id="messagesSchoolsForm" method="get">
             <div class="form-group mb-1">
                 <label for="search">Keresés</label>
                 <input type="text" name="search" id="search" class="form-control">
             </div>
 
-            <div class="d-flex align-items-center mb-1">
+            <div class="d-flex align-items-center mb-2">
                 <button type="submit" class="btn btn-primary-dark me-2"><i class="fa-solid fa-search"></i> Keresés</button>
                 <a href="{{ url_for('messages.list_all') }}" class="btn btn-dark me-2">
                     <i class="fa-solid fa-rotate-left"></i> Visszaállítás</a>
@@ -26,6 +30,7 @@
             <div class="post">
                 <h5>Tárgy: {{ message.subject }}</h5>
                 <div class="small-text gray-text">Feladó: {{ message.sender_name }}</div>
+                <div class="small-text gray-text">Címzett: {{ message.team.team_name }}</div>
                 <hr>
                 <p>{{ message.content | safe_escape }}</p>
             </div>

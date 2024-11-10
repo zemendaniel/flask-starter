@@ -121,24 +121,35 @@ def deadline():
     return render_template("pages/deadline.html", form=form)
 
 
-@bp.route("stats")
+@bp.route("/stats")
 @is_fully_authenticated
-@has_role('admin','super_admin', 'school')
+@has_role('admin', 'super_admin')
 def stats():
-    language_percentages = ()
-    category_percentages = ()
+    language_percentages = []
+    sum_of_lang_perc = 0
+    category_percentages = []
+    sum_of_cat_perc = 0
     for language in LanguageRepository.find_all():
-        language_percentages += (language.name,
-                                         TeamRepository.percentage_of_language(language.name))
+        lang_perc = TeamRepository.percentage_of_language(language.name)
+        sum_of_lang_perc += lang_perc
+        language_percentages.append((language.name, lang_perc))
 
     for category in CategoryRepository.find_all():
-        category_percentages += (category.name,
-                                     TeamRepository.percentage_of_category(category.name))
+        cat_perc = TeamRepository.percentage_of_category(category.name)
+        sum_of_cat_perc += cat_perc
+        category_percentages.append((category.name, cat_perc))
+    
+    if sum_of_lang_perc < 100:
+        language_percentages.append(('Nem választotta ki', 100 - sum_of_lang_perc))
+    if sum_of_cat_perc < 100:
+        category_percentages.append(('Nem választotta ki', 100 - sum_of_cat_perc))
 
     count_of_teams = TeamRepository.count_of_teams()
     count_of_schools = SchoolRepository.count_of_schools()
 
-    return 'placeholder'
+    return render_template("pages/stats.html", language_percentages=language_percentages,
+                           count_of_schools=count_of_schools, count_of_teams=count_of_teams,
+                           category_percentages=category_percentages)
 
 
 

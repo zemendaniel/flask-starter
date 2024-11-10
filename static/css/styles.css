@@ -191,11 +191,7 @@ form input[type="checkbox"] {
 .small-text {
     font-size: 0.9rem;
 }
-.card{
-    background-color: #d71212;
-    font-style: italic;
-}
-.mini_container{
+.mini-container{
     background-color: #1a46ac;
 }
 .two-line-input {
@@ -236,6 +232,15 @@ form input[type="checkbox"] {
 .team-section {
     font-weight: 600;
     font-size: 1.1rem;
+}
+
+.language-bar {
+    background-color: #f6ad55;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border: 2px solid #333333;
+    height: 1.2rem;
+    font-weight: bold;
 }
 
 

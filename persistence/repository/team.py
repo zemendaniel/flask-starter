@@ -1,5 +1,4 @@
 from flask import g
-from select import select
 from sqlalchemy import func
 from persistence.repository.__init__ import filter
 from io import BytesIO
@@ -125,7 +124,7 @@ class TeamRepository:
         )
 
         a = g.session.query(Team.id).filter(this_language_team).count()
-        b =  g.session.scalar(func.count(Team.id))
+        b = g.session.scalar(func.count(Team.id))
         if b == 0:
             return 0
 
@@ -161,6 +160,7 @@ class TeamRepository:
             return 0
 
         return (a / b)*100
+
 
 from ..model.category import Category
 from ..model.language import Language

@@ -12,22 +12,23 @@
     <h4 class="text-center pt-3">Jelentkezési határidő: <span class="text-warning" style="font-weight: bold">{{ deadline() }}</span></h4>
 
     {% if not g.user %}
-        <div>{{ welcome_text | safe_escape }}</div>
+        <div class="mt-5">{{ welcome_text | safe_escape }}</div>
     {% endif %}
 
     {% if g.user %}
         {% if g.user.role == "team" %}
 
+            <div class="text-center">
+            <div class="pt-3"></div>
             {% if g.user.team.declared_incomplete %}
                 <h5 class="text-danger">A jelentkezés hiánypótlást igényel!</h5>
             {% elif g.user.team.school_approved and not g.user.team.admin_approved %}
                 <h5 class="text-success">A iskola jóváhagyta a jelentkezést!</h5>
-            {% elif g.user.team.admin_approved %} %}
+            {% elif g.user.team.admin_approved %}
                 <h5 class="text-success">A szervezők jóváhagyták a jelentkezést!</h5>
             {% endif %}
-
-            <a href="{{ url_for("teams.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Csapatom</a>
-
+            <a href="{{ url_for("teams.view") }}" class="btn btn-dark"><i class="fa-solid fa-user-group"></i> Csapatom</a>
+            </div>
         {% elif g.user.role == "school" %}
             <div class="text-center mt-4">
                 <a href="{{ url_for("schools.view") }}" class="btn btn-dark me-3"><i class="fa-solid fa-school"></i> Iskolám</a>

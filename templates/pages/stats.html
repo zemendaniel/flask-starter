@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Statisztikák{% endblock %}
+
+{% block head %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block heading %}
+    {% with heading_content="Statisztikák" %}
+        {% include "heading.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block main %}
+    <div class="mt-4 info-container p-2 w-50 ms-auto me-auto text-center">
+        <div class="team-section">Iskolák száma: <span class="badge badge-custom ms-1" style="font-size: 1.1em">{{ count_of_schools }}</span></div>
+    </div>
+
+    <div class="mt-4 info-container p-2 w-50 ms-auto me-auto text-center justify-content-center">
+        <div class="team-section">Csapatok száma: <span class="badge badge-custom ms-1" style="font-size: 1.1em">{{ count_of_teams }}</span></div>
+    </div>
+    <hr class="my-4">
+
+    {% for lang in language_percentages %}
+        <div class="badge badge-custom mb-1">{{ lang[0] }} ({{ lang[1] }}%)</div>
+        <div class="language-bar p-2 mb-3" style="width: {{ lang[1] * 0.75 }}%"></div>
+    {% endfor %}
+    <hr class="my-4">
+    {% for cat in category_percentages %}
+        <div class="badge badge-custom mb-1">{{ cat[0] }} ({{ cat[1] }}%)</div>
+        <div class="language-bar p-2 mb-3" style="width: {{ cat[1] * 0.75 }}%; background-color: darkred"></div>
+    {% endfor %}
+
+{% endblock %}

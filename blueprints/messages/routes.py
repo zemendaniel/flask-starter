@@ -1,5 +1,4 @@
 from flask import render_template, flash, g, redirect, url_for, abort, request
-from pyexpat.errors import messages
 
 from persistence.repository.message import MessageRepository
 from persistence.repository.team import TeamRepository
