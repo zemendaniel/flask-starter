@@ -11,8 +11,8 @@
 {% block main %}
     {% if is_admin() %}
         <a href="{{ url_for('schools.list_all') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolákhoz</a>
-    {% elif %}
-        <a href="{{ url_for("schools.view") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolákhoz</a>
+    {% else %}
+        <a href="{{ url_for("schools.view") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza az iskolámhoz</a>
     {% endif %}
 
     <form method="post" enctype="multipart/form-data">
@@ -36,7 +36,7 @@
                 {{ form.application_form.label }}
                 <br>
                 {% if g.user.school.application_form %}
-                    <a href="{{ url_for("schools.application_form", school_id=school.id) }}">Letöltés</a>
+            <a href="{{ url_for("schools.application_form", school_id=school.id) }}" class="btn btn-secondary mt-1 mb-2"><i class="fa-solid fa-download"></i> Letöltés</a>
                 {% endif %}
                 {{ form.application_form(class="form-control") }}
             </div>

@@ -1,17 +1,38 @@
 <div class="post">
-    <h4>{{ school.school_name }}</h4>
+    <h3 class="text-center">{{ school.school_name }}</h3>
     <hr>
-    <h5>Cím</h5>
-    <p>{{ school.address }}</p>
-    <h5>Kapcsolattartó</h5>
-    <p>Neve: {{ school.contact_name }}, email címe: {{ school.contact_email }}</p>
 
-    <h5>Jelentkezési lap</h5>
-    {% if school.application_form %}
-        <a href="{{ url_for("schools.application_form", school_id=school.id) }}">Letöltés</a>
-    {% else %}
-        <p class="text-danger">Nincs</p>
-    {% endif %}
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Cím:
+        </div>
+        <div style="font-size: 1.1rem">
+            {{ school.address }}
+        </div>
+    </div>
+
+    <div class="info-container p-2 mb-3">
+        <div class="team-section">
+            Kapcsolattartó:
+        </div>
+        <div style="font-size: 1.1rem">
+            {{ school.contact_name }} <span class="badge badge-custom ms-1"> {{ school.contact_email }}</span>
+        </div>
+    </div>
+    <div class="info-container p-2 mb-1">
+        <div class="team-section">
+            Jelentkezési lap:
+        </div>
+        <div style="font-size: 1.1rem">
+
+        {% if school.application_form %}
+            <a href="{{ url_for("schools.application_form", school_id=school.id) }}" class="btn btn-secondary mt-1"><i class="fa-solid fa-download"></i> Letöltés</a>
+        {% else %}
+            <div class="text-danger"><b>Nincs</b></div>
+        {% endif %}
+        </div>
+    </div>
+
 
     {% if is_admin() %}
         <form method="post" action="{{ url_for("users.delete", user_id=school.user.id) }}" onsubmit="return confirm('Biztosan törli? ({{ school.school_name }})')">
@@ -19,5 +40,7 @@
             <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Törlés</button>
         </form>
     {% endif %}
-    <a href="{{ url_for("schools.edit", school_id=school.id) }}" class="btn btn-primary-dark"><i class="fa-solid fa-circle-plus"></i> Szerkesztés</a>
+    <a href="{{ url_for("schools.edit", school_id=school.id) }}" class="btn btn-primary-dark"><i class="fa-solid fa-pen-to-square"></i>
+        Szerkesztés {% if not is_admin() %}és jelentkezési lap feltöltése{% endif %}
+    </a>
 </div>

@@ -4,7 +4,6 @@
         {% if team.declared_incomplete %}<div style="font-size: 1.1rem" class="text-danger ms-1 mb-2">Hiánypótlás szükséges!</div>{% endif %}
 
     <div class="info-container p-2 mb-3">
-
         <div class="team-section">
             Első csapattag:
         </div>
@@ -77,9 +76,9 @@
         {% if (is_admin() and team.school_approved) or (g.user.role == "school" and g.user.school.application_form and not team.admin_approved) %}
             <button type="submit" class="btn btn-primary-dark" {% if team.declared_incomplete %}disabled{% endif %}>
                 {% if g.user.is_admin and team.school_approved %}
-                    {% if team.admin_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
+                    {% if team.admin_approved %}<i class="fa-solid fa-x"></i> Jóváhagyás visszavonása{% else %}<i class="fa-solid fa-check"></i> Jóváhagyás{% endif %}
                 {% elif g.user.role == "school" and g.user.school.application_form and not team.admin_approved %}
-                    {% if team.school_approved %}Jóváhagyás visszavonása{% else %}Jóváhagyás{% endif %}
+                    {% if team.school_approved %}<i class="fa-solid fa-x"></i> Jóváhagyás visszavonása{% else %}<i class="fa-solid fa-check"></i> Jóváhagyás{% endif %}
                 {% endif %}
             </button>
         {% endif %}

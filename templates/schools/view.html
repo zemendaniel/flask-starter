@@ -3,11 +3,14 @@
 {% block title %}Iskola{% endblock %}
 
 {% block heading %}
-    {% with heading_content="Iskola" %}
+    {% with heading_content="Iskolám adatai" %}
         {% include "heading.html" %}
     {% endwith %}
 {% endblock %}
 
+
 {% block main %}
+    <a href="{{ url_for("pages.home") }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza a főoldalra</a>
+
     {% include "schools/school.html" %}
 {% endblock %}
