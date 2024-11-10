@@ -27,6 +27,8 @@ def create():
 
         flash("Sikeresen regisztrálta az iskolát!", 'success')
         return redirect(url_for("pages.home"))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('schools/create.html', form=form)
 

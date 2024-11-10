@@ -18,6 +18,8 @@ def create():
         category.save()
         flash('Kategória sikeresen létrehozva!', 'success')
         return redirect(url_for('categories.list_all'))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('categories/form.html', form=form, create=True)
 
@@ -45,6 +47,8 @@ def edit(category_id):
         category.save()
         flash('Kategória sikeresen módosítva!', 'success')
         return redirect(url_for('categories.edit', category_id=category_id))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('categories/form.html', form=form, category=category, create=False)
 

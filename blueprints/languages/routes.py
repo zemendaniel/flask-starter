@@ -18,6 +18,8 @@ def create():
         language.save()
         flash('Programnyelv sikeresen hozzáadva!', 'success')
         return redirect(url_for('languages.list_all'))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('languages/form.html', form=form, create=True)
 
@@ -45,6 +47,8 @@ def edit(language_id):
         language.save()
         flash('Programnyelv sikeresen módosítva!', 'success')
         return redirect(url_for('languages.edit', language_id=language_id))
+    elif form.errors:
+        [flash(error, 'error') for field, errors in form.errors.items() for error in errors]
 
     return render_template('languages/form.html', form=form, create=False, language=language)
 
