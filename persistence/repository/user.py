@@ -1,5 +1,6 @@
 from flask import g
 from sqlalchemy import func
+from persistence.repository import filter
 
 
 class UserRepository:
@@ -58,15 +59,9 @@ class UserRepository:
         return g.session.scalars(statement).all()
 
     @staticmethod
-    def filter(username, role_name):
-        statement = g.session.query(User)
-
-        if username:
-            username = username.strip().lower()
-            statement = statement.filter(User.name.ilike(f"%{username}%"))
-
-        if role_name:
-            statement = statement.filter(User.role == role_name)
+    def search(username, role_name):
+        statement = filter(User, User.name.ilike(f"%{username}%"),
+                           (User.role == role_name) if role_name != 'minden' else None)
 
         return g.session.scalars(statement).all()
 

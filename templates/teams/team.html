@@ -2,7 +2,8 @@
     <h3 class="text-center">{{ team.team_name }}</h3>
     <hr>
         {% if team.declared_incomplete %}<div style="font-size: 1.1rem" class="text-danger ms-1 mb-2">Hiánypótlás szükséges!</div>{% endif %}
-
+        {% if team.school_approved and not team.admin_approved %}<div style="font-size: 1.1rem" class="text-success ms-1 mb-2">Az iskola jováhagyta a jelentkezéset!</div>{% endif %}
+        {% if team.school_approved and team.admin_approved %}<div style="font-size: 1.1rem" class="text-success ms-1 mb-2">A szervezők is jováhagyták a jelentkezéset!</div>{% endif %}
     <div class="info-container p-2 mb-3">
         <div class="team-section">
             Első csapattag:
@@ -108,13 +109,14 @@
                         Hiánypótlás kérés visszavonása
                     </button>
                 {% else %}
-   <div class="d-flex align-items-center flex-wrap">
+        <div class="d-flex align-items-center flex-wrap">
                     <button type="submit" class="btn btn-success me-2">
                         Hiánypótlás kérése
                     </button>
                 {% endif %}
 
                 <a href="{{ url_for("messages.send", team_id=team.id) }}" class="btn btn-secondary me-2"><i class="fa-solid fa-envelope"></i> Üzenet küldése</a>
+            </div>
             </form>
         {% endif %}
 
@@ -130,4 +132,3 @@
             {% endif %}
         {% endif %}
    </div>
-</div>
