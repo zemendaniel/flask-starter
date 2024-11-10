@@ -126,7 +126,23 @@ class TeamRepository:
 
         a = g.session.query(Team.id).filter(this_language_team).count()
         b =  g.session.scalar(func.count(Team.id))
+        if b == 0:
+            return 0
+
         return (a/b)*100
+
+    @staticmethod
+    def percentage_of_category(category_name):
+        this_category_team = (
+            Team.category.has(Category.name == category_name)
+        )
+
+        a = g.session.query(Team.id).filter(this_category_team).count()
+        b = g.session.scalar(func.count(Team.id))
+        if b == 0:
+            return 0
+
+        return (a / b) * 100
 
     @staticmethod
     def percentage_of_language_by_school(language_name, school_name):
@@ -138,8 +154,13 @@ class TeamRepository:
         all_language = (
             Team.school.has(School.school_name == school_name)
         )
+        a = g.session.query(Team.id).filter(this_language).count()
+        b = g.session.query(Team.id).filter(all_language).count()
 
-        return (g.session.query(Team.id).filter(this_language).count() / g.session.query(Team.id).filter(all_language).count())*100
+        if b == 0:
+            return 0
+
+        return (a / b)*100
 
 from ..model.category import Category
 from ..model.language import Language
