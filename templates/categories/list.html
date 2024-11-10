@@ -9,7 +9,10 @@
 {% endblock %}
 
 {% block main %}
-    <a href="{{ url_for('categories.create') }}" class="btn btn-dark mb-3"><i class="fa-solid fa-plus-circle"></i> Kategória hozzáadása</a>
+    <div class="mb-2">
+        <a href="{{ url_for('pages.home') }}" class="btn btn-dark me-1"><i class="fa-solid fa-arrow-left"></i> Vissza a főoldalra</a>
+        <a href="{{ url_for('categories.create') }}" class="btn btn-primary-dark"><i class="fa-solid fa-plus-circle"></i> Kategória hozzáadása</a>
+    </div>
 
     {% for category in categories %}
         <div class="post">

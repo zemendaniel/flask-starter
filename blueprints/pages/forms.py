@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed
 from wtforms.fields.simple import TextAreaField, FileField
 from wtforms.fields.datetime import DateTimeLocalField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, Optional
 from werkzeug.datastructures import FileStorage
 from wtforms import ValidationError
 from flask_ckeditor import CKEditorField
@@ -36,11 +36,13 @@ class SetWelcomeTextForm(FlaskForm):
 
 
 def future_date_check(form, field):
+    if not field.data:
+        return
     if field.data <= datetime.now():
         raise ValidationError("A határidőnek a jövőben kell lennie!")
 
 
 class SetDeadlineForm(FlaskForm):
-    deadline = DateTimeLocalField("Határidő", validators=[DataRequired(), future_date_check])
+    deadline = DateTimeLocalField("Határidő", validators=[future_date_check, Optional()])
 
 

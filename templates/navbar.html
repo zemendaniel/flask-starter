@@ -64,7 +64,7 @@
                     <a class="nav-link {% if request.endpoint == 'schools.view' %}active{% endif %}" href="{{ url_for("schools.view") }}"><i class="fa-solid fa-school"></i> Iskolám</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'teams.list_all' %}active{% endif %}" href="{{ url_for("teams.list_all") }}"><i class="fa-solid fa-people-group"></i> Saját csapataim</a>
+                    <a class="nav-link {% if request.endpoint == 'teams.list_all' %}active{% endif %}" href="{{ url_for("teams.list_all") }}"><i class="fa-solid fa-user-group"></i> Csapataim</a>
                 </li>
             {% endif %}
 

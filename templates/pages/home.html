@@ -29,7 +29,10 @@
             <a href="{{ url_for("teams.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Csapatom</a>
 
         {% elif g.user.role == "school" %}
-            <a href="{{ url_for("schools.view") }}" class="btn btn-dark"><i class="fa-solid fa-arrow-right"></i> Iskolám</a>
+            <div class="text-center mt-4">
+                <a href="{{ url_for("schools.view") }}" class="btn btn-dark me-3"><i class="fa-solid fa-school"></i> Iskolám</a>
+                <a href="{{ url_for("teams.list_all") }}" class="btn btn-dark"><i class="fa-solid fa-user-group"></i> Csapataim</a>
+            </div>
 
         {% elif is_admin() %}
             <div class="text-center mt-4">
@@ -37,7 +40,7 @@
                 <a href="{{ url_for("teams.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-user-group"></i> Csapatok</a>
                 <a href="{{ url_for("schools.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-school"></i> Iskolák</a>
                 <a href="{{ url_for("categories.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-list"></i> Kategóriák</a>
-                <a href="{{ url_for("languages.list_all") }}" class="btn btn-dark me-3"><i class="fa-solid fa-terminal"></i> Programnyelvek</a>
+                <a href="{{ url_for("languages.list_all") }}" class="btn btn-dark"><i class="fa-solid fa-terminal"></i> Programnyelvek</a>
             </div>
 
         {% endif %}
