@@ -1,6 +1,4 @@
-from random import choices
-
-from wtforms.fields.simple import StringField, BooleanField
+from wtforms.fields.simple import StringField
 from wtforms.fields.numeric import IntegerField
 from wtforms.fields.choices import SelectField
 from flask_wtf import FlaskForm
@@ -10,6 +8,23 @@ from persistence.repository.language import LanguageRepository
 from persistence.repository.school import SchoolRepository
 from blueprints.users.forms import RegisterUserForm
 from persistence.repository.team import TeamRepository
+
+
+class OptionalIfFieldEqualTo(Optional):
+    # a validator which makes a field optional if
+    # another field has a desired value
+
+    def __init__(self, other_field_name, value, *args, **kwargs):
+        self.other_field_name = other_field_name
+        self.value = value
+        super(OptionalIfFieldEqualTo, self).__init__(*args, **kwargs)
+
+    def __call__(self, form, field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if other_field.data == self.value:
+            super(OptionalIfFieldEqualTo, self).__call__(form, field)
 
 
 class EditTeamForm(FlaskForm):
