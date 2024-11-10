@@ -70,7 +70,7 @@ def list_all():
 
     if search or application_form or ascending:
         schools = SchoolRepository.search(search, not bool(ascending),
-            SchoolRepository.application_form_criteria(application_form) )
+            SchoolRepository.application_form_criteria(application_form))
 
     return render_template('schools/list.html', schools=schools)
 

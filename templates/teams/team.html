@@ -51,7 +51,11 @@
             {% if not team.school %}
                 Még nincs megadva
             {% else %}
-                <div>{{ team.school.school_name }} <span class="badge badge-custom ms-1">{{ team.school.address }}</span></div>
+                {% if is_admin() %}
+                    <a class="custom-a" href="{{ url_for("schools.list_all", search=team.school.school_name) }}"><div>{{ team.school.school_name }} <span class="badge badge-custom ms-1">{{ team.school.address }}</span></div></a>
+                {% else %}
+                   <div>{{ team.school.school_name }} <span class="badge badge-custom ms-1">{{ team.school.address }}</span></div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
