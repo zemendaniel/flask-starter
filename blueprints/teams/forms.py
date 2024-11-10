@@ -1,5 +1,3 @@
-from random import choices
-
 from wtforms.fields.simple import StringField
 from wtforms.fields.numeric import IntegerField
 from wtforms.fields.choices import SelectField
@@ -33,11 +31,11 @@ class EditTeamForm(FlaskForm):
     name1 = StringField('Első csapattag neve', validators=[DataRequired(), length(max=64)])
     name2 = StringField('Masodik csapattag neve', validators=[length(max=64), DataRequired()])
     name3 = StringField('Harmadik csapattag neve', validators=[length(max=64), DataRequired()])
-    name_extra = StringField('Póttag neve', validators=[length(max=64), OptionalIfFieldEqualTo('year_extra', '')])
+    name_extra = StringField('Póttag neve', validators=[length(max=64), Optional()])
     year1 = IntegerField('Első csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
     year2 = IntegerField('Masodik csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
     year3 = IntegerField('Harmadik csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
-    year_extra = IntegerField('Póttag évfolyama (9-13)', validators=[NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!"), OptionalIfFieldEqualTo('name_extra', '')])
+    year_extra = IntegerField('Póttag évfolyama (9-13)', validators=[NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!"), Optional()])
     teachers = StringField('Felkészítő tanárok (több is megadható, vesszővel elválasztva, pl.: Nagy Ferenc, Kovács János)',
                            validators=[DataRequired(), length(max=255)])
 

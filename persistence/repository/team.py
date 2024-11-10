@@ -128,7 +128,7 @@ class TeamRepository:
         if b == 0:
             return 0
 
-        return (a/b)*100
+        return round((a/b)*100, 2)
 
     @staticmethod
     def percentage_of_category(category_name):
@@ -141,7 +141,7 @@ class TeamRepository:
         if b == 0:
             return 0
 
-        return (a / b) * 100
+        return round((a/b)*100, 2)
 
     @staticmethod
     def percentage_of_language_by_school(language_name, school_name):
@@ -159,7 +159,7 @@ class TeamRepository:
         if b == 0:
             return 0
 
-        return (a / b)*100
+        return round((a/b)*100, 2)
 
 
 from ..model.category import Category
