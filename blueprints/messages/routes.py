@@ -1,4 +1,5 @@
-from flask import render_template, flash, g, redirect, url_for, abort
+from flask import render_template, flash, g, redirect, url_for, abort, request
+from pyexpat.errors import messages
 
 from persistence.repository.message import MessageRepository
 from persistence.repository.team import TeamRepository
@@ -36,11 +37,13 @@ def send(team_id):
 @bp.route('/')
 @has_role('admin', 'super_admin', 'team')
 def list_all():
-    if g.user.role == 'team':
-        messages = g.user.team.messages
-        g.user.team.has_unred_messages = False
-        g.user.team.save()
+    if request.args.get('search'):
+        messages = MessageRepository.search(request.args.get('search'), )
     else:
         messages = MessageRepository.find_all()
+
+    if g.user.role == 'team':
+        g.user.team.has_unred_messages = False
+        g.user.team.save()
 
     return render_template('messages/list.html', messages=messages)

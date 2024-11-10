@@ -30,7 +30,7 @@ class SchoolRepository:
         else:
             statement = statement.order_by(School.school_name.desc())
 
-        return g.session.scalars(statement)
+        return g.session.scalars(statement).all()
 
 
     @staticmethod
