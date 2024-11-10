@@ -1,6 +1,6 @@
 from random import choices
 
-from wtforms.fields.simple import StringField, BooleanField
+from wtforms.fields.simple import StringField
 from wtforms.fields.numeric import IntegerField
 from wtforms.fields.choices import SelectField
 from flask_wtf import FlaskForm
@@ -12,15 +12,32 @@ from blueprints.users.forms import RegisterUserForm
 from persistence.repository.team import TeamRepository
 
 
+class OptionalIfFieldEqualTo(Optional):
+    # a validator which makes a field optional if
+    # another field has a desired value
+
+    def __init__(self, other_field_name, value, *args, **kwargs):
+        self.other_field_name = other_field_name
+        self.value = value
+        super(OptionalIfFieldEqualTo, self).__init__(*args, **kwargs)
+
+    def __call__(self, form, field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if other_field.data == self.value:
+            super(OptionalIfFieldEqualTo, self).__call__(form, field)
+
+
 class EditTeamForm(FlaskForm):
     name1 = StringField('Első csapattag neve', validators=[DataRequired(), length(max=64)])
     name2 = StringField('Masodik csapattag neve', validators=[length(max=64), DataRequired()])
     name3 = StringField('Harmadik csapattag neve', validators=[length(max=64), DataRequired()])
-    name_extra = StringField('Póttag neve', validators=[length(max=64), Optional()])
+    name_extra = StringField('Póttag neve', validators=[length(max=64), OptionalIfFieldEqualTo('year_extra', '')])
     year1 = IntegerField('Első csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
     year2 = IntegerField('Masodik csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
     year3 = IntegerField('Harmadik csapattag évfolyama (9-13)', validators=[DataRequired(), NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!")])
-    year_extra = IntegerField('Póttag évfolyama (9-13)', validators=[NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!"), Optional()])
+    year_extra = IntegerField('Póttag évfolyama (9-13)', validators=[NumberRange(min=9, max=13, message="Az évfolyamnak9-13 között kell lennie!"), OptionalIfFieldEqualTo('name_extra', '')])
     teachers = StringField('Felkészítő tanárok (több is megadható, vesszővel elválasztva, pl.: Nagy Ferenc, Kovács János)',
                            validators=[DataRequired(), length(max=255)])
 

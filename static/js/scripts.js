@@ -137,3 +137,16 @@ function createFlashMessage(msg, category){
 
     }, 10000);
 }
+
+function requiredAutoSetter() {
+    let name = document.getElementById('name_extra');
+    let year = document.getElementById('year_extra');
+
+    name.addEventListener('change', function(e) {
+            year.required = name.value !== '';
+    });
+
+    year.addEventListener('change', function(e) {
+            name.required = year.value !== '';
+    });
+}
