@@ -125,15 +125,15 @@ def deadline():
 @is_fully_authenticated
 @has_role('admin','super_admin', 'school')
 def stats():
-    language_percentages = []
-    category_percentages = []
+    language_percentages = ()
+    category_percentages = ()
     for language in LanguageRepository.find_all():
-        language_percentages.append({language.name:
-                                         TeamRepository.percentage_of_language(language.name)})
+        language_percentages += (language.name,
+                                         TeamRepository.percentage_of_language(language.name))
 
     for category in CategoryRepository.find_all():
-        category_percentages.append({category.name:
-                                     TeamRepository.percentage_of_category(category.name)})
+        category_percentages += (category.name,
+                                     TeamRepository.percentage_of_category(category.name))
 
     count_of_teams = TeamRepository.count_of_teams()
     count_of_schools = SchoolRepository.count_of_schools()
