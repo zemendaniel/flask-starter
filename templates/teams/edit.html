@@ -11,7 +11,7 @@
 {% block main %}
     {% if is_admin() %}
         <a href="{{ url_for('teams.list_all') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza a csapatokhoz</a>
-    {% elif %}
+    {% else %}
         <a href="{{ url_for('teams.view') }}" class="btn btn-dark mb-2"><i class="fa-solid fa-arrow-left"></i> Vissza a csapatomhoz</a>
     {% endif %}
 

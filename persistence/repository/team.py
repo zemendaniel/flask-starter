@@ -1,12 +1,7 @@
 from flask import g
+from select import select
 from sqlalchemy import func
-
-from .user import UserRepository
-from persistence.model.team import Team
 from persistence.repository.__init__ import filter
-from ..model.category import Category
-from ..model.language import Language
-from ..model.school import School
 from io import BytesIO
 
 
@@ -109,3 +104,42 @@ class TeamRepository:
 
         csv = "\n".join(header_line + team_lines)
         return BytesIO(csv.encode('utf-8'))
+
+
+    @staticmethod
+    def count_of_teams():
+
+        return g.session.scalar(func.count(Team.id))
+
+    @staticmethod
+    def count_of_teams_by_school(school_name):
+        condition = (
+            Team.school.has(School.school_name == school_name)
+        )
+        return g.session.scalar(func.count(condition))
+
+    @staticmethod
+    def percentage_of_language(language_name):
+        this_language_team = (
+            Team.language.has(Language.name == language_name)
+        )
+
+        return (g.session.scalar(func.count(this_language_team)) / g.session.scalar(func.count(Team.id)))*100
+
+    @staticmethod
+    def percentage_of_language_by_school(language_name, school_name):
+        this_language = (
+            Team.school.has(School.school_name == school_name)
+                and Team.language.has(Language.name == language_name)
+        )
+
+        all_language = (
+            Team.school.has(School.school_name == school_name)
+        )
+
+        return (this_language / all_language)*100
+
+from ..model.category import Category
+from ..model.language import Language
+from ..model.school import School
+from persistence.model.team import Team

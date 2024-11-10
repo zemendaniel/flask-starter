@@ -1,9 +1,6 @@
 from flask import g
+from select import select
 from sqlalchemy import func
-
-from persistence.model.school import School
-from persistence.model.team import Team
-from .user import UserRepository
 from persistence.repository import filter
 
 
@@ -31,7 +28,6 @@ class SchoolRepository:
             statement = statement.order_by(School.school_name.desc())
 
         return g.session.scalars(statement).all()
-
 
     @staticmethod
     def application_form_criteria(choice):
@@ -80,3 +76,17 @@ class SchoolRepository:
     def save(school):
         g.session.add(school)
         g.session.commit()
+
+    @staticmethod
+    def find_by_user_id(user_id):
+        statement = (
+            School.select().where(School.user_id == user_id)
+        )
+        return g.session.scalar(statement)
+
+    @staticmethod
+    def count_of_schools():
+        return g.session.scalar(func.count(School.id))
+
+
+from persistence.model.school import School
