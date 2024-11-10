@@ -1,11 +1,9 @@
-from itertools import count
-
 from flask import redirect, url_for, render_template, request, g, flash, abort, send_file
 from blueprints.pages import bp
+from persistence.repository.category import CategoryRepository
 from persistence.repository.language import LanguageRepository
 from persistence.repository.school import SchoolRepository
 from persistence.repository.team import TeamRepository
-from persistence.repository.user import UserRepository
 from security.decorators import is_fully_authenticated, is_admin, has_role
 from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm, SetWelcomeTextForm, SetDeadlineForm
 from persistence.repository.site_setting import SiteSettingRepository
@@ -127,23 +125,17 @@ def deadline():
 @is_fully_authenticated
 @has_role('admin','super_admin', 'school')
 def stats():
-    language_percentages = []
+    language_percentages = ()
+    category_percentages = ()
+    for language in LanguageRepository.find_all():
+        language_percentages += (language.name,
+                                         TeamRepository.percentage_of_language(language.name))
 
-    if g.user.role == 'school':
-        for language in LanguageRepository.find_all():
-            language_percentages.append({language.name:
-                TeamRepository.percentage_of_language_by_school(language,
-                                SchoolRepository.find_by_user_id(g.user.id).school_name
-                )})
+    for category in CategoryRepository.find_all():
+        category_percentages += (category.name,
+                                     TeamRepository.percentage_of_category(category.name))
 
-            count_of_teams = TeamRepository.count_of_teams_by_school(SchoolRepository.find_by_user_id(g.user.id).school_name)
-    else:
-            for language in LanguageRepository.find_all():
-                language_percentages.append({language.name:
-                                                 TeamRepository.percentage_of_language(language.name)})
-
-            count_of_teams = TeamRepository.count_of_teams()
-
+    count_of_teams = TeamRepository.count_of_teams()
     count_of_schools = SchoolRepository.count_of_schools()
 
     return 'placeholder'
