@@ -16,10 +16,10 @@ class SchoolRepository:
         :return: list of search results
         """
 
-        statement = filter(School, School.school_name.like(f"%{query}%")
-                           | School.address.like(f"%{query}%")
-                           | School.contact_name.like(f"%{query}%")
-                           | School.contact_email.like(f"%{query}%"),
+        statement = filter(School, School.school_name.ilike(f"%{query}%")
+                           | School.address.ilike(f"%{query}%")
+                           | School.contact_name.ilike(f"%{query}%")
+                           | School.contact_email.ilike(f"%{query}%"),
                            *extra_filters)
 
         if ascending:

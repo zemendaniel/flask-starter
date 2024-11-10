@@ -46,4 +46,3 @@ class UserPasswordResetForm(FlaskForm):
 class UserDeleteForm(FlaskForm):
     password = PasswordField('Jelszó', validators=[DataRequired(), length(max=32, min=4)])
     submit = SubmitField('Fiók törlése')
-

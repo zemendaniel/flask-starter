@@ -15,9 +15,9 @@ class MessageRepository:
         :return: list of search results
         """
 
-        statement = filter(Message, Message.team.has(Team.team_name.like(f"%{query}%"))
-                           | Message.sender.has(User.name.like(f"%{query}%")),
-                            *extra_filters)
+        statement = filter(Message, Message.team.has(Team.team_name.ilike(f"%{query}%"))
+                           | Message.sender.has(User.name.ilike(f"%{query}%")),
+                           *extra_filters)
 
         statement = statement.order_by(Message.id.desc())
 
@@ -44,4 +44,4 @@ class MessageRepository:
 
 from persistence.model.message import Message
 from persistence.model.team import Team
-from  persistence.model.user import User
+from persistence.model.user import User

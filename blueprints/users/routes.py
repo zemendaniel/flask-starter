@@ -2,19 +2,21 @@ from flask import g, redirect, url_for, flash, render_template, abort, request, 
 from security.decorators import is_admin, is_fully_authenticated
 from blueprints.users import bp
 from blueprints.pages import bp as base_bp
-from blueprints.users.forms import RegisterUserForm, EditUserRoleForm, UserSettingsForm, UserPasswordResetForm, \
-    UserDeleteForm
+from blueprints.users.forms import RegisterUserForm, UserSettingsForm, UserPasswordResetForm, UserDeleteForm
 from persistence.repository.user import UserRepository
-from persistence.model.user import User
+from persistence.model.user import User, roles
 
 
-@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/')
 @is_fully_authenticated
 @is_admin
 def list_all():
-    users = UserRepository.find_all()
+    if request.args.get('name') or request.args.get('role'):
+        users = UserRepository.filter(request.form.get('name'), request.form.get('role'))
+    else:
+        users = UserRepository.find_all()
 
-    return render_template("users/list.html", users=users)
+    return render_template("users/list.html", users=users, roles=roles)
 
 
 @bp.route('/delete/<int:user_id>', methods=['POST'])

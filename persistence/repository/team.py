@@ -18,15 +18,15 @@ class TeamRepository:
 
         statement = filter(
             Team,
-            Team.name1.like(f"%{query}%")
-            | Team.name2.like(f"%{query}%")
-            | Team.name3.like(f"%{query}%")
-            | Team.name_extra.like(f"%{query}%")
-            | Team.teachers.like(f"%{query}%")
-            | Team.language.has(Language.name.like(f"%{query}%"))  # Requires join on `Language`
-            | Team.category.has(Category.name.like(f"%{query}%"))  # Requires join on `Category`
-            | Team.school.has(School.school_name.like(f"%{query}%"))
-            | Team.team_name.like(f"%{query}%"),
+            Team.name1.ilike(f"%{query}%")
+            | Team.name2.ilike(f"%{query}%")
+            | Team.name3.ilike(f"%{query}%")
+            | Team.name_extra.ilike(f"%{query}%")
+            | Team.teachers.ilike(f"%{query}%")
+            | Team.language.has(Language.name.ilike(f"%{query}%"))  # Requires join on `Language`
+            | Team.category.has(Category.name.ilike(f"%{query}%"))  # Requires join on `Category`
+            | Team.school.has(School.school_name.ilike(f"%{query}%"))
+            | Team.team_name.ilike(f"%{query}%"),
             *extra_filters  # Additional filters
         )
 
@@ -103,7 +103,6 @@ class TeamRepository:
 
         csv = "\n".join(header_line + team_lines)
         return BytesIO(csv.encode('utf-8'))
-
 
     @staticmethod
     def count_of_teams():

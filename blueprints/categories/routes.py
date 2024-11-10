@@ -29,6 +29,10 @@ def create():
 @is_admin
 def delete(category_id):
     category = CategoryRepository.find_by_id(category_id) or abort(404)
+    if category.teams:
+        flash('A kategória nem törölhető, mert valaki használja!', 'error')
+        return redirect(url_for('categories.list_all'))
+
     category.delete()
     flash('Kategória sikeresen törölve!', 'success')
 

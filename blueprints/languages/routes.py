@@ -29,6 +29,10 @@ def create():
 @is_admin
 def delete(language_id):
     language = LanguageRepository.find_by_id(language_id) or abort(404)
+    if language.teams:
+        flash('A programnyelv nem törölhető, mert valaki használja!', 'error')
+        return redirect(url_for('languages.list_all'))
+
     language.delete()
     flash('Programnyelv sikeresen törölve!', 'success')
 

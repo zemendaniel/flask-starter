@@ -57,5 +57,18 @@ class UserRepository:
 
         return g.session.scalars(statement).all()
 
+    @staticmethod
+    def filter(username, role_name):
+        statement = g.session.query(User)
+
+        if username:
+            username = username.strip().lower()
+            statement = statement.filter(User.name.ilike(f"%{username}%"))
+
+        if role_name:
+            statement = statement.filter(User.role == role_name)
+
+        return g.session.scalars(statement).all()
+
 
 from persistence.model.user import User

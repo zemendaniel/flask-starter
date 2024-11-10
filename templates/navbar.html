@@ -87,6 +87,10 @@
                     <a class="nav-link {% if request.endpoint == 'pages.site_settings' %}active{% endif %}" href="{{ url_for("pages.site_settings") }}"><i class="fas fa-gear"></i> Weboldal beállításai</a>
                 </li>
 
+                <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'pages.errors' %}active{% endif %}" href="{{ url_for("pages.errors") }}"><i class="fas fa-bug"></i> Hibák</a>
+                </li>
+
         {% endif %}
 
         {% endif %}

@@ -8,6 +8,7 @@ from security.decorators import is_fully_authenticated, is_admin, has_role
 from blueprints.pages.forms import SetOrgNameForm, SetFaviconForm, SetWelcomeTextForm, SetDeadlineForm
 from persistence.repository.site_setting import SiteSettingRepository
 from io import BytesIO
+from datetime import datetime
 
 
 @bp.route('/')
@@ -152,5 +153,10 @@ def stats():
                            category_percentages=category_percentages)
 
 
-
+@bp.route("/close-now")
+@is_fully_authenticated
+@is_admin
+def close_now():
+    SiteSettingRepository.set_deadline(datetime.now())
+    return redirect(url_for('pages.home'))
 
